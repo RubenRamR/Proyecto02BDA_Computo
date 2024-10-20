@@ -8,7 +8,7 @@ package com.mycompany.Main;
  *
  * @author rramirez
  */
-public class Main {
+public class PruebaEstudiante {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
