@@ -31,34 +31,34 @@ public class PruebasEstudiante {
 //        /*
 //        INSERTAR
 //         */
-// Instancia del DAO de Estudiante
-        EstudianteDAO estudianteDAO = new EstudianteDAO();
-
-        // Crear una entidad de Carrera (ejemplo)
-        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Computación", 20);
-
-        // Crear una lista de bloqueos (si es necesario)
-        List<BloqueoEntidad> bloqueos = new ArrayList<>();
-
-        // Crear un estudiante con datos ficticios
-        EstudianteEntidad estudiante = new EstudianteEntidad();
-        estudiante.setNombre("ruben");
-        estudiante.setApPaterno("Pérez");
-        estudiante.setApMaterno("García");
-        estudiante.setEstatus(Estatus.INSCRITO);  // Enum con estatus de estudiante
-        estudiante.setContrasena("password123");
-        estudiante.setCarrera(carrera);
-        estudiante.setBloqueos(bloqueos);  // Por ahora no hay bloqueos, lista vacía
-
-        try
-        {
-            // Insertar el estudiante en la base de datos
-            estudianteDAO.insertarEstudiante(estudiante);
-            System.out.println("Estudiante insertado correctamente: " + estudiante);
-        } catch (PersistenceException e)
-        {
-            System.err.println("Error al insertar el estudiante: " + e.getMessage());
-        }
+// Instancia del DAO de Estudiante SI
+////        EstudianteDAO estudianteDAO = new EstudianteDAO();
+////
+////        // Crear una entidad de Carrera (ejemplo)
+////        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Computación", 20);
+////
+////        // Crear una lista de bloqueos (si es necesario)
+////        List<BloqueoEntidad> bloqueos = new ArrayList<>();
+////
+////        // Crear un estudiante con datos ficticios
+////        EstudianteEntidad estudiante = new EstudianteEntidad();
+////        estudiante.setNombre("ruben");
+////        estudiante.setApPaterno("Pérez");
+////        estudiante.setApMaterno("García");
+////        estudiante.setEstatus(Estatus.INSCRITO);  // Enum con estatus de estudiante
+////        estudiante.setContrasena("password123");
+////        estudiante.setCarrera(carrera);
+////        estudiante.setBloqueos(bloqueos);  // Por ahora no hay bloqueos, lista vacía
+////
+////        try
+////        {
+////            // Insertar el estudiante en la base de datos
+////            estudianteDAO.insertarEstudiante(estudiante);
+////            System.out.println("Estudiante insertado correctamente: " + estudiante);
+////        } catch (PersistenceException e)
+////        {
+////            System.err.println("Error al insertar el estudiante: " + e.getMessage());
+////        }
         /*
         Actualizar
          */
