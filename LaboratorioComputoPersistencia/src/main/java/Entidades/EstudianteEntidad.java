@@ -39,26 +39,27 @@ public class EstudianteEntidad implements Serializable {
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.PERSIST)
-    private List<ComputadoraEntidad> computadoras = new ArrayList<>();
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<ReservaEntidad> reservas = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idCarrera", referencedColumnName = "idCarrera")
+    @JoinColumn(name = "idCarrera", nullable = false)
     private CarreraEntidad carrera;
 
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.PERSIST)
-    private List<BloqueoEntidad> bloqueos = new ArrayList<>();
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<BloqueoEntidad> bloqueos;
 
     public EstudianteEntidad() {
     }
 
-    public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera) {
+    public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera, List<BloqueoEntidad> bloqueos) {
         this.nombre = nombre;
         this.apPaterno = apPaterno;
         this.apMaterno = apMaterno;
         this.estatus = estatus;
         this.contrasena = contrasena;
         this.carrera = carrera;
+        this.bloqueos = bloqueos;
     }
 
     public Long getId() {
@@ -109,12 +110,12 @@ public class EstudianteEntidad implements Serializable {
         this.contrasena = contrasena;
     }
 
-    public List<ComputadoraEntidad> getComputadoras() {
-        return computadoras;
+    public List<ReservaEntidad> getReservas() {
+        return reservas;
     }
 
-    public void setComputadoras(List<ComputadoraEntidad> computadoras) {
-        this.computadoras = computadoras;
+    public void setReservas(List<ReservaEntidad> reservas) {
+        this.reservas = reservas;
     }
 
     public CarreraEntidad getCarrera() {
@@ -135,7 +136,7 @@ public class EstudianteEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "EstudianteEntidad{" + "id=" + id + ", nombre=" + nombre + ", apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", estatus=" + estatus + ", contrasena=" + contrasena + ", computadoras=" + computadoras + ", carrera=" + carrera + ", bloqueos=" + bloqueos + '}';
+        return "EstudianteEntidad{" + "id=" + id + ", nombre=" + nombre + ", apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", estatus=" + estatus + ", contrasena=" + contrasena + ", reservas=" + reservas + ", carrera=" + carrera + ", bloqueos=" + bloqueos + '}';
     }
 
 }

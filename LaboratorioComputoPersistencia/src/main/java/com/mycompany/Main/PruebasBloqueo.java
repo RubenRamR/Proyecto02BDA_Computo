@@ -28,57 +28,53 @@ public class PruebasBloqueo {
         /*
         INSERTAR BLOQUEO
          */
-//                // Crear un objeto DAO para estudiantes
-//        EstudianteDAO estudianteDAO = new EstudianteDAO();
-//
-//        // Crear una carrera para el estudiante
-//        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Sistemas", 2);
-//
-//        // Crear un estudiante
-//        EstudianteEntidad estudiante = new EstudianteEntidad();
-//        estudiante.setNombre("Boooooooooooooooooooob");
-//        estudiante.setApPaterno("Pérez");
-//        estudiante.setApMaterno("Gómez");
-//        estudiante.setEstatus(Estatus.INSCRITO);
-//        estudiante.setContrasena("banban");
-//        estudiante.setCarrera(carrera);
-//
-//        // Persistir el estudiante en la base de datos
-//        try
-//        {
-//            estudianteDAO.insertarEstudiante(estudiante);
-//        } catch (PersistenceException e)
-//        {
-//            System.err.println("Error al agregar el estudiante: " + e.getMessage());
-//            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-//        } catch (Exception e)
-//        {
-//            System.err.println("Error inesperado: " + e.getMessage());
-//            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-//        } finally
-//        {
-//            estudianteDAO.cerrar(); // Asegúrate de tener un método para cerrar la conexión
-//        }
-//
-//
-//        // Crear una instancia del DAO para Bloqueo
-//        BloqueoDAO bloqueoDAO = new BloqueoDAO();
-//        
-//        // Crear un nuevo bloqueo
-//        BloqueoEntidad nuevoBloqueo = new BloqueoEntidad(
-//            LocalDateTime.now().plusDays(7), // fechaLiberacion
-//            LocalDateTime.now(),              // fechaBloqueo
-//            "Incumplimiento de normas",       // motivo
-//            estudiante                         // estudiante relacionado
-//        );
-//
-//        try {
-//            // Insertar el nuevo bloqueo en la base de datos
-//            bloqueoDAO.insertarBloqueo(nuevoBloqueo);
-//            System.out.println("Bloqueo insertado exitosamente.");
-//        } catch (PersistenceException e) {
-//            System.err.println("Error al insertar el bloqueo: " + e.getMessage());
-//        }
+                // Crear un objeto DAO para estudiantes
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
+        // Crear una carrera para el estudiante
+        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Sistemas", 2);
+
+        // Crear un estudiante
+        EstudianteEntidad estudiante = new EstudianteEntidad();
+        estudiante.setNombre("Boooooooooooooooooooob");
+        estudiante.setApPaterno("Pérez");
+        estudiante.setApMaterno("Gómez");
+        estudiante.setEstatus(Estatus.INSCRITO);
+        estudiante.setContrasena("banban");
+        estudiante.setCarrera(carrera);
+
+        // Persistir el estudiante en la base de datos
+        try
+        {
+            estudianteDAO.insertarEstudiante(estudiante);
+        } catch (PersistenceException e)
+        {
+            System.err.println("Error al agregar el estudiante: " + e.getMessage());
+            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
+        } catch (Exception e)
+        {
+            System.err.println("Error inesperado: " + e.getMessage());
+            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
+        }
+
+        // Crear una instancia del DAO para Bloqueo
+        BloqueoDAO bloqueoDAO = new BloqueoDAO();
+        
+        // Crear un nuevo bloqueo
+        BloqueoEntidad nuevoBloqueo = new BloqueoEntidad(
+            LocalDateTime.now().plusDays(7), // fechaLiberacion
+            LocalDateTime.now(),              // fechaBloqueo
+            "Incumplimiento de normas",       // motivo
+            estudiante                         // estudiante relacionado
+        );
+
+        try {
+            // Insertar el nuevo bloqueo en la base de datos
+            bloqueoDAO.insertarBloqueo(nuevoBloqueo);
+            System.out.println("Bloqueo insertado exitosamente.");
+        } catch (PersistenceException e) {
+            System.err.println("Error al insertar el bloqueo: " + e.getMessage());
+        }
 
         /*
         EDITAR BLOQUEO

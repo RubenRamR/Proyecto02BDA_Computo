@@ -31,7 +31,7 @@ public class CarreraEntidad implements Serializable {
     @Column(name = "minutosMaxUsoDiario", nullable = false)
     private int minutosMaxUsoDiario;
 
-    @OneToMany(mappedBy = "carrera", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL)
     private List<EstudianteEntidad> estudiantes = new ArrayList<>();
 
     public CarreraEntidad() {

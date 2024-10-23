@@ -5,7 +5,10 @@
 package Entidades;
 
 import ENUM.Estado;
+import ENUM.TipoCompu;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -34,16 +37,33 @@ public class ComputadoraEntidad implements Serializable {
     @Column(name = "direccionIP", nullable = false, unique = true)
     private String direccionIP;
 
-    @Column(name = "software", length = 60, nullable = false)
-    private String software;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TipoCompu")
+    private TipoCompu tipoCompu;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idCentroComputo", referencedColumnName = "idCentroComputo")
+    @ElementCollection
+    @CollectionTable(name = "Software_List", joinColumns = @JoinColumn(name = "idComputadora"))
+    @Column(name = "software")
+    private List<String> softwares = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "idCentroComputo", nullable = false)
     private CentroComputoEntidad centroComputo;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idEstudiante", referencedColumnName = "idEstudiante")
-    private EstudianteEntidad estudiante;
+    @OneToMany(mappedBy = "computadora", cascade = CascadeType.ALL)
+    private List<ReservaEntidad> reservas = new ArrayList<>();
+
+    public ComputadoraEntidad() {
+    }
+
+    public ComputadoraEntidad(String nombreAlumno, Estado estado, int numeroMaquina, String direccionIP, TipoCompu tipoCompu, CentroComputoEntidad centroComputo) {
+        this.nombreAlumno = nombreAlumno;
+        this.estado = estado;
+        this.numeroMaquina = numeroMaquina;
+        this.direccionIP = direccionIP;
+        this.tipoCompu = tipoCompu;
+        this.centroComputo = centroComputo;
+    }
 
     public Long getId() {
         return id;
@@ -52,4 +72,74 @@ public class ComputadoraEntidad implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getNombreAlumno() {
+        return nombreAlumno;
+    }
+
+    public void setNombreAlumno(String nombreAlumno) {
+        this.nombreAlumno = nombreAlumno;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public int getNumeroMaquina() {
+        return numeroMaquina;
+    }
+
+    public void setNumeroMaquina(int numeroMaquina) {
+        this.numeroMaquina = numeroMaquina;
+    }
+
+    public String getDireccionIP() {
+        return direccionIP;
+    }
+
+    public void setDireccionIP(String direccionIP) {
+        this.direccionIP = direccionIP;
+    }
+
+    public TipoCompu getTipoCompu() {
+        return tipoCompu;
+    }
+
+    public void setTipoCompu(TipoCompu tipoCompu) {
+        this.tipoCompu = tipoCompu;
+    }
+
+    public List<String> getSoftwares() {
+        return softwares;
+    }
+
+    public void setSoftwares(List<String> softwares) {
+        this.softwares = softwares;
+    }
+
+    public CentroComputoEntidad getCentroComputo() {
+        return centroComputo;
+    }
+
+    public void setCentroComputo(CentroComputoEntidad centroComputo) {
+        this.centroComputo = centroComputo;
+    }
+
+    public List<ReservaEntidad> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<ReservaEntidad> reservas) {
+        this.reservas = reservas;
+    }
+
+    @Override
+    public String toString() {
+        return "ComputadoraEntidad{" + "id=" + id + ", nombreAlumno=" + nombreAlumno + ", estado=" + estado + ", numeroMaquina=" + numeroMaquina + ", direccionIP=" + direccionIP + ", tipoCompu=" + tipoCompu + ", softwares=" + softwares + ", centroComputo=" + centroComputo + ", reservas=" + reservas + '}';
+    }
+
 }

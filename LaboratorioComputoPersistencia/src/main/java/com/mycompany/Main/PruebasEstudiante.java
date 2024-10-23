@@ -5,6 +5,7 @@ package com.mycompany.Main;
 
 import DAOs.EstudianteDAO;
 import ENUM.Estatus;
+import Entidades.BloqueoEntidad;
 import Entidades.CarreraEntidad;
 import Entidades.EstudianteEntidad;
 import static com.mysql.cj.conf.PropertyKey.logger;
@@ -27,41 +28,37 @@ public class PruebasEstudiante {
 
     public static void main(String[] args) {
 
-        /*
-        INSERTAR
-         */
-//        // Crear un objeto DAO para estudiantes
-//        EstudianteDAO estudianteDAO = new EstudianteDAO();
-//
-//        // Crear una carrera para el estudiante
-//        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Sistemas", 2);
-//
-//        // Crear un estudiante
-//        EstudianteEntidad estudiante = new EstudianteEntidad();
-//        estudiante.setNombre("Juan");
-//        estudiante.setApPaterno("Pérez");
-//        estudiante.setApMaterno("Gómez");
-//        estudiante.setEstatus(Estatus.INSCRITO);
-//        estudiante.setContrasena("contrasenaSegura123");
-//        estudiante.setCarrera(carrera);
-//
-//        // Persistir el estudiante en la base de datos
-//        try
-//        {
-//            estudianteDAO.insertarEstudiante(estudiante);
-//        } catch (PersistenceException e)
-//        {
-//            System.err.println("Error al agregar el estudiante: " + e.getMessage());
-//            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-//        } catch (Exception e)
-//        {
-//            System.err.println("Error inesperado: " + e.getMessage());
-//            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-//        } finally
-//        {
-//            estudianteDAO.cerrar(); // Asegúrate de tener un método para cerrar la conexión
-//        }
-//
+//        /*
+//        INSERTAR
+//         */
+// Instancia del DAO de Estudiante
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
+        // Crear una entidad de Carrera (ejemplo)
+        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Computación", 20);
+
+        // Crear una lista de bloqueos (si es necesario)
+        List<BloqueoEntidad> bloqueos = new ArrayList<>();
+
+        // Crear un estudiante con datos ficticios
+        EstudianteEntidad estudiante = new EstudianteEntidad();
+        estudiante.setNombre("ruben");
+        estudiante.setApPaterno("Pérez");
+        estudiante.setApMaterno("García");
+        estudiante.setEstatus(Estatus.INSCRITO);  // Enum con estatus de estudiante
+        estudiante.setContrasena("password123");
+        estudiante.setCarrera(carrera);
+        estudiante.setBloqueos(bloqueos);  // Por ahora no hay bloqueos, lista vacía
+
+        try
+        {
+            // Insertar el estudiante en la base de datos
+            estudianteDAO.insertarEstudiante(estudiante);
+            System.out.println("Estudiante insertado correctamente: " + estudiante);
+        } catch (PersistenceException e)
+        {
+            System.err.println("Error al insertar el estudiante: " + e.getMessage());
+        }
         /*
         Actualizar
          */

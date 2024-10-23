@@ -30,8 +30,8 @@ public class BloqueoEntidad implements Serializable {
     @Column(name = "motivo", length = 256, nullable = false)
     private String motivo;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idEstudiante", referencedColumnName = "idEstudiante")
+    @ManyToOne
+    @JoinColumn(name = "idEstudiante", nullable = false)
     private EstudianteEntidad estudiante;
 
     public BloqueoEntidad() {

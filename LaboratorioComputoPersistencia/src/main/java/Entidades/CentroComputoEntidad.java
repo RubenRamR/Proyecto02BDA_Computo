@@ -35,22 +35,23 @@ public class CentroComputoEntidad implements Serializable {
     @Column(name = "horaFin", nullable = false)
     private LocalTime horaFin;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idUnidadAcademica", referencedColumnName = "idUnidadAcademica")
-    private UnidadAcademicaEntidad UnidadAcademica;
+    @ManyToOne
+    @JoinColumn(name = "idUnidadAcademica", nullable = false)
+    private UnidadAcademicaEntidad unidadAcademica;
 
-    @OneToMany(mappedBy = "centroComputo", cascade = CascadeType.PERSIST)
-    private List<ComputadoraEntidad> computadoras = new ArrayList<>();
+    @OneToMany(mappedBy = "centroComputo", cascade = CascadeType.ALL)
+    private List<ComputadoraEntidad> computadoras;
 
     public CentroComputoEntidad() {
     }
 
-    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad UnidadAcademica) {
+    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica, List<ComputadoraEntidad> computadoras) {
         this.nombre = nombre;
         this.contrasenaMaestra = contrasenaMaestra;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.UnidadAcademica = UnidadAcademica;
+        this.unidadAcademica = unidadAcademica;
+        this.computadoras = computadoras;
     }
 
     public Long getId() {
@@ -94,11 +95,11 @@ public class CentroComputoEntidad implements Serializable {
     }
 
     public UnidadAcademicaEntidad getUnidadAcademica() {
-        return UnidadAcademica;
+        return unidadAcademica;
     }
 
-    public void setUnidadAcademica(UnidadAcademicaEntidad UnidadAcademica) {
-        this.UnidadAcademica = UnidadAcademica;
+    public void setUnidadAcademica(UnidadAcademicaEntidad unidadAcademica) {
+        this.unidadAcademica = unidadAcademica;
     }
 
     public List<ComputadoraEntidad> getComputadoras() {
@@ -107,6 +108,11 @@ public class CentroComputoEntidad implements Serializable {
 
     public void setComputadoras(List<ComputadoraEntidad> computadoras) {
         this.computadoras = computadoras;
+    }
+
+    @Override
+    public String toString() {
+        return "CentroComputoEntidad{" + "id=" + id + ", nombre=" + nombre + ", contrasenaMaestra=" + contrasenaMaestra + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", unidadAcademica=" + unidadAcademica + ", computadoras=" + computadoras + '}';
     }
 
 }

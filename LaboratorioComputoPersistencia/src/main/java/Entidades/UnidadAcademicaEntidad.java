@@ -24,14 +24,9 @@ public class UnidadAcademicaEntidad implements Serializable {
 
     @Column(name = "nombre", length = 60, nullable = false)
     private String nombre;
-//
-//    @OneToMany(mappedBy = "unidadAcademica", cascade = CascadeType.PERSIST)
-//    private List<CentroComputoEntidad> centrosComputo = new ArrayList<>();
-    
-    @ManyToOne // Indica que este es el lado "many" de la relación
-    @JoinColumn(name = "unidad_academica_id", nullable = false) // Columna que relaciona con UnidadAcademica
-    private UnidadAcademicaEntidad unidadAcademica; // Debe coincidir con el mappedBy en UnidadAcademicaEntidad
 
+    @OneToMany(mappedBy = "unidadAcademica", cascade = CascadeType.ALL)
+    private List<CentroComputoEntidad> centrosComputo;
 
     public UnidadAcademicaEntidad() {
     }
@@ -56,13 +51,16 @@ public class UnidadAcademicaEntidad implements Serializable {
         this.nombre = nombre;
     }
 
-    public UnidadAcademicaEntidad getUnidadAcademica() {
-        return unidadAcademica;
+    public List<CentroComputoEntidad> getCentrosComputo() {
+        return centrosComputo;
     }
 
-    public void setUnidadAcademica(UnidadAcademicaEntidad unidadAcademica) {
-        this.unidadAcademica = unidadAcademica;
+    public void setCentrosComputo(List<CentroComputoEntidad> centrosComputo) {
+        this.centrosComputo = centrosComputo;
     }
 
-
+    @Override
+    public String toString() {
+        return "UnidadAcademicaEntidad{" + "id=" + id + ", nombre=" + nombre + ", centrosComputo=" + centrosComputo + '}';
+    }
 }
