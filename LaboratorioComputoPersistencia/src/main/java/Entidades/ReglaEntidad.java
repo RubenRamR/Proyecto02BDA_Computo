@@ -22,6 +22,9 @@ public class ReglaEntidad implements Serializable {
     @Column(name = "idRegla", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @Column(name = "decripcion", length = 60)
+    private String descripcion;
 
     @ManyToMany(mappedBy = "reglas", cascade =
     {

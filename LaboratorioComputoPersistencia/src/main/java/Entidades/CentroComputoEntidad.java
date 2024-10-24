@@ -35,12 +35,12 @@ public class CentroComputoEntidad implements Serializable {
     @Column(name = "horaFin", nullable = false)
     private LocalTime horaFin;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)  // Añade el cascade aquí
     @JoinColumn(name = "idUnidadAcademica", nullable = false)
     private UnidadAcademicaEntidad unidadAcademica;
 
     @OneToMany(mappedBy = "centroComputo", cascade = CascadeType.ALL)
-    private List<ComputadoraEntidad> computadoras;
+    private List<ComputadoraEntidad> computadoras = new ArrayList<>();
 
     @ManyToMany(cascade =
     {
@@ -56,13 +56,12 @@ public class CentroComputoEntidad implements Serializable {
     public CentroComputoEntidad() {
     }
 
-    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica, List<ComputadoraEntidad> computadoras) {
+    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica) {
         this.nombre = nombre;
         this.contrasenaMaestra = contrasenaMaestra;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.unidadAcademica = unidadAcademica;
-        this.computadoras = computadoras;
     }
 
     public Long getId() {

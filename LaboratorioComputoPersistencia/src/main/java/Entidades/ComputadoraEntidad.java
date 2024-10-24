@@ -50,7 +50,7 @@ public class ComputadoraEntidad implements Serializable {
     @JoinColumn(name = "idCentroComputo", nullable = false)
     private CentroComputoEntidad centroComputo;
 
-    @OneToMany(mappedBy = "computadora", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "computadora", cascade = CascadeType.PERSIST)
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
     public ComputadoraEntidad() {

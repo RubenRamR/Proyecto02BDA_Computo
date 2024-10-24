@@ -32,6 +32,7 @@ import javax.persistence.criteria.Root;
  *
  * @author rramirez
  */
+//NO LISTA
 public class ReservaDAO implements IReservaDAO {
 
     private static final Logger logger = Logger.getLogger(ReservaDAO.class.getName());

@@ -26,13 +26,14 @@ public class UnidadAcademicaEntidad implements Serializable {
     private String nombre;
 
     @OneToMany(mappedBy = "unidadAcademica", cascade = CascadeType.ALL)
-    private List<CentroComputoEntidad> centrosComputo;
+    private List<CentroComputoEntidad> centrosComputo = new ArrayList<>();
 
     public UnidadAcademicaEntidad() {
     }
 
-    public UnidadAcademicaEntidad(String nombre) {
+    public UnidadAcademicaEntidad(String nombre, List<CentroComputoEntidad> centrosComputo) {
         this.nombre = nombre;
+        this.centrosComputo = centrosComputo;
     }
 
     public Long getId() {
@@ -63,4 +64,5 @@ public class UnidadAcademicaEntidad implements Serializable {
     public String toString() {
         return "UnidadAcademicaEntidad{" + "id=" + id + ", nombre=" + nombre + ", centrosComputo=" + centrosComputo + '}';
     }
+
 }
