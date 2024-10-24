@@ -7,7 +7,9 @@ package DAOs;
 import Entidades.BloqueoEntidad;
 import Entidades.EstudianteEntidad;
 import InterfacesDAO.IBloqueoDAO;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,75 +33,32 @@ public class BloqueoDAO implements IBloqueoDAO {
     }
 
     @Override
-    public void insertarBloqueo(BloqueoEntidad bloqueo) throws PersistenceException {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+    public void insertarBloqueo(BloqueoEntidad bloqueo, Long idEstudiante) throws PersistenceException {
+        EntityManager entityManager = null;
         try
         {
+            entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
+
+            EstudianteEntidad estudiante = entityManager.find(EstudianteEntidad.class, idEstudiante);
+            if (estudiante == null)
+            {
+                throw new PersistenceException("Estudiante no encontrado con ID: " + idEstudiante);
+            }
+
+            bloqueo.setEstudiante(estudiante);
+
             entityManager.persist(bloqueo);
             entityManager.getTransaction().commit();
-            logger.info("Bloqueo insertado: " + bloqueo);
-        } catch (Exception e)
+            logger.info("Bloqueo insertado exitosamente: " + bloqueo);
+        } catch (PersistenceException e)
         {
-            if (entityManager.getTransaction().isActive())
+            if (entityManager != null && entityManager.getTransaction().isActive())
             {
                 entityManager.getTransaction().rollback();
             }
-            logger.severe("Error al insertar bloqueo: " + e.getMessage());
-            throw new PersistenceException("No se pudo insertar el bloqueo", e);
-        } finally
-        {
-            entityManager.close();
-        }
-    }
-
-    @Override
-    public void editarBloqueo(BloqueoEntidad bloqueo) throws PersistenceException {
-        EntityManager entityManager = null;
-        EntityTransaction transaction = null;
-
-        try
-        {
-            entityManager = entityManagerFactory.createEntityManager();
-            transaction = entityManager.getTransaction();
-
-            transaction.begin();
-
-            BloqueoEntidad bloqueoExistente = entityManager.find(BloqueoEntidad.class, bloqueo.getId());
-            if (bloqueoExistente != null)
-            {
-                if (bloqueo.getEstudiante() != null)
-                {
-                    EstudianteEntidad estudiante = entityManager.find(EstudianteEntidad.class, bloqueo.getEstudiante().getId());
-                    if (estudiante != null)
-                    {
-                        bloqueoExistente.setEstudiante(estudiante);
-                    } else
-                    {
-                        throw new PersistenceException("Estudiante no encontrado con ID: " + bloqueo.getEstudiante().getId());
-                    }
-                }
-
-                // Actualizar otros campos del bloqueo
-                bloqueoExistente.setFechaLiberacion(bloqueo.getFechaLiberacion());
-                bloqueoExistente.setFechaBloqueo(bloqueo.getFechaBloqueo());
-                bloqueoExistente.setMotivo(bloqueo.getMotivo());
-
-                // Guardar los cambios
-                entityManager.merge(bloqueoExistente);
-            } else
-            {
-                throw new PersistenceException("Bloqueo no encontrado con ID: " + bloqueo.getId());
-            }
-
-            transaction.commit();
-        } catch (Exception e)
-        {
-            if (transaction != null && transaction.isActive())
-            {
-                transaction.rollback();
-            }
-            throw new PersistenceException("Error al editar el bloqueo: " + e.getMessage(), e);
+            logger.log(Level.SEVERE, "Error al insertar el bloqueo: " + e.getMessage(), e);
+            throw new PersistenceException("Error al insertar el bloqueo: " + e.getMessage(), e);
         } finally
         {
             if (entityManager != null)
@@ -110,95 +69,119 @@ public class BloqueoDAO implements IBloqueoDAO {
     }
 
     @Override
-    public void eliminarBloqueoPorID(Long id) throws PersistenceException {
-        EntityManager entityManager = null;
+    public void editarBloqueo(BloqueoEntidad bloqueo) {
+        EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = null;
 
         try
         {
-            entityManager = entityManagerFactory.createEntityManager();
-            transaction = entityManager.getTransaction();
-
+            transaction = em.getTransaction();
             transaction.begin();
 
-            BloqueoEntidad bloqueo = entityManager.find(BloqueoEntidad.class, id);
+            BloqueoEntidad bloqueoExistente = em.find(BloqueoEntidad.class, bloqueo.getId());
+
+            if (bloqueoExistente != null)
+            {
+                bloqueoExistente.setFechaBloqueo(bloqueo.getFechaBloqueo());
+                bloqueoExistente.setFechaLiberacion(bloqueo.getFechaLiberacion());
+                bloqueoExistente.setMotivo(bloqueo.getMotivo());
+
+                em.merge(bloqueoExistente);
+            } else
+            {
+                System.out.println("El bloqueo con ID " + bloqueo.getId() + " no existe.");
+            }
+
+            transaction.commit();
+        } catch (Exception e)
+        {
+            if (transaction != null)
+            {
+                transaction.rollback();
+            }
+            System.err.println("Error al editar el bloqueo: " + e.getMessage());
+        } finally
+        {
+            em.close();
+        }
+    }
+
+    @Override
+    public void eliminarBloqueoPorID(Long idBloqueo) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = null;
+
+        try
+        {
+            transaction = em.getTransaction();
+            transaction.begin();
+
+            BloqueoEntidad bloqueo = em.find(BloqueoEntidad.class, idBloqueo);
 
             if (bloqueo != null)
             {
-                entityManager.remove(bloqueo);
+                em.remove(bloqueo);
+                System.out.println("Bloqueo eliminado con éxito.");
             } else
             {
-                throw new PersistenceException("No se encontró el bloqueo con ID: " + id);
+                System.out.println("El bloqueo con ID " + idBloqueo + " no existe.");
             }
 
             transaction.commit();
         } catch (Exception e)
         {
-            if (transaction != null && transaction.isActive())
+            if (transaction != null)
             {
                 transaction.rollback();
             }
-            throw new PersistenceException("Error al eliminar el bloqueo con ID: " + id, e);
+            System.err.println("Error al eliminar el bloqueo: " + e.getMessage());
         } finally
         {
-            if (entityManager != null)
-            {
-                entityManager.close();
-            }
+            em.close();
         }
     }
 
     @Override
     public BloqueoEntidad obtenerBloqueoPorID(Long id) throws PersistenceException {
-        EntityManager entityManager = null;
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         try
         {
-            entityManager = entityManagerFactory.createEntityManager();
-
-            BloqueoEntidad bloqueo = entityManager.find(BloqueoEntidad.class, id);
+            BloqueoEntidad bloqueo = em.find(BloqueoEntidad.class, id);
 
             if (bloqueo == null)
             {
-                throw new PersistenceException("No se encontró el bloqueo con ID: " + id);
+                throw new PersistenceException("El bloqueo con ID " + id + " no existe.");
             }
 
             return bloqueo;
-
         } catch (Exception e)
         {
-            throw new PersistenceException("Error al obtener el bloqueo con ID: " + id, e);
+            throw new PersistenceException("Error al obtener el bloqueo: " + e.getMessage(), e);
         } finally
         {
-            if (entityManager != null)
-            {
-                entityManager.close();
-            }
+            em.close();
         }
     }
 
     @Override
     public List<BloqueoEntidad> obtenerTodosLosBloqueos() throws PersistenceException {
-        EntityManager entityManager = null;
+        EntityManager em = entityManagerFactory.createEntityManager();
+        List<BloqueoEntidad> bloqueos = new ArrayList<>();
 
         try
         {
-            entityManager = entityManagerFactory.createEntityManager();
-
-            TypedQuery<BloqueoEntidad> query = entityManager.createQuery("SELECT b FROM BloqueoEntidad b", BloqueoEntidad.class);
-
-            return query.getResultList();
-
+            TypedQuery<BloqueoEntidad> query = em.createQuery("SELECT b FROM BloqueoEntidad b", BloqueoEntidad.class);
+            bloqueos = query.getResultList();
         } catch (Exception e)
         {
             throw new PersistenceException("Error al obtener todos los bloqueos: " + e.getMessage(), e);
         } finally
         {
-            if (entityManager != null)
-            {
-                entityManager.close();
-            }
+            em.close();
         }
+
+        return bloqueos;
     }
 
 }

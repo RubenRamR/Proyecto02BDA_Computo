@@ -5,6 +5,7 @@
 package InterfacesDAO;
 
 import Entidades.BloqueoEntidad;
+import Entidades.EstudianteEntidad;
 import java.util.List;
 import javax.persistence.PersistenceException;
 
@@ -14,7 +15,7 @@ import javax.persistence.PersistenceException;
  */
 public interface IBloqueoDAO {
 
-    public void insertarBloqueo(BloqueoEntidad bloqueo) throws PersistenceException;
+    public void insertarBloqueo(BloqueoEntidad bloqueo, Long idEstudiante) throws PersistenceException;
 
     public void editarBloqueo(BloqueoEntidad bloqueo) throws PersistenceException;
 

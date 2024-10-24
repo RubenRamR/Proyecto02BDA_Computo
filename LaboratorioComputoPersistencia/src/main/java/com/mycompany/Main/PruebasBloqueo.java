@@ -10,7 +10,10 @@ import ENUM.Estatus;
 import Entidades.BloqueoEntidad;
 import Entidades.CarreraEntidad;
 import Entidades.EstudianteEntidad;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.PersistenceException;
 
@@ -28,128 +31,100 @@ public class PruebasBloqueo {
         /*
         INSERTAR BLOQUEO
          */
-                // Crear un objeto DAO para estudiantes
-        EstudianteDAO estudianteDAO = new EstudianteDAO();
-
-        // Crear una carrera para el estudiante
-        CarreraEntidad carrera = new CarreraEntidad("Ingeniería en Sistemas", 2);
-
-        // Crear un estudiante
-        EstudianteEntidad estudiante = new EstudianteEntidad();
-        estudiante.setNombre("Boooooooooooooooooooob");
-        estudiante.setApPaterno("Pérez");
-        estudiante.setApMaterno("Gómez");
-        estudiante.setEstatus(Estatus.INSCRITO);
-        estudiante.setContrasena("banban");
-        estudiante.setCarrera(carrera);
-
-        // Persistir el estudiante en la base de datos
-        try
-        {
-            estudianteDAO.insertarEstudiante(estudiante);
-        } catch (PersistenceException e)
-        {
-            System.err.println("Error al agregar el estudiante: " + e.getMessage());
-            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-        } catch (Exception e)
-        {
-            System.err.println("Error inesperado: " + e.getMessage());
-            e.printStackTrace(); // Imprimir la traza de la pila para más detalles
-        }
-
-        // Crear una instancia del DAO para Bloqueo
-        BloqueoDAO bloqueoDAO = new BloqueoDAO();
-        
-        // Crear un nuevo bloqueo
-        BloqueoEntidad nuevoBloqueo = new BloqueoEntidad(
-            LocalDateTime.now().plusDays(7), // fechaLiberacion
-            LocalDateTime.now(),              // fechaBloqueo
-            "Incumplimiento de normas",       // motivo
-            estudiante                         // estudiante relacionado
-        );
-
-        try {
-            // Insertar el nuevo bloqueo en la base de datos
-            bloqueoDAO.insertarBloqueo(nuevoBloqueo);
-            System.out.println("Bloqueo insertado exitosamente.");
-        } catch (PersistenceException e) {
-            System.err.println("Error al insertar el bloqueo: " + e.getMessage());
-        }
-
+//        // Crear instancias de las entidades
+//        EstudianteEntidad estudiante = new EstudianteEntidad(
+//                "Juan", // nombre
+//                "Pérez", // apPaterno
+//                "García", // apMaterno
+//                Estatus.INSCRITO, // estatus
+//                "contrasena123", // contrasena
+//                new CarreraEntidad("ISW", 250), // carrera (puedes inicializarla más adelante si es necesario)
+//                new ArrayList<>() // bloqueos (inicializado como lista vacía)
+//        );
+//
+//        // Insertar el estudiante en la base de datos para obtener su ID
+//        EstudianteDAO estudianteDAO = new EstudianteDAO();
+//        try
+//        {
+//            estudianteDAO.insertarEstudiante(estudiante);  // Asegúrate de tener este método en EstudianteDAO
+//        } catch (PersistenceException e)
+//        {
+//            System.err.println("Error al insertar el estudiante: " + e.getMessage());
+//            return; // Salir si hay un error al insertar el estudiante
+//        }
+//
+//        // Crear un BloqueoEntidad
+//        BloqueoEntidad bloqueo = new BloqueoEntidad();
+//        bloqueo.setFechaBloqueo(LocalDateTime.now()); // Asegúrate de que tengas un setter para la fecha
+//        bloqueo.setFechaLiberacion(LocalDateTime.now().plusDays(8)); // 8 días después
+//        bloqueo.setMotivo("Falta de asistencia");
+//
+//        // Insertar el bloqueo en la base de datos
+//        BloqueoDAO bloqueoDAO = new BloqueoDAO();
+//        try
+//        {
+//            // Usa el ID del estudiante recién insertado
+//            bloqueoDAO.insertarBloqueo(bloqueo, 3L);
+//            System.out.println("Bloqueo insertado correctamente para el estudiante con ID: " + estudiante.getId());
+//        } catch (PersistenceException e)
+//        {
+//            System.err.println("Error al insertar el bloqueo: " + e.getMessage());
+//        }
+//
+        //
         /*
         EDITAR BLOQUEO
          */
+//// Crear una instancia de BloqueoEntidad con los nuevos valores
+//        BloqueoEntidad bloqueoEditar = new BloqueoEntidad();
+//        bloqueoEditar.setId(1L); // ID del bloqueo que deseas editar
+//        bloqueoEditar.setFechaBloqueo(LocalDateTime.now());
+//        bloqueoEditar.setFechaLiberacion(LocalDateTime.now().plusDays(10));
+//        bloqueoEditar.setMotivo("Asistencia mejorada");
+//
+//// Llamar al método editarBloqueo
 //        BloqueoDAO bloqueoDAO = new BloqueoDAO();
-//
-//        // Crear o recuperar un bloqueo que deseas editar
-//        BloqueoEntidad bloqueo = new BloqueoEntidad();
-//        bloqueo.setId(3L); // ID del bloqueo existente
-//        bloqueo.setFechaLiberacion(LocalDateTime.now().plusDays(1)); // Nueva fecha de liberación
-//        bloqueo.setFechaBloqueo(LocalDateTime.now()); // Nueva fecha de bloqueo
-//        bloqueo.setMotivo("Incumplimiento de normas actualizadaaaa");
-//
-//        try
-//        {
-//            bloqueoDAO.editarBloqueo(bloqueo);
-//            System.out.println("Bloqueo editado exitosamente.");
-//        } catch (PersistenceException e)
-//        {
-//            System.err.println("Error al editar el bloqueo: " + e.getMessage());
-//        }
+//        bloqueoDAO.editarBloqueo(bloqueoEditar);
 //
         /*
         ELIMINAR BLOQUEO
          */
+//        // ID del bloqueo que deseas eliminar
+//        Long idBloqueo = 2L;
+//
 //        BloqueoDAO bloqueoDAO = new BloqueoDAO();
+//        bloqueoDAO.eliminarBloqueoPorID(idBloqueo);
 //
-//        try
-//        {
-//            // ID del bloqueo que deseas eliminar
-//            Long bloqueoId = 2L;
-//
-//            // Llamar al método para eliminar el bloqueo por ID
-//            bloqueoDAO.eliminarBloqueoPorID(bloqueoId);
-//            System.out.println("Bloqueo con ID " + bloqueoId + " eliminado correctamente.");
-//        } catch (PersistenceException e)
-//        {
-//            System.out.println("Error al eliminar el bloqueo: " + e.getMessage());
-//        }
         /*
         OBTENER POR ID
          */
-//        BloqueoDAO bloqueoDAO = new BloqueoDAO();
+//        // ID del bloqueo que deseas obtener
+//        Long idBloqueo = 3L;
 //
+//        BloqueoDAO bloqueoDAO = new BloqueoDAO();
 //        try
 //        {
-//            Long bloqueoId = 3L;
-//
-//            BloqueoEntidad bloqueo = bloqueoDAO.obtenerBloqueoPorID(bloqueoId);
+//            BloqueoEntidad bloqueo = bloqueoDAO.obtenerBloqueoPorID(idBloqueo);
 //            System.out.println("Bloqueo encontrado: " + bloqueo);
-//
 //        } catch (PersistenceException e)
 //        {
-//            System.out.println("Error al obtener el bloqueo: " + e.getMessage());
+//            System.err.println(e.getMessage());
 //        }
-
         /*
         OBTENER TODOS
          */
+        //
 //        BloqueoDAO bloqueoDAO = new BloqueoDAO();
-//
 //        try
 //        {
-//            // Llamar al método para obtener todos los bloqueos
 //            List<BloqueoEntidad> bloqueos = bloqueoDAO.obtenerTodosLosBloqueos();
-//
-//            // Imprimir los bloqueos obtenidos
 //            for (BloqueoEntidad bloqueo : bloqueos)
 //            {
-//                System.out.println(bloqueo);
+//                System.out.println("Bloqueo: " + bloqueo);
 //            }
-//
 //        } catch (PersistenceException e)
 //        {
-//            System.out.println("Error al obtener los bloqueos: " + e.getMessage());
+//            System.err.println(e.getMessage());
 //        }
     }
 

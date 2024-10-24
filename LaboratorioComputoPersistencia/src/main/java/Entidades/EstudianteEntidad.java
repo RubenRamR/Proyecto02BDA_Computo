@@ -47,7 +47,7 @@ public class EstudianteEntidad implements Serializable {
     private CarreraEntidad carrera;
 
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
-    private List<BloqueoEntidad> bloqueos;
+    private List<BloqueoEntidad> bloqueos = new ArrayList<>();
 
     public EstudianteEntidad() {
     }
