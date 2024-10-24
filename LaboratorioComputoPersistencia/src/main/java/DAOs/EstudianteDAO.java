@@ -6,6 +6,7 @@ package DAOs;
 
 import Entidades.EstudianteEntidad;
 import InterfacesDAO.IEstudianteDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,13 @@ public class EstudianteDAO implements IEstudianteDAO {
             transaction = entityManager.getTransaction();
             transaction.begin();
 
-            EstudianteEntidad estudianteExistente = entityManager.find(EstudianteEntidad.class, estudiante.getId());
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<EstudianteEntidad> cq = cb.createQuery(EstudianteEntidad.class);
+            Root<EstudianteEntidad> estudianteRoot = cq.from(EstudianteEntidad.class);
+
+            cq.select(estudianteRoot).where(cb.equal(estudianteRoot.get("id"), estudiante.getId()));
+
+            EstudianteEntidad estudianteExistente = entityManager.createQuery(cq).getSingleResult();
 
             if (estudianteExistente != null)
             {
@@ -89,35 +96,39 @@ public class EstudianteDAO implements IEstudianteDAO {
                 estudianteExistente.setEstatus(estudiante.getEstatus());
                 estudianteExistente.setContrasena(estudiante.getContrasena());
                 estudianteExistente.setCarrera(estudiante.getCarrera());
+                estudianteExistente.setReservas(estudiante.getReservas());
+                estudianteExistente.setBloqueos(estudiante.getBloqueos());
 
                 entityManager.merge(estudianteExistente);
-
                 transaction.commit();
-                System.out.println("Estudiante actualizado con éxito: " + estudiante.getNombre());
+
+                logger.log(Level.INFO, "Estudiante actualizado con éxito: {0}", estudianteExistente);
             } else
             {
-                System.err.println("Estudiante no encontrado con ID: " + estudiante.getId());
-                throw new PersistenceException("Estudiante no encontrado con ID: " + estudiante.getId());
+                logger.log(Level.WARNING, "No se encontró el estudiante con ID: {0}", estudiante.getId());
             }
 
+        } catch (NoResultException e)
+        {
+            logger.log(Level.WARNING, "No se encontró ningún estudiante con el ID: {0}", estudiante.getId());
+            if (transaction != null && transaction.isActive())
+            {
+                transaction.rollback();
+            }
         } catch (PersistenceException e)
         {
+            logger.log(Level.SEVERE, "Error al actualizar el estudiante: {0}", e.getMessage());
             if (transaction != null && transaction.isActive())
             {
                 transaction.rollback();
             }
-            System.err.println("Error al actualizar el Estudiante: " + e.getMessage());
-            e.printStackTrace();
-
         } catch (Exception e)
         {
+            logger.log(Level.SEVERE, "Error inesperado al actualizar el estudiante: {0}", e.getMessage());
             if (transaction != null && transaction.isActive())
             {
                 transaction.rollback();
             }
-            System.err.println("Error inesperado: " + e.getMessage());
-            e.printStackTrace();
-
         } finally
         {
             if (entityManager != null)
@@ -138,35 +149,33 @@ public class EstudianteDAO implements IEstudianteDAO {
             transaction.begin();
 
             EstudianteEntidad estudiante = entityManager.find(EstudianteEntidad.class, id);
+
             if (estudiante != null)
             {
                 entityManager.remove(estudiante);
-
                 transaction.commit();
-                System.out.println("Estudiante eliminado con éxito: " + estudiante.getNombre());
+                logger.log(Level.INFO, "Estudiante eliminado con éxito: ID {0}", id);
             } else
             {
-                System.err.println("Estudiante no encontrado con ID: " + id);
-                throw new PersistenceException("Estudiante no encontrado con ID: " + id);
+                logger.log(Level.WARNING, "No se encontró un estudiante con ID {0}", id);
+                transaction.rollback();
             }
+
         } catch (PersistenceException e)
         {
+            logger.log(Level.SEVERE, "Error al eliminar el estudiante: {0}", e.getMessage());
             if (transaction != null && transaction.isActive())
             {
                 transaction.rollback();
             }
-            System.err.println("Error al eliminar el Estudiante: " + e.getMessage());
-            e.printStackTrace();
-
+            throw e;
         } catch (Exception e)
         {
+            logger.log(Level.SEVERE, "Error inesperado al eliminar el estudiante: {0}", e.getMessage());
             if (transaction != null && transaction.isActive())
             {
                 transaction.rollback();
             }
-            System.err.println("Error inesperado al eliminar el Estudiante: " + e.getMessage());
-            e.printStackTrace();
-
         } finally
         {
             if (entityManager != null)
@@ -178,28 +187,30 @@ public class EstudianteDAO implements IEstudianteDAO {
 
     @Override
     public EstudianteEntidad obtenerEstudiantePorID(Long id) throws PersistenceException {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityManager em = null;
         EstudianteEntidad estudiante = null;
 
         try
         {
-            estudiante = entityManager.find(EstudianteEntidad.class, id);
-            if (estudiante == null)
+            em = entityManagerFactory.createEntityManager();
+            estudiante = em.find(EstudianteEntidad.class, id);
+
+            if (estudiante != null)
             {
-                throw new PersistenceException("No se encontró ningún estudiante con el ID: " + id);
+                System.out.println("Estudiante encontrado: " + estudiante);
+            } else
+            {
+                System.out.println("Estudiante no encontrado con ID: " + id);
             }
-            System.out.println("Estudiante encontrado: " + estudiante);
-        } catch (PersistenceException e)
-        {
-            System.err.println("Error al obtener el estudiante: " + e.getMessage());
-            throw e;
         } catch (Exception e)
         {
-            System.err.println("Error inesperado al obtener el estudiante: " + e.getMessage());
-            throw new PersistenceException("Error inesperado al obtener estudiante con ID: " + id, e);
+            throw new PersistenceException("Error al obtener el estudiante con ID: " + id, e);
         } finally
         {
-            entityManager.close();
+            if (em != null && em.isOpen())
+            {
+                em.close();
+            }
         }
 
         return estudiante;
@@ -207,24 +218,35 @@ public class EstudianteDAO implements IEstudianteDAO {
 
     @Override
     public List<EstudianteEntidad> obtenerTodosLosEstudiantes() throws PersistenceException {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<EstudianteEntidad> estudiantes = null;
+        EntityManager em = null;
+        List<EstudianteEntidad> estudiantes = new ArrayList<>();
 
         try
         {
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            em = entityManagerFactory.createEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<EstudianteEntidad> cq = cb.createQuery(EstudianteEntidad.class);
             Root<EstudianteEntidad> root = cq.from(EstudianteEntidad.class);
             cq.select(root);
-            estudiantes = entityManager.createQuery(cq).getResultList();
-            System.out.println("Estudiantes obtenidos: " + estudiantes);
+
+            estudiantes = em.createQuery(cq).getResultList();
+
+            if (estudiantes.isEmpty())
+            {
+                System.out.println("No se encontraron estudiantes.");
+            } else
+            {
+                System.out.println("Total de estudiantes encontrados: " + estudiantes.size());
+            }
         } catch (Exception e)
         {
-            System.err.println("Error al obtener todos los estudiantes: " + e.getMessage());
-            throw new PersistenceException("Error al obtener estudiantes", e);
+            throw new PersistenceException("Error al obtener la lista de estudiantes", e);
         } finally
         {
-            entityManager.close();
+            if (em != null && em.isOpen())
+            {
+                em.close();
+            }
         }
 
         return estudiantes;
