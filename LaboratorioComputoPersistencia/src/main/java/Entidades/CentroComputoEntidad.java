@@ -42,6 +42,17 @@ public class CentroComputoEntidad implements Serializable {
     @OneToMany(mappedBy = "centroComputo", cascade = CascadeType.ALL)
     private List<ComputadoraEntidad> computadoras;
 
+    @ManyToMany(cascade =
+    {
+        CascadeType.PERSIST, CascadeType.MERGE
+    })
+    @JoinTable(
+            name = "CentroComputo_Regla",
+            joinColumns = @JoinColumn(name = "idCentroComputo"),
+            inverseJoinColumns = @JoinColumn(name = "idRegla")
+    )
+    private List<ReglaEntidad> reglas = new ArrayList<>();
+
     public CentroComputoEntidad() {
     }
 
@@ -110,9 +121,17 @@ public class CentroComputoEntidad implements Serializable {
         this.computadoras = computadoras;
     }
 
+    public List<ReglaEntidad> getReglas() {
+        return reglas;
+    }
+
+    public void setReglas(List<ReglaEntidad> reglas) {
+        this.reglas = reglas;
+    }
+
     @Override
     public String toString() {
-        return "CentroComputoEntidad{" + "id=" + id + ", nombre=" + nombre + ", contrasenaMaestra=" + contrasenaMaestra + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", unidadAcademica=" + unidadAcademica + ", computadoras=" + computadoras + '}';
+        return "CentroComputoEntidad{" + "id=" + id + ", nombre=" + nombre + ", contrasenaMaestra=" + contrasenaMaestra + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", unidadAcademica=" + unidadAcademica + ", computadoras=" + computadoras + ", reglas=" + reglas + '}';
     }
 
 }
