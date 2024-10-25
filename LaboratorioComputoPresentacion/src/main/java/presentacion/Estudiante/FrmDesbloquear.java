@@ -8,12 +8,12 @@ package presentacion.Estudiante;
  *
  * @author user
  */
-public class Desbloquear extends javax.swing.JFrame {
+public class FrmDesbloquear extends javax.swing.JFrame {
 
     /**
      * Creates new form Desbloquear
      */
-    public Desbloquear() {
+    public FrmDesbloquear() {
         initComponents();
     }
 
@@ -146,20 +146,21 @@ public class Desbloquear extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Desbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmDesbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Desbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmDesbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Desbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmDesbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Desbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmDesbloquear.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Desbloquear().setVisible(true);
+                new FrmDesbloquear().setVisible(true);
             }
         });
     }
