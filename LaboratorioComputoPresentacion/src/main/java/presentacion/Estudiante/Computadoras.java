@@ -36,7 +36,7 @@ public class Computadoras extends javax.swing.JFrame {
         logo.setBackground(new java.awt.Color(255, 255, 255));
         logo.setSize(new java.awt.Dimension(20, 100));
 
-        jPanel2.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel2.setBackground(new java.awt.Color(0, 102, 153));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));

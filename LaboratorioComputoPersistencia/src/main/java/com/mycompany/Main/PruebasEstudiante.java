@@ -31,7 +31,7 @@ public class PruebasEstudiante {
         /*
         INSERTAR
          */
-//// Instancia del DAO de Estudiante SI
+// Instancia del DAO de Estudiante SI
 //        EstudianteDAO estudianteDAO = new EstudianteDAO();
 //
 //        // Crear una entidad de Carrera (ejemplo)
@@ -59,7 +59,7 @@ public class PruebasEstudiante {
 //        {
 //            System.err.println("Error al insertar el estudiante: " + e.getMessage());
 //        }
-//
+
 //        /*
 //        Actualizar
 //         */
@@ -111,7 +111,7 @@ public class PruebasEstudiante {
         /*
         Obtener Todos
          */
-        EstudianteDAO estudianteDAO = new EstudianteDAO();
-        System.out.println(estudianteDAO.obtenerTodosLosEstudiantes());
+//        EstudianteDAO estudianteDAO = new EstudianteDAO();
+//        System.out.println(estudianteDAO.obtenerTodosLosEstudiantes());
     }
 }
