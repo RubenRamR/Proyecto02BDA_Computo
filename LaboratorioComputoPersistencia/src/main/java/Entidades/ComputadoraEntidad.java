@@ -41,11 +41,6 @@ public class ComputadoraEntidad implements Serializable {
     @Column(name = "TipoCompu")
     private TipoCompu tipoCompu;
 
-    @ElementCollection
-    @CollectionTable(name = "Software_List", joinColumns = @JoinColumn(name = "idComputadora"))
-    @Column(name = "software")
-    private List<String> softwares = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "idCentroComputo", nullable = false)
     private CentroComputoEntidad centroComputo;
@@ -53,16 +48,25 @@ public class ComputadoraEntidad implements Serializable {
     @OneToMany(mappedBy = "computadora", cascade = CascadeType.PERSIST)
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "computadora_software", // Nombre de la tabla de unión
+            joinColumns = @JoinColumn(name = "idComputadora"), // FK a ComputadoraEntidad
+            inverseJoinColumns = @JoinColumn(name = "idSoftware") // FK a SoftwareEntidad
+    )
+    private List<SoftwareEntidad> softwareList = new ArrayList<>();
+
     public ComputadoraEntidad() {
     }
 
-    public ComputadoraEntidad(String nombreAlumno, Estado estado, int numeroMaquina, String direccionIP, TipoCompu tipoCompu, CentroComputoEntidad centroComputo) {
+    public ComputadoraEntidad(String nombreAlumno, Estado estado, int numeroMaquina, String direccionIP, TipoCompu tipoCompu, CentroComputoEntidad centroComputo, List<SoftwareEntidad> softwareList) {
         this.nombreAlumno = nombreAlumno;
         this.estado = estado;
         this.numeroMaquina = numeroMaquina;
         this.direccionIP = direccionIP;
         this.tipoCompu = tipoCompu;
         this.centroComputo = centroComputo;
+        this.softwareList = softwareList;
     }
 
     public Long getId() {
@@ -113,14 +117,6 @@ public class ComputadoraEntidad implements Serializable {
         this.tipoCompu = tipoCompu;
     }
 
-    public List<String> getSoftwares() {
-        return softwares;
-    }
-
-    public void setSoftwares(List<String> softwares) {
-        this.softwares = softwares;
-    }
-
     public CentroComputoEntidad getCentroComputo() {
         return centroComputo;
     }
@@ -137,9 +133,28 @@ public class ComputadoraEntidad implements Serializable {
         this.reservas = reservas;
     }
 
+    public List<SoftwareEntidad> getSoftwareList() {
+        return softwareList;
+    }
+
+    public void setSoftwareList(List<SoftwareEntidad> softwareList) {
+        this.softwareList = softwareList;
+    }
+
     @Override
     public String toString() {
-        return "ComputadoraEntidad{" + "id=" + id + ", nombreAlumno=" + nombreAlumno + ", estado=" + estado + ", numeroMaquina=" + numeroMaquina + ", direccionIP=" + direccionIP + ", tipoCompu=" + tipoCompu + ", softwares=" + softwares + ", centroComputo=" + centroComputo + ", reservas=" + reservas + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("ComputadoraEntidad{id=").append(id)
+                .append(", nombreAlumno='").append(nombreAlumno).append('\'')
+                .append(", estado=").append(estado)
+                .append(", numeroMaquina=").append(numeroMaquina)
+                .append(", direccionIP='").append(direccionIP).append('\'')
+                .append(", tipoCompu=").append(tipoCompu)
+                .append(", centroComputo=").append(centroComputo != null ? centroComputo.getId() : "null")
+                .append(", reservasSize=").append(reservas != null ? reservas.size() : "null")
+                .append(", softwareListSize=").append(softwareList != null ? softwareList.size() : "null")
+                .append('}');
+        return sb.toString();
     }
 
 }

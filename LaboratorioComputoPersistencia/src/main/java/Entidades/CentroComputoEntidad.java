@@ -35,28 +35,18 @@ public class CentroComputoEntidad implements Serializable {
     @Column(name = "horaFin", nullable = false)
     private LocalTime horaFin;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)  // Añade el cascade aquí
-    @JoinColumn(name = "idUnidadAcademica", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "idUnidadAcademica")
     private UnidadAcademicaEntidad unidadAcademica;
 
     @OneToMany(mappedBy = "centroComputo", cascade = CascadeType.ALL)
     private List<ComputadoraEntidad> computadoras = new ArrayList<>();
 
-    @ManyToMany(cascade =
-    {
-        CascadeType.PERSIST, CascadeType.MERGE
-    })
-    @JoinTable(
-            name = "CentroComputo_Regla",
-            joinColumns = @JoinColumn(name = "idCentroComputo"),
-            inverseJoinColumns = @JoinColumn(name = "idRegla")
-    )
-    private List<ReglaEntidad> reglas = new ArrayList<>();
-
     public CentroComputoEntidad() {
     }
 
-    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica) {
+    public CentroComputoEntidad(Long id, String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica) {
+        this.id = id;
         this.nombre = nombre;
         this.contrasenaMaestra = contrasenaMaestra;
         this.horaInicio = horaInicio;
@@ -120,17 +110,9 @@ public class CentroComputoEntidad implements Serializable {
         this.computadoras = computadoras;
     }
 
-    public List<ReglaEntidad> getReglas() {
-        return reglas;
-    }
-
-    public void setReglas(List<ReglaEntidad> reglas) {
-        this.reglas = reglas;
-    }
-
     @Override
     public String toString() {
-        return "CentroComputoEntidad{" + "id=" + id + ", nombre=" + nombre + ", contrasenaMaestra=" + contrasenaMaestra + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", unidadAcademica=" + unidadAcademica + ", computadoras=" + computadoras + ", reglas=" + reglas + '}';
+        return "CentroComputoEntidad{" + "id=" + id + ", nombre=" + nombre + ", contrasenaMaestra=" + contrasenaMaestra + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", unidadAcademica=" + unidadAcademica + ", computadoras=" + computadoras + '}';
     }
 
 }

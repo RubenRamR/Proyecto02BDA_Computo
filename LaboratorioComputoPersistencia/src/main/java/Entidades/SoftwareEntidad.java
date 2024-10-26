@@ -4,7 +4,6 @@
  */
 package Entidades;
 
-import jakarta.persistence.Column;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +14,25 @@ import javax.persistence.*;
  * @author rramirez
  */
 @Entity
-@Table(name = "Regla")
-public class ReglaEntidad implements Serializable {
+@Table(name = "Software")
+public class SoftwareEntidad implements Serializable {
 
     @Id
-    @Column(name = "idRegla", nullable = false, unique = true)
+    @Column(name = "idSoftware", unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name = "decripcion", length = 60)
-    private String descripcion;
 
-    @ManyToMany(mappedBy = "reglas", cascade =
-    {
-        CascadeType.PERSIST, CascadeType.MERGE
-    })
-    private List<CentroComputoEntidad> centrosComputo = new ArrayList<>();
+    @Column(name = "nombre", length = 60)
+    private String nombre;
 
-    public ReglaEntidad() {
+    @ManyToMany(mappedBy = "softwareList")
+    private List<ComputadoraEntidad> computadoras = new ArrayList<>();
+
+    public SoftwareEntidad() {
+    }
+
+    public SoftwareEntidad(String nombre) {
+        this.nombre = nombre;
     }
 
     public Long getId() {
@@ -43,12 +43,20 @@ public class ReglaEntidad implements Serializable {
         this.id = id;
     }
 
-    public List<CentroComputoEntidad> getCentrosComputo() {
-        return centrosComputo;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCentrosComputo(List<CentroComputoEntidad> centrosComputo) {
-        this.centrosComputo = centrosComputo;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<ComputadoraEntidad> getComputadoras() {
+        return computadoras;
+    }
+
+    public void setComputadoras(List<ComputadoraEntidad> computadoras) {
+        this.computadoras = computadoras;
     }
 
     @Override
@@ -61,11 +69,11 @@ public class ReglaEntidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ReglaEntidad))
+        if (!(object instanceof SoftwareEntidad))
         {
             return false;
         }
-        ReglaEntidad other = (ReglaEntidad) object;
+        SoftwareEntidad other = (SoftwareEntidad) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
         {
             return false;
@@ -75,7 +83,11 @@ public class ReglaEntidad implements Serializable {
 
     @Override
     public String toString() {
-        return "ReglaEntidad{" + "id=" + id + ", centrosComputo=" + centrosComputo + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Software [id=").append(id)
+                .append(", nombre=").append(nombre)
+                .append("]");
+        return sb.toString();
     }
 
 }
