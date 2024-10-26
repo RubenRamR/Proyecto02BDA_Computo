@@ -30,7 +30,7 @@ public class FrmMenu extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnBloqueos = new javax.swing.JButton();
-        btnReporteSucursales = new javax.swing.JButton();
+        BtnRepCdComp = new javax.swing.JButton();
         btnAdministrarFunciones = new javax.swing.JButton();
         btnCatalogoEstudiantes = new javax.swing.JButton();
         BtnCentrosComp = new javax.swing.JButton();
@@ -62,16 +62,16 @@ public class FrmMenu extends javax.swing.JFrame {
         });
         jPanel1.add(btnBloqueos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 260, 50));
 
-        btnReporteSucursales.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
-        btnReporteSucursales.setForeground(new java.awt.Color(0, 0, 51));
-        btnReporteSucursales.setText(" Centro De Cómputos");
-        btnReporteSucursales.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnReporteSucursales.addActionListener(new java.awt.event.ActionListener() {
+        BtnRepCdComp.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
+        BtnRepCdComp.setForeground(new java.awt.Color(0, 0, 51));
+        BtnRepCdComp.setText(" Centro De Cómputos");
+        BtnRepCdComp.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        BtnRepCdComp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReporteSucursalesActionPerformed(evt);
+                BtnRepCdCompActionPerformed(evt);
             }
         });
-        jPanel1.add(btnReporteSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 260, 50));
+        jPanel1.add(BtnRepCdComp, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 260, 50));
 
         btnAdministrarFunciones.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnAdministrarFunciones.setForeground(new java.awt.Color(0, 0, 51));
@@ -164,13 +164,15 @@ public class FrmMenu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAdministrarFuncionesActionPerformed
 
-    private void btnReporteSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteSucursalesActionPerformed
+    private void BtnRepCdCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRepCdCompActionPerformed
         // TODO add your handling code here:
-
-    }//GEN-LAST:event_btnReporteSucursalesActionPerformed
+        
+    }//GEN-LAST:event_BtnRepCdCompActionPerformed
 
     private void btnBloqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloqueosActionPerformed
-
+        FrmBloqueos fb = new FrmBloqueos();
+        fb.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBloqueosActionPerformed
 
     /**
@@ -218,11 +220,11 @@ public class FrmMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnCentrosComp;
+    private javax.swing.JButton BtnRepCdComp;
     private javax.swing.JButton btnAdministrarFunciones;
     private javax.swing.JButton btnAdministrarFunciones2;
     private javax.swing.JButton btnBloqueos;
     private javax.swing.JButton btnCatalogoEstudiantes;
-    private javax.swing.JButton btnReporteSucursales;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
