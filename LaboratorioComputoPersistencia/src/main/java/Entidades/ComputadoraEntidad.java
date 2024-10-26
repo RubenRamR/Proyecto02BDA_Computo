@@ -4,8 +4,8 @@
  */
 package Entidades;
 
-import ENUM.Estado;
-import ENUM.TipoCompu;
+import ENUM_P.Estado;
+import ENUM_P.TipoCompu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

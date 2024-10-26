@@ -4,7 +4,7 @@
  */
 package DAOs;
 
-import ENUM.Estado;
+import ENUM_P.Estado;
 import Entidades.ComputadoraEntidad;
 import Entidades.EstudianteEntidad;
 import Entidades.ReservaEntidad;

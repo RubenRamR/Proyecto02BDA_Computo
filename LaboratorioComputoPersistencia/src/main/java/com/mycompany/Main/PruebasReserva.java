@@ -5,9 +5,9 @@
 package com.mycompany.Main;
 
 import DAOs.ReservaDAO;
-import ENUM.Estado;
-import ENUM.Estatus;
-import ENUM.TipoCompu;
+import ENUM_P.Estado;
+import ENUM_P.Estatus;
+import ENUM_P.TipoCompu;
 import Entidades.CarreraEntidad;
 import Entidades.CentroComputoEntidad;
 import Entidades.ComputadoraEntidad;

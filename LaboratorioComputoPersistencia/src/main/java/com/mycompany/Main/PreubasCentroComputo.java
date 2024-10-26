@@ -6,8 +6,8 @@ package com.mycompany.Main;
 
 import DAOs.CentroComputoDAO;
 import DAOs.ComputadoraDAO;
-import ENUM.Estado;
-import ENUM.TipoCompu;
+import ENUM_P.Estado;
+import ENUM_P.TipoCompu;
 import Entidades.CarreraEntidad;
 import Entidades.CentroComputoEntidad;
 import Entidades.ComputadoraEntidad;

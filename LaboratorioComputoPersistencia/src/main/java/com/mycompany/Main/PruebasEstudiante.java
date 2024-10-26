@@ -4,7 +4,7 @@
 package com.mycompany.Main;
 
 import DAOs.EstudianteDAO;
-import ENUM.Estatus;
+import ENUM_P.Estatus;
 import Entidades.BloqueoEntidad;
 import Entidades.CarreraEntidad;
 import Entidades.EstudianteEntidad;
