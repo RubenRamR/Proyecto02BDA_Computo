@@ -117,6 +117,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
 
         CBUnidadA.setBackground(new java.awt.Color(255, 255, 255));
         CBUnidadA.setForeground(new java.awt.Color(0, 0, 0));
+        CBUnidadA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ITSON Nainari", "ITSON Centro", "ITSON Navojoa", "ITSON Guaymas", "ITSON Empalme" }));
         jPanel4.add(CBUnidadA, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, 110, 30));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
@@ -145,14 +146,12 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         LocalTime horaInicio = TimeInicio.getTime();
         LocalTime horaFin = TimeFin.getTime();
         String nombreUnidadAcademica = (String) CBUnidadA.getSelectedItem();
-        
-//       UnidadAcademicaDTO unidadAcademica = centroComputoNegocio.obtenerUnidadAcademicaPorNombre(nombreUnidadAcademica);
 
-        CentroComputoDTO centroComputo = new CentroComputoDTO(nombre, contrMa, horaInicio, horaFin, unidadAcademica);
+        CentroComputoDTO centroComputo = new CentroComputoDTO(nombre, contrMa, horaInicio, horaFin);
 
         try
         {
-           centroComputoNegocio.insertarCentroComputo(centroComputo);
+            centroComputoNegocio.insertarCentroComputo(centroComputo);
             JOptionPane.showMessageDialog(this, "centroComputo agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (NegocioException ex)
         {

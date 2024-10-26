@@ -4,11 +4,13 @@
  */
 package presentacion.Administrador;
 
+import DAOs.CarreraDAO;
 import DTOs.BloqueoDTO;
 import DTOs.CarreraDTO;
 import DTOs.EstudianteDTO;
 import ENUM_P.Estatus;
 import Negocio.EstudianteNegocio;
+import static com.mysql.cj.conf.PropertyKey.logger;
 import excepciones.NegocioException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,10 @@ import javax.swing.JOptionPane;
  */
 public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(CarreraDAO.class.getName());
+
     EstudianteNegocio estudianteNegocio;
+    List<CarreraDTO> carreras;
 
     /**
      * Creates new form AgregarEstudiante
@@ -30,6 +35,19 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
     public FrmAgregarEstudiante() {
         initComponents();
         estudianteNegocio = new EstudianteNegocio();
+        carreras = new ArrayList<>();
+        cargarCarreras();
+    }
+
+    private void cargarCarreras() {
+        carreras = estudianteNegocio.obtenerCarreras(); // Método que trae las carreras disponibles
+
+        // Limpia y carga CBCarrera con los nombres de las carreras
+        CBCarrera.removeAllItems();
+        for (CarreraDTO carrera : carreras)
+        {
+            CBCarrera.addItem(carrera.getNombre()); // O la propiedad que sea adecuada
+        }
     }
 
     /**
@@ -99,7 +117,7 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
         CBCarrera.setBackground(new java.awt.Color(255, 255, 255));
         CBCarrera.setForeground(new java.awt.Color(0, 0, 0));
-        CBCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingeniería en Computación" }));
+        CBCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingeniería en Computación", "ISW", " " }));
         jPanel1.add(CBCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 190, -1));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
@@ -149,30 +167,60 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarEsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarEsActionPerformed
-        String nombre = LblNombre.getText();
-        String apPaterno = LblApPaterno.getText();
-        String apMaterno = LblApMaterno.getText();
-        Estatus estatus = Estatus.valueOf((String) CBEstatus.getSelectedItem());
-        String contrasena = LblContraseña.getText();
-        String carreraNombre = (String) CBCarrera.getSelectedItem(); // Obtener el nombre de la carrera seleccionada
-
-        // Crear el DTO de carrera solo para pasar el nombre
-        CarreraDTO carreraDTO = new CarreraDTO();
-        carreraDTO.setNombre(carreraNombre);
-
-        // Crear el EstudianteDTO con la carrera seleccionada
-        EstudianteDTO estudianteDTO = new EstudianteDTO(
-                nombre, apPaterno, apMaterno, estatus, contrasena, carreraDTO, new ArrayList<>()
-        );
-
         try
         {
-            estudianteNegocio.insertarEstudiante(estudianteDTO);
-            JOptionPane.showMessageDialog(this, "Estudiante agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Recoger los datos de los campos del formulario
+            String nombre = LblNombre.getText().trim();
+            String apPaterno = LblApPaterno.getText().trim();
+            String apMaterno = LblApMaterno.getText().trim();
+            String contrasena = new String(LblContraseña.getPassword()).trim(); // Obtener contraseña como String
+            Estatus estatus = Estatus.valueOf(CBEstatus.getSelectedItem().toString()); // Convertir a Estatus
+            
+            // Validar que los campos no estén vacíos
+            if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() || contrasena.isEmpty())
+            {
+                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir del método si hay campos vacíos
+            }
+            
+            
+            // Verificar que se haya seleccionado una carrera
+            CarreraDTO carreraSeleccionada = (CBCarrera.getSelectedIndex() != -1)
+                    ? carreras.get(CBCarrera.getSelectedIndex())
+                    : null;
+            
+            CarreraDTO carreradto = estudianteNegocio.obtenerCarreraPorNombre(carreraSeleccionada.getNombre());
+            
+            if (carreradto == null)
+            {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una carrera", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir del método si no se seleccionó carrera
+            }
+            
+            // Obtener el ID de la carrera seleccionada
+            Long idCarrera = carreraSeleccionada.getId(); // Suponiendo que el método getId() devuelve el ID de la carrera
+            
+            // Aquí puedes continuar con la lógica para agregar el estudiante
+            // Por ejemplo, crear un objeto EstudianteDTO con los datos recogidos
+            EstudianteDTO nuevoEstudiante = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena);
+            
+            // Asignar la carrera al DTO del estudiante
+            CarreraDTO carreraDTO = new CarreraDTO();
+            carreraDTO.setId(idCarrera); // Asignar el ID de la carrera
+            nuevoEstudiante.setCarrera(carreraDTO); // Asignar la carrera al estudiante
+            
+            // Aquí debes llamar a tu servicio o lógica de negocio para insertar el estudiante
+            try
+            {
+                estudianteNegocio.insertarEstudiante(nuevoEstudiante); // Asumiendo que tienes un objeto estudianteNegocio
+                JOptionPane.showMessageDialog(this, "Estudiante agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NegocioException e)
+            {
+                JOptionPane.showMessageDialog(this, "Error al agregar el estudiante: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (NegocioException ex)
         {
             Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error al agregar el estudiante: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnAgregarEsActionPerformed
 

@@ -4,6 +4,7 @@
  */
 package Negocio.Convertidores;
 
+import DAOs.CarreraDAO;
 import DAOs.EstudianteDAO;
 import DTOs.BloqueoDTO;
 import DTOs.CarreraDTO;
@@ -27,6 +28,7 @@ public class Convertidores {
     private static final Logger logger = Logger.getLogger(EstudianteDAO.class.getName());
 
     private EstudianteDAO estudianteDAO = new EstudianteDAO();
+    private CarreraDAO carreraDAO = new CarreraDAO();
 
     public Convertidores() {
     }
@@ -38,9 +40,10 @@ public class Convertidores {
         String apMaterno = estudiantedto.getApMaterno();
         Estatus estatus = estudiantedto.getEstatus();
         String contrasena = estudiantedto.getContrasena();
-        CarreraDTO carreradto = estudiantedto.getCarrera();
+        Long idCarrera = estudiantedto.getCarrera().getId(); // Obtener el ID de la carrera
 
-        CarreraEntidad carreraEntidad = this.convertirCarreraAEntidad(carreradto);
+        // Buscar la CarreraEntidad usando el ID
+        CarreraEntidad carreraEntidad = carreraDAO.obtenerCarreraPorId(idCarrera);
 
         EstudianteEntidad estudianteEntidad = new EstudianteEntidad();
         estudianteEntidad.setId(id);
@@ -49,9 +52,9 @@ public class Convertidores {
         estudianteEntidad.setApMaterno(apMaterno);
         estudianteEntidad.setEstatus(estatus);
         estudianteEntidad.setContrasena(contrasena);
-        estudianteEntidad.setCarrera(carreraEntidad);
-        List<BloqueoDTO> listaBloqueosdto = estudiantedto.getBloqueos();
+        estudianteEntidad.setCarrera(carreraEntidad); // Asignar la carrera
 
+        List<BloqueoDTO> listaBloqueosdto = estudiantedto.getBloqueos();
         List<BloqueoEntidad> listaBloqueosEntidad = this.convertirBloqueosAEntidad(listaBloqueosdto);
         estudianteEntidad.setBloqueos(listaBloqueosEntidad);
 
@@ -81,7 +84,10 @@ public class Convertidores {
         estudianteDTO.setApMaterno(apMaterno);
         estudianteDTO.setEstatus(estatus);
         estudianteDTO.setContrasena(contrasena);
-        estudianteDTO.setCarrera(carreraDTO);
+        Long idCarrera = estudianteEntidad.getCarrera().getId(); // Obtener el ID de la carrera
+
+        // Buscar la CarreraEntidad usando el ID
+        CarreraEntidad carreraEntidad2 = carreraDAO.obtenerCarreraPorId(idCarrera);
         estudianteDTO.setBloqueos(bloqueosDTO);
 
         return estudianteDTO;
@@ -100,17 +106,36 @@ public class Convertidores {
     }
 
     public CarreraEntidad convertirCarreraAEntidad(CarreraDTO carreradto) {
+        Long id = carreradto.getId();
         String nombre = carreradto.getNombre();
         int minutosMaxUsoDiario = carreradto.getMinutosMaxUsoDiario();
 
-        return new CarreraEntidad(nombre, minutosMaxUsoDiario);
+        return new CarreraEntidad(id, nombre, minutosMaxUsoDiario);
     }
 
     public CarreraDTO convertirCarreraADTO(CarreraEntidad carreraEntidad) {
+        Long id = carreraEntidad.getId();
         String nombre = carreraEntidad.getNombre();
         int minutosMaxUsoDiario = carreraEntidad.getminutosMaxUsoDiario();
 
-        return new CarreraDTO(nombre, minutosMaxUsoDiario);
+        return new CarreraDTO(id, nombre, minutosMaxUsoDiario);
+    }
+
+    public List<CarreraDTO> convertirCarrerasADTO(List<CarreraEntidad> carrerasEntidad) {
+        List<CarreraDTO> carrerasDTO = new ArrayList<>(); // Crear una lista para almacenar los DTOs
+
+        for (CarreraEntidad carreraEntidad : carrerasEntidad)
+        { // Iterar sobre cada CarreraEntidad
+            Long id = carreraEntidad.getId();
+            String nombre = carreraEntidad.getNombre();
+            int minutosMaxUsoDiario = carreraEntidad.getminutosMaxUsoDiario(); // Asegúrate de usar el método correcto
+
+            // Crear un CarreraDTO y agregarlo a la lista
+            CarreraDTO carreraDTO = new CarreraDTO(id, nombre, minutosMaxUsoDiario);
+            carrerasDTO.add(carreraDTO);
+        }
+
+        return carrerasDTO; // Devolver la lista de CarreraDTO
     }
 
     public List<BloqueoEntidad> convertirBloqueosAEntidad(List<BloqueoDTO> bloqueosdto) {

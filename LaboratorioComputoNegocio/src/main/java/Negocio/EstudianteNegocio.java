@@ -13,6 +13,7 @@ import Entidades.EstudianteEntidad;
 import InterfacesNegocio.IEstudianteNegocio;
 import Negocio.Convertidores.Convertidores;
 import excepciones.NegocioException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,19 +33,31 @@ public class EstudianteNegocio implements IEstudianteNegocio {
 
     @Override
     public void insertarEstudiante(EstudianteDTO estudianteDTO) throws NegocioException {
-        CarreraEntidad carrera = carreraDAO.obtenerCarreraPorId(estudianteDTO.getCarrera().getId());
-        if (carrera != null)
+
+        try
         {
-            EstudianteEntidad estudiante = new EstudianteEntidad();
-            estudiante.setNombre(estudianteDTO.getNombre());
-            estudiante.setApPaterno(estudianteDTO.getApPaterno());
-            estudiante.setApMaterno(estudianteDTO.getApMaterno());
-            estudiante.setEstatus(estudianteDTO.getEstatus());
-            estudiante.setCarrera(carrera); // Asocia la carrera existente
-            estudianteDAO.insertarEstudiante(estudiante);
-        } else
+
+            Long idCarrera = estudianteDTO.getCarrera().getId();
+            if (idCarrera == null)
+            {
+                throw new NegocioException("El ID de la carrera no puede ser nulo.");
+            }
+            CarreraEntidad carreraEntidad = carreraDAO.obtenerCarreraPorId(idCarrera);
+
+            EstudianteEntidad estudianteEntidad = convertidor.convertirEstudianteAEntidad(estudianteDTO);
+
+            carreraEntidad = carreraDAO.obtenerCarreraPorId(estudianteDTO.getCarrera().getId());
+            if (carreraEntidad == null)
+            {
+                throw new NegocioException("Carrera no encontrada para el ID: " + estudianteDTO.getCarrera().getId());
+            }
+
+            estudianteEntidad.setCarrera(carreraEntidad);
+
+            estudianteDAO.insertarEstudiante(estudianteEntidad);
+        } catch (Exception e)
         {
-            System.out.println("La carrera no existe");
+            throw new NegocioException("Error al insertar el estudiante: " + e.getMessage(), e);
         }
     }
 
@@ -109,6 +122,21 @@ public class EstudianteNegocio implements IEstudianteNegocio {
             throw new NegocioException("Error al obtener la carrera: " + ex.getMessage(), ex);
         }
         return carreraDTO;
+    }
+
+    public List<CarreraDTO> obtenerCarreras() {
+        List<CarreraDTO> listaCarrerasDTO = new ArrayList<>();
+        try
+        {
+            // Aquí asumo que tu DAO tiene un método que retorna las carreras desde la base de datos
+            List<CarreraEntidad> listaCarrerase = carreraDAO.obtenerTodasLasCarreras();
+            listaCarrerasDTO = convertidor.convertirCarrerasADTO(listaCarrerase);
+        } catch (Exception e)
+        {
+            System.out.println("Error");
+        }
+        return listaCarrerasDTO;
+
     }
 
 }

@@ -43,13 +43,22 @@ public class EstudianteEntidad implements Serializable {
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idCarrera", nullable = false)
+    @JoinColumn(name = "idCarrera", nullable = true)
     private CarreraEntidad carrera;
 
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
     private List<BloqueoEntidad> bloqueos = new ArrayList<>();
 
     public EstudianteEntidad() {
+    }
+
+    public EstudianteEntidad(Long id, String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.estatus = estatus;
+        this.contrasena = contrasena;
     }
 
     public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera) {
@@ -61,7 +70,6 @@ public class EstudianteEntidad implements Serializable {
         this.carrera = carrera;
     }
 
-    
     public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera, List<BloqueoEntidad> bloqueos) {
         this.nombre = nombre;
         this.apPaterno = apPaterno;

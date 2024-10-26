@@ -35,7 +35,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
      * @param idEstudiante
      */
     public FrmEditarEstudiante(Long idEstudiante) throws NegocioException {
-        initComponents();
+         initComponents();
         this.idEstudiante = idEstudiante;
         estudianteNegocio = new EstudianteNegocio();
         bloqueoDAO = new BloqueoDAO();
@@ -236,7 +236,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         }
 
         // Crear el DTO del estudiante con bloqueos
-        EstudianteDTO estudianteDTO = new EstudianteDTO(idEstudiante, nombre, apPaterno, apMaterno, estatus, contrasena, carreraEstudiante, bloqueos);
+        EstudianteDTO estudianteDTO = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena);
 
         try
         {

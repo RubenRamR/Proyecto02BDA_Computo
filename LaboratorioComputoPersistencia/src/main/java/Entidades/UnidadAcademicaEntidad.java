@@ -31,9 +31,8 @@ public class UnidadAcademicaEntidad implements Serializable {
     public UnidadAcademicaEntidad() {
     }
 
-    public UnidadAcademicaEntidad(String nombre, List<CentroComputoEntidad> centrosComputo) {
+    public UnidadAcademicaEntidad(String nombre) {
         this.nombre = nombre;
-        this.centrosComputo = centrosComputo;
     }
 
     public Long getId() {

@@ -37,6 +37,12 @@ public class CarreraEntidad implements Serializable {
     public CarreraEntidad() {
     }
 
+    public CarreraEntidad(Long id, String nombre, int minutosMaxUsoDiario) {
+        this.id = id;
+        this.nombre = nombre;
+        this.minutosMaxUsoDiario = minutosMaxUsoDiario;
+    }
+
     public CarreraEntidad(String nombre, int minutosMaxUsoDiario) {
         this.nombre = nombre;
         this.minutosMaxUsoDiario = minutosMaxUsoDiario;

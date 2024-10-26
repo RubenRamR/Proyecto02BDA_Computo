@@ -43,14 +43,11 @@ public class EstudianteDAO implements IEstudianteDAO {
             entityManager.getTransaction().begin();
             entityManager.persist(estudiante);
             entityManager.getTransaction().commit();
+            logger.info("Estudiante creado exitosamente: " + estudiante);
         } catch (Exception e)
         {
-
-            if (entityManager.getTransaction().isActive())
-            {
-                entityManager.getTransaction().rollback();
-            }
-
+            entityManager.getTransaction().rollback();
+            logger.severe("Error creando estudiante: " + e.getMessage());
         } finally
         {
             entityManager.close();

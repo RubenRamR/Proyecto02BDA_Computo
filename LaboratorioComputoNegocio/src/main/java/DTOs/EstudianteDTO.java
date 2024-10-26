@@ -28,39 +28,27 @@ public class EstudianteDTO {
 
     private List<ReservaDTO> reservas = new ArrayList<>();
 
-    private CarreraDTO carrera;
+    private CarreraDTO Carrera;
 
     private List<BloqueoDTO> bloqueos = new ArrayList<>();
 
     public EstudianteDTO() {
     }
 
-    public EstudianteDTO(Long id, String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera, List<BloqueoDTO> bloqueos) {
-        this.id = id;
+    public EstudianteDTO(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena) {
         this.nombre = nombre;
         this.apPaterno = apPaterno;
         this.apMaterno = apMaterno;
         this.estatus = estatus;
         this.contrasena = contrasena;
-        this.carrera = carrera;
     }
 
-    public EstudianteDTO(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera) {
-        this.nombre = nombre;
-        this.apPaterno = apPaterno;
-        this.apMaterno = apMaterno;
-        this.estatus = estatus;
-        this.contrasena = contrasena;
-        this.carrera = carrera;
+    public CarreraDTO getCarrera() {
+        return Carrera;
     }
 
-    public EstudianteDTO(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera, List<BloqueoDTO> bloqueos) {
-        this.nombre = nombre;
-        this.apPaterno = apPaterno;
-        this.apMaterno = apMaterno;
-        this.estatus = estatus;
-        this.contrasena = contrasena;
-        this.carrera = carrera;
+    public void setCarrera(CarreraDTO Carrera) {
+        this.Carrera = Carrera;
     }
 
     public Long getId() {
@@ -119,14 +107,6 @@ public class EstudianteDTO {
         this.reservas = reservas;
     }
 
-    public CarreraDTO getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(CarreraDTO carrera) {
-        this.carrera = carrera;
-    }
-
     public List<BloqueoDTO> getBloqueos() {
         return bloqueos;
     }
@@ -137,7 +117,7 @@ public class EstudianteDTO {
 
     @Override
     public String toString() {
-        return "EstudianteDTO{" + "id=" + id + ", nombre=" + nombre + ", apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", estatus=" + estatus + ", contrasena=" + contrasena + ", reservas=" + reservas + ", carrera=" + carrera + ", bloqueos=" + bloqueos + '}';
+        return "EstudianteDTO{" + "id=" + id + ", nombre=" + nombre + ", apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", estatus=" + estatus + ", contrasena=" + contrasena + ", reservas=" + reservas + ", Carrera=" + Carrera + ", bloqueos=" + bloqueos + '}';
     }
 
 }

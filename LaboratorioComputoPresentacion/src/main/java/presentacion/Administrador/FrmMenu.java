@@ -33,7 +33,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnReporteSucursales = new javax.swing.JButton();
         btnAdministrarFunciones = new javax.swing.JButton();
         btnCatalogoEstudiantes = new javax.swing.JButton();
-        btnAdministrarFunciones1 = new javax.swing.JButton();
+        BtnCentrosComp = new javax.swing.JButton();
         btnAdministrarFunciones2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -95,16 +95,16 @@ public class FrmMenu extends javax.swing.JFrame {
         });
         jPanel1.add(btnCatalogoEstudiantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 260, 50));
 
-        btnAdministrarFunciones1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
-        btnAdministrarFunciones1.setForeground(new java.awt.Color(0, 0, 51));
-        btnAdministrarFunciones1.setText("Centros De Cómputo");
-        btnAdministrarFunciones1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnAdministrarFunciones1.addActionListener(new java.awt.event.ActionListener() {
+        BtnCentrosComp.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
+        BtnCentrosComp.setForeground(new java.awt.Color(0, 0, 51));
+        BtnCentrosComp.setText("Centros De Cómputo");
+        BtnCentrosComp.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        BtnCentrosComp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdministrarFunciones1ActionPerformed(evt);
+                BtnCentrosCompActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdministrarFunciones1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 260, 50));
+        jPanel1.add(BtnCentrosComp, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 260, 50));
 
         btnAdministrarFunciones2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnAdministrarFunciones2.setForeground(new java.awt.Color(0, 0, 51));
@@ -145,9 +145,12 @@ public class FrmMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAdministrarFunciones2ActionPerformed
 
-    private void btnAdministrarFunciones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarFunciones1ActionPerformed
+    private void BtnCentrosCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCentrosCompActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAdministrarFunciones1ActionPerformed
+        FrmCentroComputo fcc = new FrmCentroComputo();
+        fcc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnCentrosCompActionPerformed
 
     private void btnCatalogoEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogoEstudiantesActionPerformed
         // TODO add your handling code here:
@@ -214,8 +217,8 @@ public class FrmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnCentrosComp;
     private javax.swing.JButton btnAdministrarFunciones;
-    private javax.swing.JButton btnAdministrarFunciones1;
     private javax.swing.JButton btnAdministrarFunciones2;
     private javax.swing.JButton btnBloqueos;
     private javax.swing.JButton btnCatalogoEstudiantes;

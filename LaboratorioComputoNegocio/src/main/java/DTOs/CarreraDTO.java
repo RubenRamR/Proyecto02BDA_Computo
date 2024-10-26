@@ -24,6 +24,12 @@ public class CarreraDTO {
     public CarreraDTO() {
     }
 
+    public CarreraDTO(Long id, String nombre, int minutosMaxUsoDiario) {
+        this.id = id;
+        this.nombre = nombre;
+        this.minutosMaxUsoDiario = minutosMaxUsoDiario;
+    }
+
     public CarreraDTO(String nombre, int minutosMaxUsoDiario) {
         this.nombre = nombre;
         this.minutosMaxUsoDiario = minutosMaxUsoDiario;
