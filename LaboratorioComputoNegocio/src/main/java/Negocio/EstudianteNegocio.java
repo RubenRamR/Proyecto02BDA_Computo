@@ -14,6 +14,8 @@ import InterfacesNegocio.IEstudianteNegocio;
 import Negocio.Convertidores.Convertidores;
 import excepciones.NegocioException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,13 +31,20 @@ public class EstudianteNegocio implements IEstudianteNegocio {
     }
 
     @Override
-    public void insertarEstudiante(EstudianteDTO estudiante) throws NegocioException {
-        try
+    public void insertarEstudiante(EstudianteDTO estudianteDTO) throws NegocioException {
+        CarreraEntidad carrera = carreraDAO.obtenerCarreraPorId(estudianteDTO.getCarrera().getId());
+        if (carrera != null)
         {
-            estudianteDAO.insertarEstudiante(convertidor.convertirEstudianteAEntidad(estudiante));
-        } catch (Exception ex)
+            EstudianteEntidad estudiante = new EstudianteEntidad();
+            estudiante.setNombre(estudianteDTO.getNombre());
+            estudiante.setApPaterno(estudianteDTO.getApPaterno());
+            estudiante.setApMaterno(estudianteDTO.getApMaterno());
+            estudiante.setEstatus(estudianteDTO.getEstatus());
+            estudiante.setCarrera(carrera); // Asocia la carrera existente
+            estudianteDAO.insertarEstudiante(estudiante);
+        } else
         {
-            throw new NegocioException("Error al insertar el estudiante: " + ex.getMessage(), ex);
+            System.out.println("La carrera no existe");
         }
     }
 
@@ -85,17 +94,21 @@ public class EstudianteNegocio implements IEstudianteNegocio {
         }
     }
 
-    @Override
     public CarreraDTO obtenerCarreraPorNombre(String nombre) throws NegocioException {
+        CarreraDTO carreraDTO = null;
         try
         {
-            CarreraEntidad carreraE = carreraDAO.obtenerCarreraPorNombre(nombre);
-            CarreraDTO carreraDTO = convertidor.convertirCarreraADTO(carreraE);
-            return carreraDTO;
+            CarreraEntidad carreraEn = carreraDAO.obtenerCarreraPorNombre(nombre);
+            carreraDTO = convertidor.convertirCarreraADTO(carreraEn);
+            if (carreraDTO == null)
+            {
+                throw new NegocioException("No se encontró la carrera con nombre: " + nombre);
+            }
         } catch (Exception ex)
         {
-            throw new NegocioException("Error al obtener la carrera por el nombre: " + ex.getMessage(), ex);
+            throw new NegocioException("Error al obtener la carrera: " + ex.getMessage(), ex);
         }
+        return carreraDTO;
     }
 
 }

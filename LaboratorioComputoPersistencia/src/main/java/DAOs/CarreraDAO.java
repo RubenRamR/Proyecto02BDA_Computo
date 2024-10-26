@@ -22,41 +22,44 @@ public class CarreraDAO implements ICarreraDAO {
 
     private static final Logger logger = Logger.getLogger(CarreraDAO.class.getName());
 
-    private EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory emf;
 
     public CarreraDAO() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("LaboratorioComputoJPA");
+        emf = Persistence.createEntityManagerFactory("LaboratorioComputoJPA");
     }
 
     @Override
-    public CarreraEntidad obtenerCarreraPorNombre(String nombreCarrera) throws Exception {
-        EntityManager em = entityManagerFactory.createEntityManager();
+    public CarreraEntidad obtenerCarreraPorNombre(String nombre) throws Exception {
+        EntityManager entityManager = emf.createEntityManager();
         try
         {
-            TypedQuery<CarreraEntidad> query = em.createQuery(
-                    "SELECT c FROM CarreraEntidad c WHERE c.nombre = :nombre",
-                    CarreraEntidad.class
-            );
-            query.setParameter("nombre", nombreCarrera);
-
-            List<CarreraEntidad> carreras = query.getResultList();
-            if (carreras.isEmpty())
-            {
-                return null; // O maneja el caso donde no se encuentra
-            } else if (carreras.size() > 1)
-            {
-                throw new IllegalStateException("More than one result was returned.");
-            }
-            return carreras.get(0);
-
-        } catch (Exception e)
+            TypedQuery<CarreraEntidad> query = entityManager.createQuery(
+                    "SELECT c FROM CarreraEntidad c WHERE c.nombre = :nombre", CarreraEntidad.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult(); // Devuelve la carrera existente
+        } catch (NoResultException e)
         {
-            throw new Exception("Error al obtener la carrera por el nombre: " + e.getMessage(), e);
+            throw new Exception("No se encontró la carrera con nombre: " + nombre, e);
         } finally
         {
-            em.close();
+            entityManager.close();
         }
-        
+    }
+
+    public CarreraEntidad obtenerCarreraPorId(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            return em.find(CarreraEntidad.class, id);
+        } catch (Exception e)
+        {
+            // Manejo de errores, si es necesario
+            e.printStackTrace();
+            return null; // Retorna null si ocurre un error
+        } finally
+        {
+            em.close(); // Asegúrate de cerrar el EntityManager para liberar recursos
+        }
     }
 
 }

@@ -37,37 +37,25 @@ public class EstudianteDAO implements IEstudianteDAO {
 
     @Override
     public void insertarEstudiante(EstudianteEntidad estudiante) throws PersistenceException {
-        EntityManager entityManager = null;
-        EntityTransaction transaction = null;
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try
         {
-            entityManager = entityManagerFactory.createEntityManager();
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-
+            entityManager.getTransaction().begin();
             entityManager.persist(estudiante);
-
-            transaction.commit();
-
-            logger.info("Estudiante insertado correctamente: " + estudiante.getNombre());
-        } catch (PersistenceException e)
+            entityManager.getTransaction().commit();
+        } catch (Exception e)
         {
-            if (transaction != null && transaction.isActive())
+
+            if (entityManager.getTransaction().isActive())
             {
-                transaction.rollback();
+                entityManager.getTransaction().rollback();
             }
 
-            logger.severe("Error al insertar el estudiante: " + e.getMessage());
-
-            throw e;
         } finally
         {
-            if (entityManager != null)
-            {
-                entityManager.close();
-            }
+            entityManager.close();
         }
+
     }
 
     @Override

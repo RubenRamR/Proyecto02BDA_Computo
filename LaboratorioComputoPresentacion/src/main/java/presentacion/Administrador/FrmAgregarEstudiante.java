@@ -149,35 +149,29 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarEsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarEsActionPerformed
-        // TODO add your handling code here:
         String nombre = LblNombre.getText();
         String apPaterno = LblApPaterno.getText();
         String apMaterno = LblApMaterno.getText();
         Estatus estatus = Estatus.valueOf((String) CBEstatus.getSelectedItem());
         String contrasena = LblContraseña.getText();
-        String carrera = (String) CBCarrera.getSelectedItem();
-        CarreraDTO carreraEstudiante = new CarreraDTO();
+        String carreraNombre = (String) CBCarrera.getSelectedItem(); // Obtener el nombre de la carrera seleccionada
 
-        try
-        {
-            carreraEstudiante = estudianteNegocio.obtenerCarreraPorNombre(carrera);
-        } catch (NegocioException ex)
-        {
-            Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Crear el DTO de carrera solo para pasar el nombre
+        CarreraDTO carreraDTO = new CarreraDTO();
+        carreraDTO.setNombre(carreraNombre);
 
-        List<BloqueoDTO> bloqueos = new ArrayList<>();
+        // Crear el EstudianteDTO con la carrera seleccionada
+        EstudianteDTO estudianteDTO = new EstudianteDTO(
+                nombre, apPaterno, apMaterno, estatus, contrasena, carreraDTO, new ArrayList<>()
+        );
 
-        EstudianteDTO estudianteDTO = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena, carreraEstudiante, bloqueos);
         try
         {
             estudianteNegocio.insertarEstudiante(estudianteDTO);
-            // Cuadro de diálogo de éxito
             JOptionPane.showMessageDialog(this, "Estudiante agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (NegocioException ex)
         {
             Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            // Cuadro de diálogo de error
             JOptionPane.showMessageDialog(this, "Error al agregar el estudiante: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnAgregarEsActionPerformed
