@@ -24,6 +24,9 @@ import javax.persistence.PersistenceException;
  *
  * @author rramirez
  */
+/*
+LISTO
+*/
 public class PruebasEstudiante {
 
     public static void main(String[] args) {
@@ -31,7 +34,7 @@ public class PruebasEstudiante {
         /*
         INSERTAR
          */
-// Instancia del DAO de Estudiante SI
+//// Instancia del DAO de Estudiante SI
 //        EstudianteDAO estudianteDAO = new EstudianteDAO();
 //
 //        // Crear una entidad de Carrera (ejemplo)

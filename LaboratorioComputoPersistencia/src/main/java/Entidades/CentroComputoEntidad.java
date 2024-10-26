@@ -45,8 +45,7 @@ public class CentroComputoEntidad implements Serializable {
     public CentroComputoEntidad() {
     }
 
-    public CentroComputoEntidad(Long id, String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica) {
-        this.id = id;
+    public CentroComputoEntidad(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaEntidad unidadAcademica) {
         this.nombre = nombre;
         this.contrasenaMaestra = contrasenaMaestra;
         this.horaInicio = horaInicio;

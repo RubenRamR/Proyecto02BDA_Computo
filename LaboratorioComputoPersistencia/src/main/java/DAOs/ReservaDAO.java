@@ -71,58 +71,7 @@ public class ReservaDAO implements IReservaDAO {
         }
     }
 
-    // Método para actualizar una reserva existente
-    public void actualizarReserva(ReservaEntidad reserva) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        try
-        {
-            transaction.begin();
-            entityManager.merge(reserva); // Actualiza la reserva
-            transaction.commit(); // Confirmar la transacción
-            logger.log(Level.INFO, "Reserva actualizada con éxito: " + reserva);
-        } catch (Exception e)
-        {
-            if (transaction.isActive())
-            {
-                transaction.rollback(); // Revertir la transacción en caso de error
-            }
-            logger.log(Level.SEVERE, "Error al actualizar la reserva: " + e.getMessage(), e);
-            throw e; // Lanza la excepción para manejarla en el nivel superior
-        } finally
-        {
-            entityManager.close(); // Asegúrate de cerrar el EntityManager
-        }
-    }
-
-    // Método para eliminar una reserva
-    public void eliminarReserva(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        try
-        {
-            transaction.begin();
-            ReservaEntidad reserva = obtenerReservaPorId(id); // Busca la reserva por ID
-            if (reserva != null)
-            {
-                entityManager.remove(reserva); // Elimina la reserva
-                logger.log(Level.INFO, "Reserva eliminada con éxito: " + reserva);
-            }
-            transaction.commit(); // Confirmar la transacción
-        } catch (Exception e)
-        {
-            if (transaction.isActive())
-            {
-                transaction.rollback(); // Revertir la transacción en caso de error
-            }
-            logger.log(Level.SEVERE, "Error al eliminar la reserva: " + e.getMessage(), e);
-            throw e; // Lanza la excepción para manejarla en el nivel superior
-        } finally
-        {
-            entityManager.close(); // Asegúrate de cerrar el EntityManager
-        }
-    }
-
+    @Override
     public List<ReservaEntidad> obtenerReservas() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try
@@ -135,6 +84,7 @@ public class ReservaDAO implements IReservaDAO {
         }
     }
 
+    @Override
     public ReservaEntidad obtenerReservaPorId(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try

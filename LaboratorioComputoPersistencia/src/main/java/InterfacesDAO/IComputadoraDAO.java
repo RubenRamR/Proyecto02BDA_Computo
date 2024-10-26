@@ -4,10 +4,23 @@
  */
 package InterfacesDAO;
 
+import Entidades.ComputadoraEntidad;
+import java.util.List;
+import javax.persistence.PersistenceException;
+
 /**
  *
  * @author rramirez
  */
 public interface IComputadoraDAO {
+
+    public void insertarComputadora(ComputadoraEntidad computadora) throws PersistenceException;
     
+    public void editarComputadora(ComputadoraEntidad computadora) throws PersistenceException;
+
+    public void eliminarComputadoraPorID(Long id) throws PersistenceException;
+
+    public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException;
+
+    public List<ComputadoraEntidad> obtenerTodasLasComputadora() throws PersistenceException;
 }

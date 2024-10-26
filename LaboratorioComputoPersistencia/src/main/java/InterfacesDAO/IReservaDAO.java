@@ -5,6 +5,7 @@
 package InterfacesDAO;
 
 import Entidades.ReservaEntidad;
+import java.util.List;
 import javax.persistence.PersistenceException;
 
 /**
@@ -12,6 +13,11 @@ import javax.persistence.PersistenceException;
  * @author rramirez
  */
 public interface IReservaDAO {
+
+    public void insertarReserva(ReservaEntidad reserva) throws PersistenceException;
+
+    public List<ReservaEntidad> obtenerReservas() throws PersistenceException;
     
-        public void insertarReserva(ReservaEntidad reserva) throws PersistenceException;
-}
+    public ReservaEntidad obtenerReservaPorId(Long id) throws PersistenceException;
+
+    }

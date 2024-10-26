@@ -26,6 +26,9 @@ public class PruebasBloqueo {
     /**
      * @param args the command line arguments
      */
+    /*
+    LISTO
+    */
     public static void main(String[] args) {
 
         /*
