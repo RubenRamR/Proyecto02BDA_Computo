@@ -5,8 +5,10 @@
 package InterfacesNegocio;
 
 import DTOs.BloqueoDTO;
+import Entidades.BloqueoEntidad;
 import excepciones.NegocioException;
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -23,4 +25,7 @@ public interface IBloqueoNegocio {
     public BloqueoDTO obtenerBloqueoPorID(Long id) throws NegocioException;
 
     public List<BloqueoDTO> obtenerTodosLosBloqueos() throws NegocioException;
+        
+    public List<BloqueoDTO> obtenerBloqueosPorIdEstudiante(Long id) throws PersistenceException;
+
 }

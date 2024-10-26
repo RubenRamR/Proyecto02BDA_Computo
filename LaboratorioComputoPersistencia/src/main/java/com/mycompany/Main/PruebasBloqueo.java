@@ -28,7 +28,7 @@ public class PruebasBloqueo {
      */
     /*
     LISTO
-    */
+     */
     public static void main(String[] args) {
 
         /*
@@ -129,6 +129,11 @@ public class PruebasBloqueo {
 //        {
 //            System.err.println(e.getMessage());
 //        }
+        /*
+        OBTENER BLOQUEO POR ID ESTUDIANTE
+         */
+//        BloqueoDAO bloqueoDAO = new BloqueoDAO();
+//        System.out.println(bloqueoDAO.obtenerBloqueoPorIdEstudiante(3L));
     }
 
 }

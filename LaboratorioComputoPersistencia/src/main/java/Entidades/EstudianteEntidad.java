@@ -52,6 +52,16 @@ public class EstudianteEntidad implements Serializable {
     public EstudianteEntidad() {
     }
 
+    public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera) {
+        this.nombre = nombre;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.estatus = estatus;
+        this.contrasena = contrasena;
+        this.carrera = carrera;
+    }
+
+    
     public EstudianteEntidad(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraEntidad carrera, List<BloqueoEntidad> bloqueos) {
         this.nombre = nombre;
         this.apPaterno = apPaterno;

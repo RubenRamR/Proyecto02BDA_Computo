@@ -74,4 +74,14 @@ public class CarreraEntidad implements Serializable {
         this.estudiantes = estudiantes;
     }
 
+    @Override
+    public String toString() {
+        return "CarreraEntidad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", minutosMaxUsoDiario=" + minutosMaxUsoDiario +
+                ", estudiantesCount=" + (estudiantes != null ? estudiantes.size() : 0) +
+                '}';
+    }
+
 }

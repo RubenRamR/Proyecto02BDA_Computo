@@ -35,7 +35,26 @@ public class EstudianteDTO {
     public EstudianteDTO() {
     }
 
+    public EstudianteDTO(Long id, String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera, List<BloqueoDTO> bloqueos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.estatus = estatus;
+        this.contrasena = contrasena;
+        this.carrera = carrera;
+    }
+
     public EstudianteDTO(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera) {
+        this.nombre = nombre;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.estatus = estatus;
+        this.contrasena = contrasena;
+        this.carrera = carrera;
+    }
+
+    public EstudianteDTO(String nombre, String apPaterno, String apMaterno, Estatus estatus, String contrasena, CarreraDTO carrera, List<BloqueoDTO> bloqueos) {
         this.nombre = nombre;
         this.apPaterno = apPaterno;
         this.apMaterno = apMaterno;

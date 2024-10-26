@@ -6,9 +6,12 @@ package Negocio;
 
 import DAOs.BloqueoDAO;
 import DTOs.BloqueoDTO;
+import Entidades.BloqueoEntidad;
 import InterfacesNegocio.IBloqueoNegocio;
+import Negocio.Convertidores.Convertidores;
 import excepciones.NegocioException;
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -16,10 +19,8 @@ import java.util.List;
  */
 public class BloqueoNegocio implements IBloqueoNegocio {
 
+    Convertidores convertidores = new Convertidores();
     BloqueoDAO bloqueoDAO;
-
-    public BloqueoNegocio() {
-    }
 
     public BloqueoNegocio(BloqueoDAO bloqueoDAO) {
         this.bloqueoDAO = new BloqueoDAO();
@@ -48,6 +49,12 @@ public class BloqueoNegocio implements IBloqueoNegocio {
     @Override
     public List<BloqueoDTO> obtenerTodosLosBloqueos() throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<BloqueoDTO> obtenerBloqueosPorIdEstudiante(Long id) throws PersistenceException {
+        List<BloqueoEntidad> bloqueoEn = bloqueoDAO.obtenerBloqueosPorIdEstudiante(id);
+        return convertidores.convertirBloqueosADTO(bloqueoEn);
     }
 
 }

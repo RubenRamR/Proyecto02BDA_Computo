@@ -24,4 +24,6 @@ public interface IBloqueoDAO {
     public BloqueoEntidad obtenerBloqueoPorID(Long id) throws PersistenceException;
 
     public List<BloqueoEntidad> obtenerTodosLosBloqueos() throws PersistenceException;
+    
+    public List<BloqueoEntidad> obtenerBloqueosPorIdEstudiante(Long id) throws PersistenceException;
 }

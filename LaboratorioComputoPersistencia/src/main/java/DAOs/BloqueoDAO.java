@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -182,6 +183,31 @@ public class BloqueoDAO implements IBloqueoDAO {
         }
 
         return bloqueos;
+    }
+
+    @Override
+    public List<BloqueoEntidad> obtenerBloqueosPorIdEstudiante(Long idEstudiante) throws PersistenceException {
+        EntityManager em = entityManagerFactory.createEntityManager();
+
+        try
+        {
+            TypedQuery<BloqueoEntidad> query = em.createQuery(
+                    "SELECT b FROM BloqueoEntidad b WHERE b.estudiante.id = :idEstudiante",
+                    BloqueoEntidad.class
+            );
+            query.setParameter("idEstudiante", idEstudiante);
+
+            // Obtiene una lista de bloqueos
+            List<BloqueoEntidad> bloqueos = query.getResultList();
+
+            return bloqueos; // Retorna la lista de bloqueos (puede estar vacía)
+        } catch (Exception e)
+        {
+            throw new PersistenceException("Error al obtener los bloqueos por ID del estudiante: " + e.getMessage(), e);
+        } finally
+        {
+            em.close();
+        }
     }
 
 }

@@ -60,7 +60,7 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnBloqueosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBloqueos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 260, 50));
+        jPanel1.add(btnBloqueos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 260, 50));
 
         btnReporteSucursales.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnReporteSucursales.setForeground(new java.awt.Color(0, 0, 51));
@@ -71,7 +71,7 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnReporteSucursalesActionPerformed(evt);
             }
         });
-        jPanel1.add(btnReporteSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 200, 260, 50));
+        jPanel1.add(btnReporteSucursales, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 260, 50));
 
         btnAdministrarFunciones.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnAdministrarFunciones.setForeground(new java.awt.Color(0, 0, 51));
@@ -93,7 +93,7 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnCatalogoEstudiantesActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCatalogoEstudiantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 260, 50));
+        jPanel1.add(btnCatalogoEstudiantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 260, 50));
 
         btnAdministrarFunciones1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnAdministrarFunciones1.setForeground(new java.awt.Color(0, 0, 51));
@@ -104,7 +104,7 @@ public class FrmMenu extends javax.swing.JFrame {
                 btnAdministrarFunciones1ActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAdministrarFunciones1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 260, 50));
+        jPanel1.add(btnAdministrarFunciones1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 260, 50));
 
         btnAdministrarFunciones2.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
         btnAdministrarFunciones2.setForeground(new java.awt.Color(0, 0, 51));
@@ -120,12 +120,12 @@ public class FrmMenu extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Reportes");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 140, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Gestión");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,7 +135,7 @@ public class FrmMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
         );
 
         pack();
@@ -151,7 +151,9 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void btnCatalogoEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatalogoEstudiantesActionPerformed
         // TODO add your handling code here:
-
+        FrmEstudiantes fe = new FrmEstudiantes();
+        fe.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCatalogoEstudiantesActionPerformed
 
     private void btnAdministrarFuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministrarFuncionesActionPerformed
@@ -177,20 +179,27 @@ public class FrmMenu extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        } catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(FrmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>

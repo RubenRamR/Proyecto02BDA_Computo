@@ -3,6 +3,7 @@
  */
 package com.mycompany.Main;
 
+import DAOs.CarreraDAO;
 import DAOs.EstudianteDAO;
 import ENUM_P.Estatus;
 import Entidades.BloqueoEntidad;
@@ -26,7 +27,7 @@ import javax.persistence.PersistenceException;
  */
 /*
 LISTO
-*/
+ */
 public class PruebasEstudiante {
 
     public static void main(String[] args) {
@@ -62,7 +63,6 @@ public class PruebasEstudiante {
 //        {
 //            System.err.println("Error al insertar el estudiante: " + e.getMessage());
 //        }
-
 //        /*
 //        Actualizar
 //         */
@@ -116,5 +116,32 @@ public class PruebasEstudiante {
          */
 //        EstudianteDAO estudianteDAO = new EstudianteDAO();
 //        System.out.println(estudianteDAO.obtenerTodosLosEstudiantes());
+        /*
+*
+*       CARRERA
+*
+         */
+//        // Crear una instancia de CarreraDAO
+//        CarreraDAO carreraDAO = new CarreraDAO();
+//
+//        // Nombre de la carrera a buscar
+//        String nombreCarrera = "Ingeniería en Computación"; // Cambia este valor según lo que tengas en la base de datos
+//
+//        // Llamar al método para obtener la carrera por nombre
+//        CarreraEntidad carreraEncontrada = carreraDAO.obtenerCarreraPorNombre(nombreCarrera);
+//
+//        if (carreraEncontrada != null)
+//        {
+//            System.out.println("Carrera encontrada: " + carreraEncontrada);
+//            // Acceder a la lista de estudiantes
+//            for (EstudianteEntidad estudiante : carreraEncontrada.getEstudiantes())
+//            {
+//                System.out.println("Estudiante: " + estudiante);
+//            }
+//        } else
+//        {
+//            System.out.println("No se encontró la carrera con el nombre: " + nombreCarrera);
+//        }
+
     }
 }

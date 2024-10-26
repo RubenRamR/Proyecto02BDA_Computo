@@ -4,9 +4,11 @@
  */
 package InterfacesNegocio;
 
+import DTOs.CarreraDTO;
 import DTOs.EstudianteDTO;
 import Entidades.EstudianteEntidad;
 import excepciones.NegocioException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -24,5 +26,6 @@ public interface IEstudianteNegocio {
     public EstudianteDTO obtenerEstudiantePorID(Long id) throws NegocioException;
 
     public List<EstudianteDTO> obtenerTodosLosEstudiantes() throws NegocioException;
-
+    
+    public CarreraDTO obtenerCarreraPorNombre(String nombre) throws NegocioException;
 }

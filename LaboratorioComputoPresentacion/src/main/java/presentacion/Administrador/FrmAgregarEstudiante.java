@@ -4,17 +4,32 @@
  */
 package presentacion.Administrador;
 
+import DTOs.BloqueoDTO;
+import DTOs.CarreraDTO;
+import DTOs.EstudianteDTO;
+import ENUM_P.Estatus;
+import Negocio.EstudianteNegocio;
+import excepciones.NegocioException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author user
  */
 public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
+    EstudianteNegocio estudianteNegocio;
+
     /**
      * Creates new form AgregarEstudiante
      */
     public FrmAgregarEstudiante() {
         initComponents();
+        estudianteNegocio = new EstudianteNegocio();
     }
 
     /**
@@ -28,96 +43,144 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        LblNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
+        BtnAgregarEs = new javax.swing.JButton();
+        LblEstatus = new javax.swing.JLabel();
+        CBCarrera = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        LblApPaterno = new javax.swing.JTextField();
+        LblApMaterno = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        LblContraseña = new javax.swing.JPasswordField();
+        CBEstatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 153));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Agregar Estudiante");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(156, 27, -1, -1));
+
+        LblNombre.setBackground(new java.awt.Color(255, 255, 255));
+        LblNombre.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(LblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 255, -1));
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Contraseña");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, -1, -1));
 
-        jButton1.setText("Agregar Estudiante");
+        BtnAgregarEs.setBackground(new java.awt.Color(102, 204, 255));
+        BtnAgregarEs.setForeground(new java.awt.Color(0, 0, 0));
+        BtnAgregarEs.setText("Agregar Estudiante");
+        BtnAgregarEs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAgregarEsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(BtnAgregarEs, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 480, -1, 30));
+
+        LblEstatus.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        LblEstatus.setForeground(new java.awt.Color(255, 255, 255));
+        LblEstatus.setText("Estatus");
+        jPanel1.add(LblEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, -1, -1));
+
+        CBCarrera.setBackground(new java.awt.Color(255, 255, 255));
+        CBCarrera.setForeground(new java.awt.Color(0, 0, 0));
+        CBCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingeniería en Computación" }));
+        jPanel1.add(CBCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 190, -1));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Inscripción");
+        jLabel4.setText("Apellido Paterno");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
-                        .addComponent(jButton1)))
-                .addContainerGap(168, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(jButton1)
-                .addGap(38, 38, 38))
-        );
+        LblApPaterno.setBackground(new java.awt.Color(255, 255, 255));
+        LblApPaterno.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(LblApPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 255, -1));
+
+        LblApMaterno.setBackground(new java.awt.Color(255, 255, 255));
+        LblApMaterno.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(LblApMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, 255, -1));
+
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Apellido Materno");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 220, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Carrera");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280, -1, -1));
+
+        LblContraseña.setBackground(new java.awt.Color(255, 255, 255));
+        LblContraseña.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(LblContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 370, 260, -1));
+
+        CBEstatus.setBackground(new java.awt.Color(255, 255, 255));
+        CBEstatus.setForeground(new java.awt.Color(0, 0, 0));
+        CBEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INSCRITO", "DESINSCRICTO" }));
+        jPanel1.add(CBEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnAgregarEsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarEsActionPerformed
+        // TODO add your handling code here:
+        String nombre = LblNombre.getText();
+        String apPaterno = LblApPaterno.getText();
+        String apMaterno = LblApMaterno.getText();
+        Estatus estatus = Estatus.valueOf((String) CBEstatus.getSelectedItem());
+        String contrasena = LblContraseña.getText();
+        String carrera = (String) CBCarrera.getSelectedItem();
+        CarreraDTO carreraEstudiante = new CarreraDTO();
+
+        try
+        {
+            carreraEstudiante = estudianteNegocio.obtenerCarreraPorNombre(carrera);
+        } catch (NegocioException ex)
+        {
+            Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        List<BloqueoDTO> bloqueos = new ArrayList<>();
+
+        EstudianteDTO estudianteDTO = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena, carreraEstudiante, bloqueos);
+        try
+        {
+            estudianteNegocio.insertarEstudiante(estudianteDTO);
+            // Cuadro de diálogo de éxito
+            JOptionPane.showMessageDialog(this, "Estudiante agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NegocioException ex)
+        {
+            Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+            // Cuadro de diálogo de error
+            JOptionPane.showMessageDialog(this, "Error al agregar el estudiante: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_BtnAgregarEsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,20 +191,27 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        } catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -156,14 +226,20 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BtnAgregarEs;
+    private javax.swing.JComboBox<String> CBCarrera;
+    private javax.swing.JComboBox<String> CBEstatus;
+    private javax.swing.JTextField LblApMaterno;
+    private javax.swing.JTextField LblApPaterno;
+    private javax.swing.JPasswordField LblContraseña;
+    private javax.swing.JLabel LblEstatus;
+    private javax.swing.JTextField LblNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
