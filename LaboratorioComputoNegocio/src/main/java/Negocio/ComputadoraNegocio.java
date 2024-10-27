@@ -22,8 +22,7 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
     Convertidores convertidor = new Convertidores();
 
     public ComputadoraNegocio() {
-        this.computadoraDAO = new ComputadoraDAO();
-        convertidor = new Convertidores();
+       
     }
 
     public ComputadoraNegocio(ComputadoraDAO computadoraDAO) {
