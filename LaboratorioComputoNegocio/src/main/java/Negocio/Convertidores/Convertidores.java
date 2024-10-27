@@ -11,6 +11,7 @@ import DTOs.CarreraDTO;
 import DTOs.CentroComputoDTO;
 import DTOs.ComputadoraDTO;
 import DTOs.EstudianteDTO;
+import DTOs.SoftwareDTO;
 import DTOs.UnidadAcademicaDTO;
 import ENUM_P.Estatus;
 import Entidades.BloqueoEntidad;
@@ -18,6 +19,7 @@ import Entidades.CarreraEntidad;
 import Entidades.CentroComputoEntidad;
 import Entidades.ComputadoraEntidad;
 import Entidades.EstudianteEntidad;
+import Entidades.SoftwareEntidad;
 import Entidades.UnidadAcademicaEntidad;
 import static com.mysql.cj.conf.PropertyKey.logger;
 import java.time.LocalDateTime;
@@ -70,31 +72,27 @@ public class Convertidores {
     }
 
     public EstudianteDTO convertirEstudianteADTO(EstudianteEntidad estudianteEntidad) {
-        String nombre = estudianteEntidad.getNombre();
-        String apPaterno = estudianteEntidad.getApPaterno();
-        String apMaterno = estudianteEntidad.getApMaterno();
-        Estatus estatus = estudianteEntidad.getEstatus();
-        String contrasena = estudianteEntidad.getContrasena();
-        CarreraEntidad carreraEntidad = estudianteEntidad.getCarrera();
+        EstudianteDTO estudianteDTO = new EstudianteDTO();
+
+        // Asegúrate de que estos valores no sean null
+        estudianteDTO.setId(estudianteEntidad.getId());
+        estudianteDTO.setNombre(estudianteEntidad.getNombre());
+        estudianteDTO.setApPaterno(estudianteEntidad.getApPaterno());
+        estudianteDTO.setApMaterno(estudianteEntidad.getApMaterno());
+        estudianteDTO.setEstatus(estudianteEntidad.getEstatus());
+        estudianteDTO.setContrasena(estudianteEntidad.getContrasena());
 
         // Convertir CarreraEntidad a CarreraDTO
-        CarreraDTO carreraDTO = this.convertirCarreraADTO(carreraEntidad);
+        CarreraEntidad carreraEntidad = estudianteEntidad.getCarrera();
+        if (carreraEntidad != null)
+        {
+            CarreraDTO carreraDTO = this.convertirCarreraADTO(carreraEntidad);
+            estudianteDTO.setCarrera(carreraDTO);
+        }
 
-        // Convertir bloqueos (sin incluir al estudiante dentro de los bloqueos para evitar recursión)
+        // Convertir bloqueos
         List<BloqueoEntidad> bloqueosEntidad = estudianteEntidad.getBloqueos();
         List<BloqueoDTO> bloqueosDTO = this.convertirBloqueosADTO(bloqueosEntidad);
-
-        // Crear el DTO del estudiante
-        EstudianteDTO estudianteDTO = new EstudianteDTO();
-        estudianteDTO.setNombre(nombre);
-        estudianteDTO.setApPaterno(apPaterno);
-        estudianteDTO.setApMaterno(apMaterno);
-        estudianteDTO.setEstatus(estatus);
-        estudianteDTO.setContrasena(contrasena);
-        Long idCarrera = estudianteEntidad.getCarrera().getId(); // Obtener el ID de la carrera
-
-        // Buscar la CarreraEntidad usando el ID
-        CarreraEntidad carreraEntidad2 = carreraDAO.obtenerCarreraPorId(idCarrera);
         estudianteDTO.setBloqueos(bloqueosDTO);
 
         return estudianteDTO;
@@ -283,6 +281,133 @@ public class Convertidores {
         centroComputoEntidad.setComputadoras(computadorasEntidad);
 
         return centroComputoEntidad;
+    }
+
+    public ComputadoraEntidad convertirComputadoraDTOAEntidad(ComputadoraDTO computadoraDTO) {
+        // Crear una nueva instancia de ComputadoraEntidad
+        ComputadoraEntidad computadoraEntidad = new ComputadoraEntidad();
+
+        // Asignar valores del DTO a la entidad
+        computadoraEntidad.setId(computadoraDTO.getId());
+        computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
+        computadoraEntidad.setEstado(computadoraDTO.getEstado());
+        computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
+        computadoraEntidad.setDireccionIP(computadoraDTO.getDireccionIP());
+        computadoraEntidad.setTipoCompu(computadoraDTO.getTipoCompu());
+
+        // Convertir CentroComputoDTO a CentroComputoEntidad
+        computadoraEntidad.setCentroComputo(convertirCentroComputoDTOAEntidad(computadoraDTO.getCentroComputo()));
+
+        // Convertir la lista de software
+        computadoraEntidad.setSoftwareList(convertirListaSoftwareDTOAEntidad(computadoraDTO.getSoftwareList()));
+
+        return computadoraEntidad;
+    }
+
+    // Método para convertir SoftwareEntidad a SoftwareDTO
+    public SoftwareDTO convertirSoftwareEntidadADTO(SoftwareEntidad softwareEntidad) {
+        if (softwareEntidad == null)
+        {
+            return null;
+        }
+
+        SoftwareDTO softwareDTO = new SoftwareDTO();
+        softwareDTO.setId(softwareEntidad.getId());
+        softwareDTO.setNombre(softwareEntidad.getNombre());
+
+        // Si necesitas convertir la lista de ComputadoraEntidad a ComputadoraDTO
+        List<ComputadoraDTO> computadorasDTO = new ArrayList<>();
+        for (ComputadoraEntidad computadora : softwareEntidad.getComputadoras())
+        {
+            // Aquí puedes llamar al método correspondiente para convertir cada ComputadoraEntidad
+            ComputadoraDTO computadoraDTO = convertirComputadoraEntidadADTO(computadora);
+            computadorasDTO.add(computadoraDTO);
+        }
+        softwareDTO.setComputadoras(computadorasDTO);
+
+        return softwareDTO;
+    }
+
+    // Método para convertir SoftwareDTO a SoftwareEntidad
+    public SoftwareEntidad convertirSoftwareDTOAEntidad(SoftwareDTO softwareDTO) {
+        if (softwareDTO == null)
+        {
+            return null;
+        }
+
+        SoftwareEntidad softwareEntidad = new SoftwareEntidad();
+        softwareEntidad.setId(softwareDTO.getId());
+        softwareEntidad.setNombre(softwareDTO.getNombre());
+
+        // Si necesitas convertir la lista de ComputadoraDTO a ComputadoraEntidad
+        List<ComputadoraEntidad> computadorasEntidad = new ArrayList<>();
+        for (ComputadoraDTO computadora : softwareDTO.getComputadoras())
+        {
+            // Aquí puedes llamar al método correspondiente para convertir cada ComputadoraDTO
+            ComputadoraEntidad computadoraEntidad = convertirComputadoraDTOAEntidad(computadora);
+            computadorasEntidad.add(computadoraEntidad);
+        }
+        softwareEntidad.setComputadoras(computadorasEntidad);
+
+        return softwareEntidad;
+    }
+
+    // Método para convertir una lista de SoftwareEntidad a una lista de SoftwareDTO
+    public List<SoftwareDTO> convertirListaSoftwareEntidadADTO(List<SoftwareEntidad> softwares) {
+        List<SoftwareDTO> softwaresDTO = new ArrayList<>();
+        if (softwares != null)
+        {
+            for (SoftwareEntidad softwareEntidad : softwares)
+            {
+                softwaresDTO.add(convertirSoftwareEntidadADTO(softwareEntidad));
+            }
+        }
+        return softwaresDTO;
+    }
+
+    // Método para convertir una lista de SoftwareDTO a una lista de SoftwareEntidad
+    public List<SoftwareEntidad> convertirListaSoftwareDTOAEntidad(List<SoftwareDTO> softwaresDTO) {
+        List<SoftwareEntidad> softwaresEntidad = new ArrayList<>();
+        if (softwaresDTO != null)
+        {
+            for (SoftwareDTO softwareDTO : softwaresDTO)
+            {
+                softwaresEntidad.add(convertirSoftwareDTOAEntidad(softwareDTO));
+            }
+        }
+        return softwaresEntidad;
+    }
+
+    // Método para convertir ComputadoraEntidad a ComputadoraDTO
+    private ComputadoraDTO convertirComputadoraEntidadADTO(ComputadoraEntidad computadora) {
+        if (computadora == null)
+        {
+            return null;
+        }
+
+        // Crear un nuevo objeto ComputadoraDTO y convertir los campos
+        ComputadoraDTO computadoraDTO = new ComputadoraDTO();
+        computadoraDTO.setId(computadora.getId());
+        computadoraDTO.setNombreAlumno(computadora.getNombreAlumno());
+        computadoraDTO.setEstado(computadora.getEstado());
+        computadoraDTO.setNumeroMaquina(computadora.getNumeroMaquina());
+        computadoraDTO.setDireccionIP(computadora.getDireccionIP());
+        computadoraDTO.setTipoCompu(computadora.getTipoCompu());
+
+        // Convertir el CentroComputoEntidad a CentroComputoDTO
+        CentroComputoDTO centroComputoDTO = convertirCentroComputoEntidadADTO(computadora.getCentroComputo());
+        computadoraDTO.setCentroComputo(centroComputoDTO);
+
+        // Convertir la lista de SoftwareEntidad a SoftwareDTO
+        List<SoftwareDTO> softwareListDTO = new ArrayList<>();
+        for (SoftwareEntidad softwareEntidad : computadora.getSoftwareList())
+        {
+            SoftwareDTO softwareDTO = convertirSoftwareEntidadADTO(softwareEntidad);
+            softwareListDTO.add(softwareDTO);
+        }
+        computadoraDTO.setSoftwareList(softwareListDTO);
+
+        return computadoraDTO;
     }
 
 }

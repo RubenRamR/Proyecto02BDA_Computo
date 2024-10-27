@@ -216,13 +216,13 @@ public class EstudianteDAO implements IEstudianteDAO {
 
             estudiantes = em.createQuery(cq).getResultList();
 
+            System.out.println("Total de estudiantes encontrados: " + estudiantes.size());
+
             if (estudiantes.isEmpty())
             {
                 System.out.println("No se encontraron estudiantes.");
-            } else
-            {
-                System.out.println("Total de estudiantes encontrados: " + estudiantes.size());
             }
+
         } catch (Exception e)
         {
             throw new PersistenceException("Error al obtener la lista de estudiantes", e);
@@ -236,4 +236,5 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         return estudiantes;
     }
+
 }

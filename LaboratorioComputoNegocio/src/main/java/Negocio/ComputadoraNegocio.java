@@ -7,8 +7,10 @@ package Negocio;
 import DAOs.ComputadoraDAO;
 import DTOs.ComputadoraDTO;
 import InterfacesNegocio.IComputadoraNegocio;
+import Negocio.Convertidores.Convertidores;
 import excepciones.NegocioException;
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.util.List;
 public class ComputadoraNegocio implements IComputadoraNegocio {
 
     ComputadoraDAO computadoraDAO;
+    Convertidores convertidor;
 
     public ComputadoraNegocio() {
     }
@@ -26,8 +29,13 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
     }
 
     @Override
-    public void insertarComputadora(ComputadoraDTO computadora) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void insertarComputadora(ComputadoraDTO computadoraDTO) throws NegocioException {
+        try {
+            // Llama al método del DAO para insertar la computadora
+            computadoraDAO.insertarComputadora(convertidor.convertirComputadoraDTOAEntidad(computadoraDTO));
+        } catch (PersistenceException e) {
+            throw new NegocioException("Error en la capa de negocio al insertar la computadora", e);
+        }
     }
 
     @Override
