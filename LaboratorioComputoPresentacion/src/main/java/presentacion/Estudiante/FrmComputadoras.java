@@ -4,17 +4,29 @@
  */
 package presentacion.Estudiante;
 
+import DTOs.ComputadoraDTO;
+import DTOs.EstudianteDTO;
+import Negocio.ComputadoraNegocio;
+import Negocio.EstudianteNegocio;
+import excepciones.NegocioException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author user
  */
 public class FrmComputadoras extends javax.swing.JFrame {
 
+    ComputadoraNegocio compNeg = new ComputadoraNegocio();
+    EstudianteDTO estudiante;
+
     /**
      * Creates new form Computadoras
      */
-    public FrmComputadoras() {
+    public FrmComputadoras(EstudianteDTO estudiante) {
         initComponents();
+        this.estudiante = estudiante;
     }
 
     /**
@@ -26,15 +38,49 @@ public class FrmComputadoras extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar2 = new javax.swing.JScrollBar();
         logo = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        BtnCompu1 = new javax.swing.JButton();
+        BtnCompu2 = new javax.swing.JButton();
+        BtnCompu3 = new javax.swing.JButton();
+        BtnCompu4 = new javax.swing.JButton();
+        BtnCompu5 = new javax.swing.JButton();
+        BtnCompu6 = new javax.swing.JButton();
+        BtnCompu7 = new javax.swing.JButton();
+        BtnCompu8 = new javax.swing.JButton();
+        BtnCompu9 = new javax.swing.JButton();
+        BtnCompu10 = new javax.swing.JButton();
+        BtnCompu11 = new javax.swing.JButton();
+        BtnCompu12 = new javax.swing.JButton();
+        BtnCompu13 = new javax.swing.JButton();
+        BtnCompu14 = new javax.swing.JButton();
+        BtnCompu15 = new javax.swing.JButton();
+        Num1 = new javax.swing.JLabel();
+        Num2 = new javax.swing.JLabel();
+        Num3 = new javax.swing.JLabel();
+        Num4 = new javax.swing.JLabel();
+        Num5 = new javax.swing.JLabel();
+        Num6 = new javax.swing.JLabel();
+        Num7 = new javax.swing.JLabel();
+        Num8 = new javax.swing.JLabel();
+        Num9 = new javax.swing.JLabel();
+        Num10 = new javax.swing.JLabel();
+        Num11 = new javax.swing.JLabel();
+        Num12 = new javax.swing.JLabel();
+        Num13 = new javax.swing.JLabel();
+        Num15 = new javax.swing.JLabel();
+        Num14 = new javax.swing.JLabel();
+        jScrollBar3 = new javax.swing.JScrollBar();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         logo.setBackground(new java.awt.Color(255, 255, 255));
-        logo.setSize(new java.awt.Dimension(20, 100));
+        logo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 153));
 
@@ -47,39 +93,235 @@ public class FrmComputadoras extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(266, 266, 266)
+                .addGap(276, 276, 276)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(278, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/potros-itson.jpg"))); // NOI18N
-        jLabel1.setSize(new java.awt.Dimension(32, 13));
+        logo.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 80));
 
-        javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
-        logo.setLayout(logoLayout);
-        logoLayout.setHorizontalGroup(
-            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoLayout.createSequentialGroup()
-                .addContainerGap(245, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(238, 238, 238))
-        );
-        logoLayout.setVerticalGroup(
-            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logoLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addComponent(jLabel1)
-                .addContainerGap(146, Short.MAX_VALUE))
-        );
+        BtnCompu1.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu1.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu1ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, -1, 70));
+
+        BtnCompu2.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu2.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu2ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, -1, 70));
+
+        BtnCompu3.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu3.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu3ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, -1, 70));
+
+        BtnCompu4.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu4.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu4ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, -1, 70));
+
+        BtnCompu5.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu5.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu5ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu5, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 190, -1, 70));
+
+        BtnCompu6.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu6.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu6ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, -1, 70));
+
+        BtnCompu7.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu7.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu7ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, -1, 70));
+
+        BtnCompu8.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu8.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu8ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 310, -1, 70));
+
+        BtnCompu9.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu9.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu9ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 310, -1, 70));
+
+        BtnCompu10.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu10.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu10ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu10, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 310, -1, 70));
+
+        BtnCompu11.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu11.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu11ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu11, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 430, -1, 70));
+
+        BtnCompu12.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu12.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu12ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu12, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, -1, 70));
+
+        BtnCompu13.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu13.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu13ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu13, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 430, -1, 70));
+
+        BtnCompu14.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu14.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu14ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu14, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 430, -1, 70));
+
+        BtnCompu15.setBackground(new java.awt.Color(255, 255, 255));
+        BtnCompu15.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\compu.png")); // NOI18N
+        BtnCompu15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCompu15ActionPerformed(evt);
+            }
+        });
+        logo.add(BtnCompu15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, -1, 70));
+
+        Num1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num1.setForeground(new java.awt.Color(0, 0, 0));
+        Num1.setText("1");
+        logo.add(Num1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, -1, -1));
+
+        Num2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num2.setForeground(new java.awt.Color(0, 0, 0));
+        Num2.setText("2");
+        logo.add(Num2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, -1, -1));
+
+        Num3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num3.setForeground(new java.awt.Color(0, 0, 0));
+        Num3.setText("3");
+        logo.add(Num3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 260, -1, -1));
+
+        Num4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num4.setForeground(new java.awt.Color(0, 0, 0));
+        Num4.setText("4");
+        logo.add(Num4, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 10, -1));
+
+        Num5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num5.setForeground(new java.awt.Color(0, 0, 0));
+        Num5.setText("5");
+        logo.add(Num5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, -1, -1));
+
+        Num6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num6.setForeground(new java.awt.Color(0, 0, 0));
+        Num6.setText("6");
+        logo.add(Num6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, -1, -1));
+
+        Num7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num7.setForeground(new java.awt.Color(0, 0, 0));
+        Num7.setText("7");
+        logo.add(Num7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 380, -1, -1));
+
+        Num8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num8.setForeground(new java.awt.Color(0, 0, 0));
+        Num8.setText("8");
+        logo.add(Num8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 380, -1, -1));
+
+        Num9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num9.setForeground(new java.awt.Color(0, 0, 0));
+        Num9.setText("9");
+        logo.add(Num9, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 380, 10, -1));
+
+        Num10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num10.setForeground(new java.awt.Color(0, 0, 0));
+        Num10.setText("10");
+        logo.add(Num10, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 380, -1, -1));
+
+        Num11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num11.setForeground(new java.awt.Color(0, 0, 0));
+        Num11.setText("11");
+        logo.add(Num11, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 500, -1, -1));
+
+        Num12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num12.setForeground(new java.awt.Color(0, 0, 0));
+        Num12.setText("12");
+        logo.add(Num12, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 500, 20, 20));
+
+        Num13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num13.setForeground(new java.awt.Color(0, 0, 0));
+        Num13.setText("13");
+        logo.add(Num13, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 500, -1, -1));
+
+        Num15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num15.setForeground(new java.awt.Color(0, 0, 0));
+        Num15.setText("15");
+        logo.add(Num15, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, -1, -1));
+
+        Num14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Num14.setForeground(new java.awt.Color(0, 0, 0));
+        Num14.setText("14");
+        logo.add(Num14, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 500, 20, -1));
+        logo.add(jScrollBar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 180, 20, 360));
+        logo.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 520, 360));
+        logo.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 570, -1, -1));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\rramirez\\OneDrive\\Escritorio\\BDA_3\\Proyecto02BDA_Computo\\LaboratorioComputoPresentacion\\Resources\\potros-itson.jpg")); // NOI18N
+        logo.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 130, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,46 +337,120 @@ public class FrmComputadoras extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void BtnCompu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu1ActionPerformed
+        try
+        {
+            // TODO add your handling code here:
+            ComputadoraDTO comp = compNeg.obtenerComputadoraPorID(1L);
+            FrmConfirmacionReserva fcr = new FrmConfirmacionReserva(comp);
+        } catch (NegocioException ex)
+        {
+            Logger.getLogger(FrmComputadoras.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_BtnCompu1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmComputadoras().setVisible(true);
-            }
-        });
+    private void BtnCompu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu2ActionPerformed
+
+    private void BtnCompu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu3ActionPerformed
+
+    private void BtnCompu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu4ActionPerformed
+
+    private void BtnCompu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu5ActionPerformed
+
+    private void BtnCompu6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu6ActionPerformed
+
+    private void BtnCompu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu7ActionPerformed
+
+    private void BtnCompu8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu8ActionPerformed
+
+    private void BtnCompu9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu9ActionPerformed
+
+    private void BtnCompu10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu10ActionPerformed
+
+    private void BtnCompu11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu11ActionPerformed
+
+    private void BtnCompu12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu12ActionPerformed
+
+    private void BtnCompu13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu13ActionPerformed
+
+    private void BtnCompu14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu14ActionPerformed
+
+    private void BtnCompu15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompu15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCompu15ActionPerformed
+
+    public static void main(String[] args) throws NegocioException {
+        EstudianteDTO es = new EstudianteDTO();
+        EstudianteNegocio en = new EstudianteNegocio();
+        es = en.obtenerEstudiantePorID(1L);
+        FrmComputadoras fc = new FrmComputadoras(es);
+        fc.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnCompu1;
+    private javax.swing.JButton BtnCompu10;
+    private javax.swing.JButton BtnCompu11;
+    private javax.swing.JButton BtnCompu12;
+    private javax.swing.JButton BtnCompu13;
+    private javax.swing.JButton BtnCompu14;
+    private javax.swing.JButton BtnCompu15;
+    private javax.swing.JButton BtnCompu2;
+    private javax.swing.JButton BtnCompu3;
+    private javax.swing.JButton BtnCompu4;
+    private javax.swing.JButton BtnCompu5;
+    private javax.swing.JButton BtnCompu6;
+    private javax.swing.JButton BtnCompu7;
+    private javax.swing.JButton BtnCompu8;
+    private javax.swing.JButton BtnCompu9;
+    private javax.swing.JLabel Num1;
+    private javax.swing.JLabel Num10;
+    private javax.swing.JLabel Num11;
+    private javax.swing.JLabel Num12;
+    private javax.swing.JLabel Num13;
+    private javax.swing.JLabel Num14;
+    private javax.swing.JLabel Num15;
+    private javax.swing.JLabel Num2;
+    private javax.swing.JLabel Num3;
+    private javax.swing.JLabel Num4;
+    private javax.swing.JLabel Num5;
+    private javax.swing.JLabel Num6;
+    private javax.swing.JLabel Num7;
+    private javax.swing.JLabel Num8;
+    private javax.swing.JLabel Num9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollBar jScrollBar2;
+    private javax.swing.JScrollBar jScrollBar3;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel logo;
     // End of variables declaration//GEN-END:variables
 }

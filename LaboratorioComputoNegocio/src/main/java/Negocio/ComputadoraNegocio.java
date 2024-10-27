@@ -18,10 +18,12 @@ import javax.persistence.PersistenceException;
  */
 public class ComputadoraNegocio implements IComputadoraNegocio {
 
-    ComputadoraDAO computadoraDAO;
-    Convertidores convertidor;
+    ComputadoraDAO computadoraDAO = new ComputadoraDAO();
+    Convertidores convertidor = new Convertidores();
 
     public ComputadoraNegocio() {
+        this.computadoraDAO = new ComputadoraDAO();
+        convertidor = new Convertidores();
     }
 
     public ComputadoraNegocio(ComputadoraDAO computadoraDAO) {
@@ -30,10 +32,12 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
 
     @Override
     public void insertarComputadora(ComputadoraDTO computadoraDTO) throws NegocioException {
-        try {
+        try
+        {
             // Llama al método del DAO para insertar la computadora
             computadoraDAO.insertarComputadora(convertidor.convertirComputadoraDTOAEntidad(computadoraDTO));
-        } catch (PersistenceException e) {
+        } catch (PersistenceException e)
+        {
             throw new NegocioException("Error en la capa de negocio al insertar la computadora", e);
         }
     }
@@ -50,7 +54,12 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
 
     @Override
     public ComputadoraDTO obtenerComputadoraPorID(Long id) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+        ComputadoraDTO computadoraDTO = convertidor.convertirComputadoraEntidadADTO(computadoraDAO.obtenerComputadoraPorID(id));
+        return computadoraDTO;
+        }catch(PersistenceException e){
+            throw new NegocioException("Error en la capa de negocio al obtener la computadora por id", e);
+        }
     }
 
     @Override

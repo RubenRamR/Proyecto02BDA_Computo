@@ -234,11 +234,13 @@ public class Convertidores {
         dto.setHoraInicio(entidad.getHoraInicio());
         dto.setHoraFin(entidad.getHoraFin());
 
-        // Mapeo de la relación con UnidadAcademica
+        // Mapeo de la relación con UnidadAcademica (evitando referencia circular)
         if (entidad.getUnidadAcademica() != null)
         {
-            UnidadAcademicaDTO unidadAcademicaDTO = convertirUnidadAcademicaEntidadADTO(entidad.getUnidadAcademica());
-            dto.setUnidadAcademica(unidadAcademicaDTO);
+            UnidadAcademicaDTO unidadAcademicaDTO = new UnidadAcademicaDTO();
+            unidadAcademicaDTO.setId(entidad.getUnidadAcademica().getId());
+            unidadAcademicaDTO.setNombre(entidad.getUnidadAcademica().getNombre());
+            dto.setUnidadAcademica(unidadAcademicaDTO); // Asigna solo el DTO parcial o simplificado
         }
 
         return dto;
@@ -379,7 +381,7 @@ public class Convertidores {
     }
 
     // Método para convertir ComputadoraEntidad a ComputadoraDTO
-    private ComputadoraDTO convertirComputadoraEntidadADTO(ComputadoraEntidad computadora) {
+    public ComputadoraDTO convertirComputadoraEntidadADTO(ComputadoraEntidad computadora) {
         if (computadora == null)
         {
             return null;
