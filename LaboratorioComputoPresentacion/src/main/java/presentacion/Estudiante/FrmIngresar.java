@@ -42,6 +42,8 @@ public class FrmIngresar extends javax.swing.JFrame {
         BtnAceptar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        BtnAceptar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,8 +68,6 @@ public class FrmIngresar extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        TxtId.setBackground(new java.awt.Color(255, 255, 255));
-        TxtId.setForeground(new java.awt.Color(0, 0, 0));
         TxtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtIdActionPerformed(evt);
@@ -77,7 +77,7 @@ public class FrmIngresar extends javax.swing.JFrame {
         BtnAceptar.setBackground(new java.awt.Color(102, 204, 255));
         BtnAceptar.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         BtnAceptar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnAceptar.setText("Aceptar");
+        BtnAceptar.setText("CHECAR");
         BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnAceptarActionPerformed(evt);
@@ -89,7 +89,21 @@ public class FrmIngresar extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Ingresar ID");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ITSON.png"))); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Ingresar ID");
+
+        BtnAceptar1.setBackground(new java.awt.Color(102, 204, 255));
+        BtnAceptar1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        BtnAceptar1.setForeground(new java.awt.Color(255, 255, 255));
+        BtnAceptar1.setText("Aceptar");
+        BtnAceptar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAceptar1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,31 +113,51 @@ public class FrmIngresar extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(201, 201, 201)
-                        .addComponent(BtnAceptar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(117, 117, 117)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel1)))
+                        .addGap(127, 127, 127)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(BtnAceptar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(195, 195, 195)
+                    .addComponent(jLabel4)
+                    .addContainerGap(196, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(211, 211, 211)
+                    .addComponent(BtnAceptar1)
+                    .addContainerGap(219, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(41, 41, 41)
-                .addComponent(BtnAceptar)
-                .addGap(60, 60, 60))
+                .addGap(62, 62, 62)
+                .addComponent(BtnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(140, 140, 140)
+                    .addComponent(jLabel4)
+                    .addContainerGap(183, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(279, Short.MAX_VALUE)
+                    .addComponent(BtnAceptar1)
+                    .addGap(50, 50, 50)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -181,6 +215,10 @@ public class FrmIngresar extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
+    private void BtnAceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnAceptar1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -226,10 +264,12 @@ public class FrmIngresar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAceptar;
+    private javax.swing.JButton BtnAceptar1;
     private javax.swing.JTextField TxtId;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

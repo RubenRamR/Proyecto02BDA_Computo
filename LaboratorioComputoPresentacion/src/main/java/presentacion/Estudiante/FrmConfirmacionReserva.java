@@ -4,6 +4,7 @@
  */
 package presentacion.Estudiante;
 
+import presentacion.Computadora.FrmDesbloquear;
 import DTOs.CentroComputoDTO;
 import DTOs.ComputadoraDTO;
 
