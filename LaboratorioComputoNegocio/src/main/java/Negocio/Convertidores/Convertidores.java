@@ -8,16 +8,23 @@ import DAOs.CarreraDAO;
 import DAOs.EstudianteDAO;
 import DTOs.BloqueoDTO;
 import DTOs.CarreraDTO;
+import DTOs.CentroComputoDTO;
+import DTOs.ComputadoraDTO;
 import DTOs.EstudianteDTO;
+import DTOs.UnidadAcademicaDTO;
 import ENUM_P.Estatus;
 import Entidades.BloqueoEntidad;
 import Entidades.CarreraEntidad;
+import Entidades.CentroComputoEntidad;
+import Entidades.ComputadoraEntidad;
 import Entidades.EstudianteEntidad;
+import Entidades.UnidadAcademicaEntidad;
 import static com.mysql.cj.conf.PropertyKey.logger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -200,4 +207,42 @@ public class Convertidores {
         return bloqueoDTO;
     }
 
+    public UnidadAcademicaDTO convertirUnidadAcademicaEntidadADTO(UnidadAcademicaEntidad entidad) {
+        // Crear el DTO vacío
+        UnidadAcademicaDTO dto = new UnidadAcademicaDTO();
+
+        // Mapear los atributos simples
+        dto.setId(entidad.getId());
+        dto.setNombre(entidad.getNombre());
+
+        // Mapear la lista de centros de cómputo si existe
+        List<CentroComputoDTO> centrosComputoDTO = entidad.getCentrosComputo().stream()
+                .map(this::convertirCentroComputoEntidadADTO) // Método para convertir cada CentroComputoEntidad a DTO
+                .collect(Collectors.toList());
+
+        // Asignar la lista convertida al DTO
+        dto.setCentrosComputo(centrosComputoDTO);
+
+        return dto;
+    }
+
+    public CentroComputoDTO convertirCentroComputoEntidadADTO(CentroComputoEntidad entidad) {
+        CentroComputoDTO dto = new CentroComputoDTO();
+
+        // Mapeo de atributos básicos
+        dto.setId(entidad.getId());
+        dto.setNombre(entidad.getNombre());
+        dto.setContrasenaMaestra(entidad.getContrasenaMaestra());
+        dto.setHoraInicio(entidad.getHoraInicio());
+        dto.setHoraFin(entidad.getHoraFin());
+
+        // Mapeo de la relación con UnidadAcademica
+        if (entidad.getUnidadAcademica() != null)
+        {
+            UnidadAcademicaDTO unidadAcademicaDTO = convertirUnidadAcademicaEntidadADTO(entidad.getUnidadAcademica());
+            dto.setUnidadAcademica(unidadAcademicaDTO);
+        }
+
+        return dto;
+    }
 }

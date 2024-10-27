@@ -27,5 +27,5 @@ public interface IEstudianteNegocio {
 
     public List<EstudianteDTO> obtenerTodosLosEstudiantes() throws NegocioException;
     
-    public CarreraDTO obtenerCarreraPorNombre(String nombre) throws NegocioException;
+    public CarreraDTO obtenerIdCarreraPorNombre(String nombre) throws NegocioException;
 }

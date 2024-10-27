@@ -107,11 +107,11 @@ public class EstudianteNegocio implements IEstudianteNegocio {
         }
     }
 
-    public CarreraDTO obtenerCarreraPorNombre(String nombre) throws NegocioException {
+    public CarreraDTO obtenerIdCarreraPorNombre(String nombre) throws NegocioException {
         CarreraDTO carreraDTO = null;
         try
         {
-            CarreraEntidad carreraEn = carreraDAO.obtenerCarreraPorNombre(nombre);
+            CarreraEntidad carreraEn = carreraDAO.obtenerIdCarreraPorNombre(nombre);
             carreraDTO = convertidor.convertirCarreraADTO(carreraEn);
             if (carreraDTO == null)
             {

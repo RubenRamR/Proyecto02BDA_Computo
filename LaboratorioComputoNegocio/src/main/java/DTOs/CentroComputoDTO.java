@@ -31,11 +31,12 @@ public class CentroComputoDTO {
     public CentroComputoDTO() {
     }
 
-    public CentroComputoDTO(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin) {
+    public CentroComputoDTO(String nombre, String contrasenaMaestra, LocalTime horaInicio, LocalTime horaFin, UnidadAcademicaDTO unidadAcademica) {
         this.nombre = nombre;
         this.contrasenaMaestra = contrasenaMaestra;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.unidadAcademica = unidadAcademica;
     }
 
     public Long getId() {

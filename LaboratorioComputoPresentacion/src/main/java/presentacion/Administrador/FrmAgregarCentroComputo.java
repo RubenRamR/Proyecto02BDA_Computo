@@ -12,6 +12,7 @@ import Negocio.CentroComputoNegocio;
 import excepciones.NegocioException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ import javax.swing.JOptionPane;
 public class FrmAgregarCentroComputo extends javax.swing.JFrame {
 
     CentroComputoNegocio centroComputoNegocio;
+    List<UnidadAcademicaDTO> unidades;
 
     /**
      * Creates new form AgregarCentroComputo
@@ -30,6 +32,18 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
     public FrmAgregarCentroComputo() {
         initComponents();
         centroComputoNegocio = new CentroComputoNegocio();
+        unidades = new ArrayList<>();
+    }
+
+    private void cargarUnidades() {
+        unidades = centroComputoNegocio.obtenerUnidadesAcademicas(); // Método que trae las unidades académicas disponibles
+
+        // Limpia y carga CBUnidadA con los nombres de las unidades
+        CBUnidadA.removeAllItems();
+        for (UnidadAcademicaDTO unidad : unidades)
+        {
+            CBUnidadA.addItem(unidad.getNombre()); // O la propiedad que sea adecuada
+        }
     }
 
     /**
@@ -117,7 +131,11 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
 
         CBUnidadA.setBackground(new java.awt.Color(255, 255, 255));
         CBUnidadA.setForeground(new java.awt.Color(0, 0, 0));
-        CBUnidadA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ITSON Nainari", "ITSON Centro", "ITSON Navojoa", "ITSON Guaymas", "ITSON Empalme" }));
+        CBUnidadA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBUnidadAActionPerformed(evt);
+            }
+        });
         jPanel4.add(CBUnidadA, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, 110, 30));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
@@ -140,25 +158,67 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-        // TODO add your handling code here:
-        String nombre = LblNombre.getText();
-        String contrMa = LblContraseñamaestra.getText();
-        LocalTime horaInicio = TimeInicio.getTime();
-        LocalTime horaFin = TimeFin.getTime();
-        String nombreUnidadAcademica = (String) CBUnidadA.getSelectedItem();
-
-        CentroComputoDTO centroComputo = new CentroComputoDTO(nombre, contrMa, horaInicio, horaFin);
-
         try
         {
-            centroComputoNegocio.insertarCentroComputo(centroComputo);
-            JOptionPane.showMessageDialog(this, "centroComputo agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Obtener los valores ingresados en el formulario
+            String nombre = LblNombre.getText();
+            String contrMa = LblContraseñamaestra.getText();
+            LocalTime horaInicio = TimeInicio.getTime();
+            LocalTime horaFin = TimeFin.getTime();
+
+            // Verificar que todos los campos requeridos están llenos
+            if (nombre.isEmpty() || contrMa.isEmpty() || horaInicio == null || horaFin == null)
+            {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Verificar que se haya seleccionado una Unidad Académica
+            if (CBUnidadA.getSelectedIndex() == -1)
+            {
+                JOptionPane.showMessageDialog(this, "Seleccione una Unidad Académica.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Obtener la unidad académica seleccionada
+            int indiceUnidad = CBUnidadA.getSelectedIndex();
+            UnidadAcademicaDTO unidadSeleccionada = unidades.get(indiceUnidad);
+
+            // Crear el nuevo Centro de Cómputo
+            CentroComputoDTO nuevoCentro = new CentroComputoDTO();
+            nuevoCentro.setNombre(nombre);
+            nuevoCentro.setContrasenaMaestra(contrMa
+            );
+            nuevoCentro.setUnidadAcademica(unidadSeleccionada);
+            nuevoCentro.setHoraInicio(horaInicio);
+            nuevoCentro.setHoraFin(horaFin);
+
+            // Agregar el nuevo Centro de Cómputo
+            centroComputoNegocio.insertarCentroComputo(nuevoCentro);
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(this, "Centro de Cómputo agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos(); // Método para limpiar los campos después de agregar
         } catch (NegocioException ex)
         {
-            Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error al agregar el centroComputo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrmAgregarCentroComputo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar el centro de cómputo.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnAgregarActionPerformed
+
+    private void limpiarCampos() {
+        LblNombre.setText("");
+        LblContraseñamaestra.setText("");
+        TimeInicio.setTime(null);
+        TimeFin.setTime(null);
+        CBUnidadA.setSelectedIndex(-1); // Reiniciar el combo box
+    }
+    private void CBUnidadAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBUnidadAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBUnidadAActionPerformed
 
     /**
      * @param args the command line arguments

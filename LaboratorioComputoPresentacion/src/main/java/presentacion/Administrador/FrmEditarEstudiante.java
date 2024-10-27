@@ -215,7 +215,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         CarreraDTO carreraEstudiante;
         try
         {
-            carreraEstudiante = estudianteNegocio.obtenerCarreraPorNombre(carreraNombre);
+            carreraEstudiante = estudianteNegocio.obtenerIdCarreraPorNombre(carreraNombre);
             if (carreraEstudiante == null)
             {
                 throw new NegocioException("Carrera no encontrada.");

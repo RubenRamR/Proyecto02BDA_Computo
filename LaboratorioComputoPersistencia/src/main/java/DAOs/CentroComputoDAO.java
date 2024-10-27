@@ -5,14 +5,20 @@
 package DAOs;
 
 import Entidades.CentroComputoEntidad;
+import Entidades.UnidadAcademicaEntidad;
 import InterfacesDAO.ICentroComputoDAO;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -135,6 +141,72 @@ public class CentroComputoDAO implements ICentroComputoDAO {
         {
             em.close();
         }
+    }
+
+    public UnidadAcademicaEntidad obtenerIdUnidadAcademicaPorNombre(String nombre) throws Exception {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        UnidadAcademicaEntidad unidadAcademica = null;
+
+        try
+        {
+            em.getTransaction().begin();
+
+            Query query = em.createQuery("SELECT u FROM unidadAcademica u WHERE u.nombre = :nombre");
+            query.setParameter("nombre", nombre);
+
+            // Obtiene el resultado de la consulta
+            unidadAcademica = (UnidadAcademicaEntidad) query.getSingleResult();
+
+            // Commit de la transacción
+            em.getTransaction().commit();
+        } catch (NoResultException e)
+        {
+            logger.warning("No se encontró ninguna unidad académica con el nombre: " + nombre);
+            throw new Exception("La unidad académica con el nombre '" + nombre + "' no fue encontrada.");
+        } catch (Exception e)
+        {
+            // Si ocurre un error, hacer rollback de la transacción
+            if (em.getTransaction().isActive())
+            {
+                em.getTransaction().rollback();
+            }
+            logger.severe("Error al obtener la unidad académica: " + e.getMessage());
+            throw e;
+        } finally
+        {
+            // Cerrar el EntityManager
+            if (em != null && em.isOpen())
+            {
+                em.close();
+            }
+        }
+
+        return unidadAcademica;
+    }
+
+    public List<UnidadAcademicaEntidad> obtenerUnidadesAcademicas() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<UnidadAcademicaEntidad> unidadesAcademicas = null;
+
+        try
+        {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<UnidadAcademicaEntidad> criteriaQuery = criteriaBuilder.createQuery(UnidadAcademicaEntidad.class);
+            Root<UnidadAcademicaEntidad> root = criteriaQuery.from(UnidadAcademicaEntidad.class);
+            criteriaQuery.select(root);
+            unidadesAcademicas = entityManager.createQuery(criteriaQuery).getResultList();
+        } catch (Exception e)
+        {
+            logger.severe("Error al obtener unidades académicas: " + e.getMessage());
+        } finally
+        {
+            if (entityManager != null && entityManager.isOpen())
+            {
+                entityManager.close();
+            }
+        }
+
+        return unidadesAcademicas;
     }
 
 }

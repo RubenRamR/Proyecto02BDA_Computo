@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -34,38 +35,47 @@ public class CarreraDAO implements ICarreraDAO {
     }
 
     @Override
-    public CarreraEntidad obtenerCarreraPorNombre(String nombre) throws Exception {
-        EntityManager entityManager = emf.createEntityManager();
+    public CarreraEntidad obtenerIdCarreraPorNombre(String nombre) throws Exception {
+        EntityManager em = emf.createEntityManager();
+        CarreraEntidad carrera = null;
+
         try
         {
-            // Crear un CriteriaBuilder
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            // Inicia la transacción si es necesario
+            em.getTransaction().begin();
 
-            // Crear una CriteriaQuery para CarreraEntidad
-            CriteriaQuery<CarreraEntidad> criteriaQuery = criteriaBuilder.createQuery(CarreraEntidad.class);
+            // Consulta JPQL para obtener la carrera por nombre
+            Query query = em.createQuery("SELECT c FROM CarreraEntidad c WHERE c.nombre = :nombre");
+            query.setParameter("nombre", nombre);
 
-            // Definir la raíz (FROM)
-            Root<CarreraEntidad> carreraRoot = criteriaQuery.from(CarreraEntidad.class);
+            // Obtiene el resultado de la consulta
+            carrera = (CarreraEntidad) query.getSingleResult();
 
-            // Realizar el JOIN FETCH para estudiantes
-            carreraRoot.fetch("estudiantes", JoinType.LEFT);
-
-            // Establecer la condición WHERE
-            criteriaQuery.select(carreraRoot)
-                    .where(criteriaBuilder.equal(carreraRoot.get("nombre"), nombre));
-
-            // Ejecutar la consulta
-            return entityManager.createQuery(criteriaQuery).getSingleResult();
+            // Commit de la transacción
+            em.getTransaction().commit();
         } catch (NoResultException e)
         {
-            throw new Exception("No se encontró la carrera con nombre: " + nombre, e);
+            logger.warning("No se encontró ninguna carrera con el nombre: " + nombre);
+            throw new Exception("La carrera con el nombre '" + nombre + "' no fue encontrada.");
         } catch (Exception e)
         {
-            throw new Exception("Error al obtener la carrera: " + e.getMessage(), e);
+            // Si ocurre un error, hacer rollback de la transacción
+            if (em.getTransaction().isActive())
+            {
+                em.getTransaction().rollback();
+            }
+            logger.severe("Error al obtener la carrera: " + e.getMessage());
+            throw e;
         } finally
         {
-            entityManager.close(); // Cerrar el EntityManager en el bloque finally
+            // Cerrar el EntityManager
+            if (em != null && em.isOpen())
+            {
+                em.close();
+            }
         }
+
+        return carrera;
     }
 
     public List<CarreraEntidad> obtenerTodasLasCarreras() {

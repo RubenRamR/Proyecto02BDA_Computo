@@ -117,7 +117,7 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
         CBCarrera.setBackground(new java.awt.Color(255, 255, 255));
         CBCarrera.setForeground(new java.awt.Color(0, 0, 0));
-        CBCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingeniería en Computación", "ISW", " " }));
+        CBCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         jPanel1.add(CBCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 190, -1));
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
@@ -189,7 +189,7 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
                     ? carreras.get(CBCarrera.getSelectedIndex())
                     : null;
             
-            CarreraDTO carreradto = estudianteNegocio.obtenerCarreraPorNombre(carreraSeleccionada.getNombre());
+            CarreraDTO carreradto = estudianteNegocio.obtenerIdCarreraPorNombre(carreraSeleccionada.getNombre());
             
             if (carreradto == null)
             {
@@ -198,16 +198,12 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
             }
             
             // Obtener el ID de la carrera seleccionada
-            Long idCarrera = carreraSeleccionada.getId(); // Suponiendo que el método getId() devuelve el ID de la carrera
+            Long idCarrera =  carreraSeleccionada.getId(); // Suponiendo que el método getId() devuelve el ID de la carrera
             
             // Aquí puedes continuar con la lógica para agregar el estudiante
             // Por ejemplo, crear un objeto EstudianteDTO con los datos recogidos
             EstudianteDTO nuevoEstudiante = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena);
-            
-            // Asignar la carrera al DTO del estudiante
-            CarreraDTO carreraDTO = new CarreraDTO();
-            carreraDTO.setId(idCarrera); // Asignar el ID de la carrera
-            nuevoEstudiante.setCarrera(carreraDTO); // Asignar la carrera al estudiante
+            nuevoEstudiante.setCarrera(carreradto); // Asignar la carrera al estudiante
             
             // Aquí debes llamar a tu servicio o lógica de negocio para insertar el estudiante
             try

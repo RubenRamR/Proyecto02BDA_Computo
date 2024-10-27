@@ -12,5 +12,5 @@ import Entidades.CarreraEntidad;
  */
 public interface ICarreraDAO {
     
-    public CarreraEntidad obtenerCarreraPorNombre(String nombre) throws Exception;
+    public CarreraEntidad obtenerIdCarreraPorNombre(String nombre) throws Exception;
 }

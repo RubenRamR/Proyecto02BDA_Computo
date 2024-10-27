@@ -25,7 +25,7 @@ public class CarreraEntidad implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", length = 35, nullable = false)
+    @Column(name = "nombre", length = 35, nullable = false, unique = false)
     private String nombre;
 
     @Column(name = "minutosMaxUsoDiario", nullable = false)

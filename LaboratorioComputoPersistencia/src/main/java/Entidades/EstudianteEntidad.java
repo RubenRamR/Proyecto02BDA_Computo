@@ -18,6 +18,7 @@ import javax.persistence.*;
 @Table(name = "Estudiante")
 public class EstudianteEntidad implements Serializable {
 
+    // Id escolar
     @Id
     @Column(name = "idEstudiante", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
