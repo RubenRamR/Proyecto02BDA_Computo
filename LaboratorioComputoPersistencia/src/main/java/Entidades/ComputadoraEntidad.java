@@ -66,7 +66,7 @@ public class ComputadoraEntidad implements Serializable {
         this.direccionIP = direccionIP;
         this.tipoCompu = tipoCompu;
         this.centroComputo = centroComputo;
-        this.softwareList = softwareList;
+        this.softwareList = softwareList != null ? softwareList : new ArrayList<>(); // Inicializa en caso de que sea null
     }
 
     public Long getId() {
