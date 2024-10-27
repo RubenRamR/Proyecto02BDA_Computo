@@ -94,6 +94,21 @@ public class EstudianteNegocio implements IEstudianteNegocio {
             throw new NegocioException("Error al obtener el estudiante con ID " + id + ": " + ex.getMessage(), ex);
         }
     }
+    
+    public EstudianteEntidad obtenerEstudiantePorNombre(String nombre) throws NegocioException {
+        try {
+            List<EstudianteEntidad> estudiantes = estudianteDAO.obtenerEstudiantes(); // Método que obtiene todos los estudiantes
+            for (EstudianteEntidad estudiante : estudiantes) {
+                if (estudiante.getNombre().equalsIgnoreCase(nombre)) {
+                    return estudiante; // Retorna el estudiante encontrado
+                }
+            }
+            throw new NegocioException("Estudiante no encontrado con el nombre: " + nombre);
+        } catch (Exception e) {
+            throw new NegocioException("Error al buscar el estudiante: " + e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public List<EstudianteDTO> obtenerTodosLosEstudiantes() throws NegocioException {

@@ -73,6 +73,23 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
     public List<ComputadoraDTO> obtenerTodasLasComputadora() throws NegocioException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public List<ComputadoraDTO> obtenerTodasLasComputadoras() throws NegocioException {
+    try {
+        List<ComputadoraEntidad> computadorasEntidad = computadoraDAO.obtenerTodasLasComputadoras();
+        List<ComputadoraDTO> computadorasDTO = new ArrayList<>();
+
+        for (ComputadoraEntidad computadora : computadorasEntidad) {
+            ComputadoraDTO computadoraDTO = convertidor.convertirComputadoraEntidadADTO(computadora);
+            computadorasDTO.add(computadoraDTO);
+        }
+
+        return computadorasDTO;
+    } catch (PersistenceException e) {
+        throw new NegocioException("Error al obtener las computadoras: " + e.getMessage(), e);
+    }
+}
+
 
     private Set<Long> processedIds = new HashSet<>();
 

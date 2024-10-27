@@ -108,6 +108,30 @@ public class ComputadoraDAO implements IComputadoraDAO {
             entityManager.close();
         }
     }
+    
+    public void actualizarComputadora(ComputadoraEntidad computadora) throws PersistenceException {
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            // Usar merge para actualizar la computadora
+            entityManager.merge(computadora);
+            entityManager.getTransaction().commit(); // Confirmar transacción
+
+            logger.info("Computadora actualizada exitosamente: " + computadora);
+        } catch (PersistenceException e) {
+            if (entityManager != null && entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback(); // Hacer rollback en caso de error
+            }
+            logger.severe("Error al actualizar la computadora: " + e.getMessage());
+            throw new PersistenceException("Error al actualizar la computadora", e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close(); // Cerrar el EntityManager
+            }
+        }
+    }
 
     @Override
     public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException {
@@ -137,7 +161,7 @@ public class ComputadoraDAO implements IComputadoraDAO {
     }
 
     @Override
-    public List<ComputadoraEntidad> obtenerTodasLasComputadora() throws PersistenceException {
+    public List<ComputadoraEntidad> obtenerTodasLasComputadoras() throws PersistenceException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try
         {

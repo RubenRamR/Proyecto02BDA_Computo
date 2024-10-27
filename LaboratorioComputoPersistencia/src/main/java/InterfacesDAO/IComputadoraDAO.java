@@ -22,5 +22,5 @@ public interface IComputadoraDAO {
 
     public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException;
 
-    public List<ComputadoraEntidad> obtenerTodasLasComputadora() throws PersistenceException;
+    public List<ComputadoraEntidad> obtenerTodasLasComputadoras() throws PersistenceException;
 }
