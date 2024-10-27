@@ -7,12 +7,17 @@ package Negocio;
 import DAOs.CentroComputoDAO;
 import DTOs.CentroComputoDTO;
 import DTOs.UnidadAcademicaDTO;
+import Entidades.CentroComputoEntidad;
 import Entidades.UnidadAcademicaEntidad;
 import InterfacesNegocio.ICentroComputoNegocio;
 import Negocio.Convertidores.Convertidores;
+import static com.mysql.cj.conf.PropertyKey.logger;
 import excepciones.NegocioException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -20,19 +25,28 @@ import java.util.List;
  */
 public class CentroComputoNegocio implements ICentroComputoNegocio {
 
-    CentroComputoDAO centroComputoDAO;
+    CentroComputoDAO centroComputoDAO = new CentroComputoDAO();
+    ;
     Convertidores convertidor;
 
     public CentroComputoNegocio() {
+        this.centroComputoDAO = new CentroComputoDAO();
+        this.convertidor = new Convertidores();
+
     }
 
-    public CentroComputoNegocio(CentroComputoDAO centroComputoDAO) {
-        this.centroComputoDAO = centroComputoDAO;
-    }
-
-    @Override
-    public void insertarCentroComputo(CentroComputoDTO centroComputo) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+     @Override
+    public void insertarCentroComputo(CentroComputoDTO centroComputoDTO) throws NegocioException {
+        try {
+            // Convertir el DTO a la entidad
+            CentroComputoEntidad centroComputoEntidad = convertidor.convertirCentroComputoDTOAEntidad(centroComputoDTO);
+            // Llamar al DAO para insertar la entidad en la base de datos
+            centroComputoDAO.insertarCentroComputo(centroComputoEntidad);
+        } catch (PersistenceException e) {
+            throw new NegocioException("Error al insertar el centro de cómputo: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new NegocioException("Error inesperado: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -80,13 +94,19 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
                 UnidadAcademicaDTO dto = new UnidadAcademicaDTO();
                 dto.setId(unidad.getId());
                 dto.setNombre(unidad.getNombre());
-                // Agregar otros campos según los atributos de la entidad
                 unidadAcademicaDTOs.add(dto);
             }
         } catch (Exception e)
         {
-            e.printStackTrace();
+            try
+            {
+                throw new Exception("Error al obtener unidades académicas", e);
+            } catch (Exception ex)
+            {
+                Logger.getLogger(CentroComputoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return unidadAcademicaDTOs;
     }
+
 }

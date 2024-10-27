@@ -245,4 +245,44 @@ public class Convertidores {
 
         return dto;
     }
+
+    public CentroComputoEntidad convertirCentroComputoDTOAEntidad(CentroComputoDTO centroComputoDTO) {
+        if (centroComputoDTO == null)
+        {
+            return null; // Manejo de caso nulo
+        }
+
+        // Crear la entidad
+        CentroComputoEntidad centroComputoEntidad = new CentroComputoEntidad();
+
+        // Asignar los valores del DTO a la entidad
+        centroComputoEntidad.setId(centroComputoDTO.getId());
+        centroComputoEntidad.setNombre(centroComputoDTO.getNombre());
+        centroComputoEntidad.setContrasenaMaestra(centroComputoDTO.getContrasenaMaestra());
+        centroComputoEntidad.setHoraInicio(centroComputoDTO.getHoraInicio());
+        centroComputoEntidad.setHoraFin(centroComputoDTO.getHoraFin());
+
+        // Convertir UnidadAcademicaDTO a UnidadAcademicaEntidad
+        if (centroComputoDTO.getUnidadAcademica() != null)
+        {
+            UnidadAcademicaEntidad unidadAcademicaEntidad = new UnidadAcademicaEntidad();
+            unidadAcademicaEntidad.setId(centroComputoDTO.getUnidadAcademica().getId());
+            // Asigna otros campos de UnidadAcademicaDTO según sea necesario
+            centroComputoEntidad.setUnidadAcademica(unidadAcademicaEntidad);
+        }
+
+        // Convertir la lista de ComputadoraDTO a ComputadoraEntidad
+        List<ComputadoraEntidad> computadorasEntidad = new ArrayList<>();
+        for (ComputadoraDTO computadoraDTO : centroComputoDTO.getComputadoras())
+        {
+            ComputadoraEntidad computadoraEntidad = new ComputadoraEntidad();
+            computadoraEntidad.setId(computadoraDTO.getId());
+            // Asigna otros campos de ComputadoraDTO según sea necesario
+            computadorasEntidad.add(computadoraEntidad);
+        }
+        centroComputoEntidad.setComputadoras(computadorasEntidad);
+
+        return centroComputoEntidad;
+    }
+
 }

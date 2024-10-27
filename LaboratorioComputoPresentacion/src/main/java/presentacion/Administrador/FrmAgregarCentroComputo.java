@@ -4,6 +4,7 @@
  */
 package presentacion.Administrador;
 
+import DAOs.CentroComputoDAO;
 import DTOs.CarreraDTO;
 import DTOs.CentroComputoDTO;
 import DTOs.EstudianteDTO;
@@ -31,18 +32,34 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
      */
     public FrmAgregarCentroComputo() {
         initComponents();
-        centroComputoNegocio = new CentroComputoNegocio();
         unidades = new ArrayList<>();
+        centroComputoNegocio = new CentroComputoNegocio(); // Verifica que esto esté aquí
+        cargarUnidades();
     }
 
     private void cargarUnidades() {
-        unidades = centroComputoNegocio.obtenerUnidadesAcademicas(); // Método que trae las unidades académicas disponibles
-
-        // Limpia y carga CBUnidadA con los nombres de las unidades
-        CBUnidadA.removeAllItems();
-        for (UnidadAcademicaDTO unidad : unidades)
+        try
         {
-            CBUnidadA.addItem(unidad.getNombre()); // O la propiedad que sea adecuada
+            unidades = centroComputoNegocio.obtenerUnidadesAcademicas(); // Asigna directamente a la lista de instancia
+            CBUnidadA.removeAllItems();
+            for (UnidadAcademicaDTO unidad : unidades)
+            {
+                if (unidad.getNombre() != null)
+                { // Asegúrate de que el nombre no sea nulo
+                    CBUnidadA.addItem(unidad.getNombre());
+                } else
+                {
+                    System.err.println("Unidad académica con nombre nulo encontrada.");
+                }
+            }
+        } catch (NullPointerException e)
+        {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e)
+        {
+            System.err.println("Se produjo un error al cargar las unidades: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -173,32 +190,43 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
                 return;
             }
 
-            // Verificar que se haya seleccionado una Unidad Académica
-            if (CBUnidadA.getSelectedIndex() == -1)
+            // Verificar que se haya seleccionado una carrera
+            UnidadAcademicaDTO unidadSeleccionada = (CBUnidadA.getSelectedIndex() != -1)
+                    ? unidades.get(CBUnidadA.getSelectedIndex())
+                    : null;
+
+            
+            if (unidadSeleccionada != null)
+            { // Verificar que el índice es válido
+
+                unidadSeleccionada = centroComputoNegocio.obtenerIdUnidadAcademicaPorNombre(unidadSeleccionada.getNombre());
+                String nombreUnidad = unidadSeleccionada.getNombre(); // Obtener el nombre de la unidad
+
+                if (nombreUnidad == null || nombreUnidad.isEmpty())
+                {
+                    JOptionPane.showMessageDialog(this, "La unidad académica seleccionada no tiene un nombre válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Crear el nuevo Centro de Cómputo
+                CentroComputoDTO nuevoCentro = new CentroComputoDTO();
+                nuevoCentro.setNombre(nombre);
+                nuevoCentro.setContrasenaMaestra(contrMa);
+                nuevoCentro.setUnidadAcademica(unidadSeleccionada);
+                nuevoCentro.setHoraInicio(horaInicio);
+                nuevoCentro.setHoraFin(horaFin);
+
+                // Agregar el nuevo Centro de Cómputo
+                centroComputoNegocio.insertarCentroComputo(nuevoCentro);
+
+                // Mostrar mensaje de éxito
+                JOptionPane.showMessageDialog(this, "Centro de Cómputo agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCampos(); // Método para limpiar los campos después de agregar
+            } else
             {
-                JOptionPane.showMessageDialog(this, "Seleccione una Unidad Académica.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado una unidad académica válida.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Obtener la unidad académica seleccionada
-            int indiceUnidad = CBUnidadA.getSelectedIndex();
-            UnidadAcademicaDTO unidadSeleccionada = unidades.get(indiceUnidad);
-
-            // Crear el nuevo Centro de Cómputo
-            CentroComputoDTO nuevoCentro = new CentroComputoDTO();
-            nuevoCentro.setNombre(nombre);
-            nuevoCentro.setContrasenaMaestra(contrMa
-            );
-            nuevoCentro.setUnidadAcademica(unidadSeleccionada);
-            nuevoCentro.setHoraInicio(horaInicio);
-            nuevoCentro.setHoraFin(horaFin);
-
-            // Agregar el nuevo Centro de Cómputo
-            centroComputoNegocio.insertarCentroComputo(nuevoCentro);
-
-            // Mostrar mensaje de éxito
-            JOptionPane.showMessageDialog(this, "Centro de Cómputo agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos(); // Método para limpiar los campos después de agregar
         } catch (NegocioException ex)
         {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -216,6 +244,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         TimeFin.setTime(null);
         CBUnidadA.setSelectedIndex(-1); // Reiniciar el combo box
     }
+
     private void CBUnidadAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBUnidadAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CBUnidadAActionPerformed

@@ -40,16 +40,23 @@ public class CentroComputoDAO implements ICentroComputoDAO {
         try
         {
             em.getTransaction().begin();
+
+            // Asegúrate de que el nombre de la unidad académica no sea nulo
+            if (centroComputo.getUnidadAcademica() != null && centroComputo.getUnidadAcademica().getNombre() == null)
+            {
+                throw new PersistenceException("El nombre de la unidad académica no puede ser nulo");
+            }
+
             em.persist(centroComputo);
             em.getTransaction().commit();
-            logger.info("Centro de cómputo insertado: " + centroComputo);
+//            logger.info("Centro de cómputo insertado: " + centroComputo);
         } catch (Exception e)
         {
             if (em.getTransaction().isActive())
             {
                 em.getTransaction().rollback();
             }
-            logger.severe("Error al insertar el centro de cómputo: " + e.getMessage());
+//            logger.severe("Error al insertar el centro de cómputo: " + e.getMessage());
             throw new PersistenceException("Error al insertar el centro de cómputo: " + e.getMessage(), e);
         } finally
         {
@@ -151,7 +158,8 @@ public class CentroComputoDAO implements ICentroComputoDAO {
         {
             em.getTransaction().begin();
 
-            Query query = em.createQuery("SELECT u FROM unidadAcademica u WHERE u.nombre = :nombre");
+            // Usa el nombre correcto de la entidad, que es "UnidadAcademicaEntidad"
+            Query query = em.createQuery("SELECT u FROM UnidadAcademicaEntidad u WHERE u.nombre = :nombre");
             query.setParameter("nombre", nombre);
 
             // Obtiene el resultado de la consulta
@@ -161,8 +169,8 @@ public class CentroComputoDAO implements ICentroComputoDAO {
             em.getTransaction().commit();
         } catch (NoResultException e)
         {
-            logger.warning("No se encontró ninguna unidad académica con el nombre: " + nombre);
-            throw new Exception("La unidad académica con el nombre '" + nombre + "' no fue encontrada.");
+//            logger.warning("No se encontró ninguna unidad académica con el nombre: " + nombre);
+//            throw new Exception("La unidad académica con el nombre '" + nombre + "' no fue encontrada.");
         } catch (Exception e)
         {
             // Si ocurre un error, hacer rollback de la transacción
@@ -170,7 +178,7 @@ public class CentroComputoDAO implements ICentroComputoDAO {
             {
                 em.getTransaction().rollback();
             }
-            logger.severe("Error al obtener la unidad académica: " + e.getMessage());
+//            logger.severe("Error al obtener la unidad académica: " + e.getMessage());
             throw e;
         } finally
         {
