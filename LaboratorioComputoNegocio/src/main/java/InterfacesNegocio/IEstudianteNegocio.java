@@ -27,5 +27,8 @@ public interface IEstudianteNegocio {
 
     public List<EstudianteDTO> obtenerTodosLosEstudiantes() throws NegocioException;
     
+    public EstudianteEntidad obtenerEstudianteEntidadPorID(Long id) throws NegocioException;
+
+    
     public CarreraDTO obtenerIdCarreraPorNombre(String nombre) throws NegocioException;
 }

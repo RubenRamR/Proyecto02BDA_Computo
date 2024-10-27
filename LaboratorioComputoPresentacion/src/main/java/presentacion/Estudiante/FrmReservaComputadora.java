@@ -5,6 +5,7 @@
 package presentacion.Estudiante;
 
 import DTOs.ComputadoraDTO;
+import DTOs.EstudianteDTO;
 import ENUM_P.Estado;
 import ENUM_P.TipoCompu;
 import Entidades.EstudianteEntidad;
@@ -43,7 +44,9 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
     public FrmReservaComputadora(List<ComputadoraDTO> computadoras) {
         initComponents2();
         centroComputoNegocio = new CentroComputoNegocio();
+        computadoraNegocio = new ComputadoraNegocio();
         cargarComputadoras();
+
     }
 
     private void initComponents2() {
@@ -70,7 +73,7 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
 
     private void cargarComputadoras() {
         try {
-        List<ComputadoraDTO> computadoras = computadoraNegocio.obtenerTodasLasComputadoras(); // Llama al método correcto
+            List<ComputadoraDTO> computadoras = computadoraNegocio.obtenerTodasLasComputadoras(); // Llama al método correcto
             for (ComputadoraDTO computadora : computadoras) {
                 modelo.addRow(new Object[]{
                     computadora.getNumeroMaquina(),
@@ -83,32 +86,73 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
         }
     }
 
+    //RESERVAR COMPU POR MEDIO DEL NOMBRE
+//    private void reservarComputadora() {
+//    int filaSeleccionada = tablaComputadoras.getSelectedRow();
+//    if (filaSeleccionada == -1) {
+//        JOptionPane.showMessageDialog(this, "Por favor, seleccione una computadora para reservar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//        return;
+//    }
+//
+//    // Obtener el número de la computadora seleccionada
+//    int numeroMaquina = (int) modelo.getValueAt(filaSeleccionada, 0);
+//    String nombreAlumno = JOptionPane.showInputDialog(this, "Ingrese su nombre:");
+//
+//    if (nombreAlumno != null && !nombreAlumno.trim().isEmpty()) {
+//        // Lógica para reservar la computadora
+//        try {
+//            EstudianteEntidad estudiante = estudianteNegocio.obtenerEstudiantePorNombre(nombreAlumno); // Obtener el estudiante por nombre
+//            ComputadoraDTO computadora = new ComputadoraDTO(nombreAlumno, Estado.OCUPADO, numeroMaquina, "", TipoCompu.ADMIN, null); // Ajustar según sea necesario
+//            
+//            centroComputoNegocio.reservarComputadora(computadora, estudiante, LocalDateTime.now(), LocalDateTime.now().plusHours(1)); // Lógica de reserva
+//            
+//            JOptionPane.showMessageDialog(this, "Computadora reservada exitosamente.");
+//            modelo.setValueAt(Estado.OCUPADO.toString(), filaSeleccionada, 1); // Actualizar el estado en la tabla
+//            modelo.setValueAt(nombreAlumno, filaSeleccionada, 2); // Asignar nombre al alumno
+//        } catch (NegocioException e) {
+//            JOptionPane.showMessageDialog(this, "Error al reservar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//}
+    //RESERVAR COMPU POR MEDIO DEL ID
     private void reservarComputadora() {
-    int filaSeleccionada = tablaComputadoras.getSelectedRow();
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(this, "Por favor, seleccione una computadora para reservar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        int filaSeleccionada = tablaComputadoras.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una computadora para reservar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    // Obtener el número de la computadora seleccionada
-    int numeroMaquina = (int) modelo.getValueAt(filaSeleccionada, 0);
-    String nombreAlumno = JOptionPane.showInputDialog(this, "Ingrese su nombre:");
+        // Obtener el ID de la computadora seleccionada
+        Integer idComputadoraInteger = (Integer) modelo.getValueAt(filaSeleccionada, 0);
+        String idAlumnoStr = JOptionPane.showInputDialog(this, "Ingrese su ID:");
 
-    if (nombreAlumno != null && !nombreAlumno.trim().isEmpty()) {
-        // Lógica para reservar la computadora
-        try {
-            EstudianteEntidad estudiante = estudianteNegocio.obtenerEstudiantePorNombre(nombreAlumno); // Obtener el estudiante por nombre
-            ComputadoraDTO computadora = new ComputadoraDTO(nombreAlumno, Estado.OCUPADO, numeroMaquina, "", TipoCompu.ADMIN, null); // Ajustar según sea necesario
-            centroComputoNegocio.reservarComputadora(computadora, estudiante, LocalDateTime.now(), LocalDateTime.now().plusHours(1)); // Lógica de reserva
-            JOptionPane.showMessageDialog(this, "Computadora reservada exitosamente.");
-            modelo.setValueAt(Estado.OCUPADO.toString(), filaSeleccionada, 1); // Actualizar el estado en la tabla
-            modelo.setValueAt(nombreAlumno, filaSeleccionada, 2); // Asignar nombre al alumno
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al reservar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        if (idAlumnoStr != null && !idAlumnoStr.trim().isEmpty()) {
+            try {
+                // Convertir el ID ingresado a un número largo
+                long idAlumno = Long.parseLong(idAlumnoStr.trim());
+                EstudianteEntidad estudiante = estudianteNegocio.obtenerEstudianteEntidadPorID(idAlumno); // Obtener el estudiante por ID
+
+                if (estudiante == null) {
+                    JOptionPane.showMessageDialog(this, "Estudiante no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Crear la computadora DTO
+                ComputadoraDTO computadora = new ComputadoraDTO(estudiante.getNombre(), Estado.OCUPADO, idComputadoraInteger, "", TipoCompu.ADMIN, null); // Ajustar según sea necesario
+
+                // Reservar la computadora
+                centroComputoNegocio.reservarComputadora(computadora, estudiante, LocalDateTime.now(), LocalDateTime.now().plusHours(1));
+
+                JOptionPane.showMessageDialog(this, "Computadora reservada exitosamente.");
+                modelo.setValueAt(Estado.OCUPADO.toString(), filaSeleccionada, 1); // Actualizar el estado en la tabla
+                modelo.setValueAt(estudiante.getNombre(), filaSeleccionada, 2); // Asignar nombre al alumno
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "ID inválido. Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, "Error al reservar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
-}
-
 
     /**
      * This method is called from within the constructor to initialize the form.

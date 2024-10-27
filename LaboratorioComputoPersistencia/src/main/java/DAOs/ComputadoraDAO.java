@@ -146,7 +146,7 @@ public class ComputadoraDAO implements IComputadoraDAO {
             root.fetch("centroComputo", JoinType.LEFT); // Cambia "centroComputo" por el nombre del atributo en ComputadoraEntidad
 
             // Condición de búsqueda por ID
-            query.select(root).where(cb.equal(root.get("id"), id));
+            query.select(root).where(cb.equal(root.get("idComputadora"), id));
 
             // Ejecutar la consulta
             return entityManager.createQuery(query).getSingleResult();

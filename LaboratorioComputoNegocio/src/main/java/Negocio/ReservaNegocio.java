@@ -4,6 +4,7 @@
  */
 package Negocio;
 
+import DAOs.ComputadoraDAO;
 import DAOs.ReservaDAO;
 import DTOs.ReservaDTO;
 import Entidades.ComputadoraEntidad;
@@ -22,22 +23,22 @@ import javax.persistence.PersistenceException;
 public class ReservaNegocio implements IReservaNegocio {
 
     ReservaDAO reservaDAO;
-private Convertidores convertidor;
+    private Convertidores convertidor;
+    ComputadoraDAO computadoraDAO;
 
     public ReservaNegocio() {
     }
 
-    public ReservaNegocio(ReservaDAO reservaDAO) {
+    public ReservaNegocio(ReservaDAO reservaDAO, ComputadoraDAO computadoraDAO, Convertidores convertidor) {
         this.reservaDAO = reservaDAO;
-        this.convertidor = new Convertidores();
+        this.computadoraDAO = computadoraDAO;
+        this.convertidor = convertidor;
     }
 
- 
-    
     @Override
     public void insertarReserva(ReservaDTO reservaDTO) throws NegocioException {
         try {
-            // Convertir el DTO a la entidad
+            // Crear la entidad de reserva
             ReservaEntidad reservaEntidad = new ReservaEntidad();
             reservaEntidad.setFechaHoraInicio(reservaDTO.getFechaHoraInicio());
             reservaEntidad.setFechaHoraFin(reservaDTO.getFechaHoraFin());
@@ -46,11 +47,17 @@ private Convertidores convertidor;
             EstudianteEntidad estudianteEntidad = convertidor.convertirEstudianteAEntidad(reservaDTO.getEstudiante());
             reservaEntidad.setEstudiante(estudianteEntidad);
 
-            // Convertir ComputadoraDTO a ComputadoraEntidad
-            ComputadoraEntidad computadoraEntidad = convertidor.convertirComputadoraDTOAEntidad(reservaDTO.getComputadora());
+            // Obtener la ComputadoraEntidad existente usando el ID
+            Long idComputadora = reservaDTO.getComputadora().getId(); // Asegúrate de que esto sea correcto
+            ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(idComputadora);
+
+            if (computadoraEntidad == null) {
+                throw new NegocioException("Computadora no encontrada con ID: " + idComputadora);
+            }
+
             reservaEntidad.setComputadora(computadoraEntidad);
 
-            // Llamar al DAO para insertar la reserva
+            // Insertar la reserva en el DAO
             reservaDAO.insertarReserva(reservaEntidad);
         } catch (PersistenceException e) {
             throw new NegocioException("Error al insertar la reserva: " + e.getMessage(), e);
