@@ -39,7 +39,6 @@ public class FrmIngresar extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         TxtId = new javax.swing.JTextField();
-        BtnAceptar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -71,16 +70,6 @@ public class FrmIngresar extends javax.swing.JFrame {
         TxtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtIdActionPerformed(evt);
-            }
-        });
-
-        BtnAceptar.setBackground(new java.awt.Color(102, 204, 255));
-        BtnAceptar.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        BtnAceptar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnAceptar.setText("CHECAR");
-        BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnAceptarActionPerformed(evt);
             }
         });
 
@@ -119,10 +108,7 @@ public class FrmIngresar extends javax.swing.JFrame {
                         .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(127, 127, 127)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(BtnAceptar)))
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,9 +131,7 @@ public class FrmIngresar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(62, 62, 62)
-                .addComponent(BtnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addGap(124, 124, 124))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(140, 140, 140)
@@ -178,42 +162,6 @@ public class FrmIngresar extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_TxtIdActionPerformed
-
-    private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
-        // TODO add your handling code here:
-        String idText = TxtId.getText();
-
-        try
-        {
-            // Verificar si el ID ingresado es un número válido
-            Long idEstudiante = Long.parseLong(idText);
-
-            // Intentar obtener el estudiante usando el ID
-            estudiante = en.obtenerEstudiantePorID(idEstudiante);
-
-            if (estudiante != null)
-            {
-                // Si el estudiante existe, abrir el siguiente formulario
-                FrmComputadoras fc = new FrmComputadoras(estudiante);
-                fc.setVisible(true);
-                this.setVisible(false); // Ocultar el formulario actual
-            } else
-            {
-                // Mostrar mensaje de error si el estudiante no existe
-                JOptionPane.showMessageDialog(this, "El ID ingresado no corresponde a ningún estudiante.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (NumberFormatException e)
-        {
-            // Mostrar mensaje de error si el ID no es un número válido
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID numérico válido.", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e)
-        {
-            // Manejar otras excepciones
-            JOptionPane.showMessageDialog(this, "Ocurrió un error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void BtnAceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptar1ActionPerformed
         // TODO add your handling code here:
@@ -263,7 +211,6 @@ public class FrmIngresar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnAceptar;
     private javax.swing.JButton BtnAceptar1;
     private javax.swing.JTextField TxtId;
     private javax.swing.JLabel jLabel1;
