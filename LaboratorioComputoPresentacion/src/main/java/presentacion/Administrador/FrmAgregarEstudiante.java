@@ -74,6 +74,7 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         LblContraseña = new javax.swing.JPasswordField();
         CBEstatus = new javax.swing.JComboBox<>();
+        BtnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +153,14 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
         CBEstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INSCRITO", "DESINSCRICTO" }));
         jPanel1.add(CBEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, -1, -1));
 
+        BtnRegresar.setText("Regresar");
+        BtnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(BtnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 473, 80, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,36 +184,35 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
             String apMaterno = LblApMaterno.getText().trim();
             String contrasena = new String(LblContraseña.getPassword()).trim(); // Obtener contraseña como String
             Estatus estatus = Estatus.valueOf(CBEstatus.getSelectedItem().toString()); // Convertir a Estatus
-            
+
             // Validar que los campos no estén vacíos
             if (nombre.isEmpty() || apPaterno.isEmpty() || apMaterno.isEmpty() || contrasena.isEmpty())
             {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 return; // Salir del método si hay campos vacíos
             }
-            
-            
+
             // Verificar que se haya seleccionado una carrera
             CarreraDTO carreraSeleccionada = (CBCarrera.getSelectedIndex() != -1)
                     ? carreras.get(CBCarrera.getSelectedIndex())
                     : null;
-            
+
             CarreraDTO carreradto = estudianteNegocio.obtenerIdCarreraPorNombre(carreraSeleccionada.getNombre());
-            
+
             if (carreradto == null)
             {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar una carrera", "Error", JOptionPane.ERROR_MESSAGE);
                 return; // Salir del método si no se seleccionó carrera
             }
-            
+
             // Obtener el ID de la carrera seleccionada
-            Long idCarrera =  carreraSeleccionada.getId(); // Suponiendo que el método getId() devuelve el ID de la carrera
-            
+            Long idCarrera = carreraSeleccionada.getId(); // Suponiendo que el método getId() devuelve el ID de la carrera
+
             // Aquí puedes continuar con la lógica para agregar el estudiante
             // Por ejemplo, crear un objeto EstudianteDTO con los datos recogidos
             EstudianteDTO nuevoEstudiante = new EstudianteDTO(nombre, apPaterno, apMaterno, estatus, contrasena);
             nuevoEstudiante.setCarrera(carreradto); // Asignar la carrera al estudiante
-            
+
             // Aquí debes llamar a tu servicio o lógica de negocio para insertar el estudiante
             try
             {
@@ -219,6 +227,13 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
             Logger.getLogger(FrmAgregarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BtnAgregarEsActionPerformed
+
+    private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
+        // TODO add your handling code here:
+        FrmEstudiantes fe = new FrmEstudiantes();
+        fe.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +280,7 @@ public class FrmAgregarEstudiante extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregarEs;
+    private javax.swing.JButton BtnRegresar;
     private javax.swing.JComboBox<String> CBCarrera;
     private javax.swing.JComboBox<String> CBEstatus;
     private javax.swing.JTextField LblApMaterno;

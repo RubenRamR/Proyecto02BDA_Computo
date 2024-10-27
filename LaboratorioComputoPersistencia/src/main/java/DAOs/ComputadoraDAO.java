@@ -13,6 +13,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -110,7 +114,18 @@ public class ComputadoraDAO implements IComputadoraDAO {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try
         {
-            return entityManager.find(ComputadoraEntidad.class, id); // Busca la computadora por ID
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComputadoraEntidad> query = cb.createQuery(ComputadoraEntidad.class);
+            Root<ComputadoraEntidad> root = query.from(ComputadoraEntidad.class);
+
+            // Realizar la unión con CentroComputoEntidad y establecerla como fetch
+            root.fetch("centroComputo", JoinType.LEFT); // Cambia "centroComputo" por el nombre del atributo en ComputadoraEntidad
+
+            // Condición de búsqueda por ID
+            query.select(root).where(cb.equal(root.get("id"), id));
+
+            // Ejecutar la consulta
+            return entityManager.createQuery(query).getSingleResult();
         } catch (Exception e)
         {
             logger.severe("Error al obtener la computadora por ID: " + e.getMessage());
