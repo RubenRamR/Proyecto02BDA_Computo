@@ -45,7 +45,7 @@ public class ComputadoraEntidad implements Serializable {
     @JoinColumn(name = "idCentroComputo", nullable = false)
     private CentroComputoEntidad centroComputo;
 
-    @OneToMany(mappedBy = "computadora", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "computadora", cascade = {CascadeType.MERGE})
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)

@@ -5,6 +5,7 @@
 package Negocio.Convertidores;
 
 import DAOs.CarreraDAO;
+import DAOs.ComputadoraDAO;
 import DAOs.EstudianteDAO;
 import DTOs.BloqueoDTO;
 import DTOs.CarreraDTO;
@@ -38,6 +39,7 @@ public class Convertidores {
 
     private EstudianteDAO estudianteDAO = new EstudianteDAO();
     private CarreraDAO carreraDAO = new CarreraDAO();
+    private ComputadoraDAO computadoraDAO = new ComputadoraDAO();
 
     public Convertidores() {
     }
@@ -286,25 +288,40 @@ public class Convertidores {
     }
 
     public ComputadoraEntidad convertirComputadoraDTOAEntidad(ComputadoraDTO computadoraDTO) {
-        // Crear una nueva instancia de ComputadoraEntidad
-        ComputadoraEntidad computadoraEntidad = new ComputadoraEntidad();
-
-        // Asignar valores del DTO a la entidad
-        computadoraEntidad.setId(computadoraDTO.getId());
-        computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
-        computadoraEntidad.setEstado(computadoraDTO.getEstado());
-        computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
-        computadoraEntidad.setDireccionIP(computadoraDTO.getDireccionIP());
-        computadoraEntidad.setTipoCompu(computadoraDTO.getTipoCompu());
-
-        // Convertir CentroComputoDTO a CentroComputoEntidad
-        computadoraEntidad.setCentroComputo(convertirCentroComputoDTOAEntidad(computadoraDTO.getCentroComputo()));
-
-        // Convertir la lista de software
-        computadoraEntidad.setSoftwareList(convertirListaSoftwareDTOAEntidad(computadoraDTO.getSoftwareList()));
-
-        return computadoraEntidad;
+    // Primero, verifica si la computadoraDTO es nula
+    if (computadoraDTO == null) {
+        return null; // Manejo de caso nulo
     }
+
+    // Intentar obtener la entidad existente de la base de datos
+    ComputadoraEntidad computadoraEntidad = null;
+    if (computadoraDTO.getId() != null) {
+        computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(computadoraDTO.getId());
+    }
+
+    // Si no se encontró la entidad existente, crea una nueva instancia
+    if (computadoraEntidad == null) {
+        computadoraEntidad = new ComputadoraEntidad();
+    }
+
+    // Asigna los valores del DTO a la entidad
+    computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
+    computadoraEntidad.setEstado(computadoraDTO.getEstado());
+    computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
+    computadoraEntidad.setDireccionIP(computadoraDTO.getDireccionIP());
+    computadoraEntidad.setTipoCompu(computadoraDTO.getTipoCompu());
+
+    // Manejo del CentroComputo
+    CentroComputoEntidad centroComputoEntidad = convertirCentroComputoDTOAEntidad(computadoraDTO.getCentroComputo());
+    computadoraEntidad.setCentroComputo(centroComputoEntidad);
+
+    // Manejo de la lista de Software
+    List<SoftwareEntidad> softwareList = convertirListaSoftwareDTOAEntidad(computadoraDTO.getSoftwareList());
+    computadoraEntidad.setSoftwareList(softwareList);
+
+    return computadoraEntidad;
+}
+
 
     // Método para convertir SoftwareEntidad a SoftwareDTO
     public SoftwareDTO convertirSoftwareEntidadADTO(SoftwareEntidad softwareEntidad) {
