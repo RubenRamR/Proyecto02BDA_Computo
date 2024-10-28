@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import presentacion.Administrador.FrmMenu;
 
 /**
  *
@@ -115,6 +116,11 @@ private CentroComputoNegocio centroComputoNegocio;
         BtnMenu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BtnMenu.setForeground(new java.awt.Color(255, 255, 255));
         BtnMenu.setText("Menú");
+        BtnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnMenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,6 +194,13 @@ private CentroComputoNegocio centroComputoNegocio;
     frmReservaComputadora.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_BtnAceptar1ActionPerformed
+
+    private void BtnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMenuActionPerformed
+        // TODO add your handling code here:
+        FrmMenu fm = new FrmMenu();
+        fm.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_BtnMenuActionPerformed
 
     /**
      * @param args the command line arguments
