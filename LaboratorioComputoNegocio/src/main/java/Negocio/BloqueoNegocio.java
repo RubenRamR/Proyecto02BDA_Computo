@@ -22,6 +22,9 @@ public class BloqueoNegocio implements IBloqueoNegocio {
     Convertidores convertidores = new Convertidores();
     BloqueoDAO bloqueoDAO;
 
+    public BloqueoNegocio() {
+    }
+
     public BloqueoNegocio(BloqueoDAO bloqueoDAO) {
         this.bloqueoDAO = new BloqueoDAO();
     }

@@ -165,7 +165,7 @@ public class FrmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnRepCdCompActionPerformed
 
     private void btnBloqueosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBloqueosActionPerformed
-        FrmBloqueos fb = new FrmBloqueos();
+        FrmBloquearEstudianteTabla fb = new FrmBloquearEstudianteTabla();
         fb.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBloqueosActionPerformed

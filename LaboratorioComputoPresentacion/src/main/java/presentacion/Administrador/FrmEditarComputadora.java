@@ -4,17 +4,54 @@
  */
 package presentacion.Administrador;
 
+import DTOs.CentroComputoDTO;
+import DTOs.ComputadoraDTO;
+import ENUM_P.Estado;
+import ENUM_P.TipoCompu;
+import Negocio.CentroComputoNegocio;
+import Negocio.ComputadoraNegocio;
+import excepciones.NegocioException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author user
  */
 public class FrmEditarComputadora extends javax.swing.JFrame {
 
+    CentroComputoNegocio centroNeg;
+    ComputadoraNegocio compuNeg;
+    Long id;
+
     /**
      * Creates new form FrmEditarComputadora
+     * @param id
      */
     public FrmEditarComputadora(Long id) {
         initComponents();
+        centroNeg = new CentroComputoNegocio();
+        compuNeg = new ComputadoraNegocio();
+        this.id = id;
+        cargarCampos();
+    }
+
+    private void cargarCampos() {
+        try
+        {
+            ComputadoraDTO computadora = compuNeg.obtenerComputadoraPorID(id);
+            LblNombreAlumno.setText(computadora.getNombreAlumno());
+            LblNumMaq.setText(String.valueOf(computadora.getNumeroMaquina()));
+            LblIp.setText(computadora.getDireccionIP());
+            CBTipoCompu.setSelectedItem(computadora.getTipoCompu());
+            CBCentroComputo.setSelectedItem(String.valueOf(computadora.getCentroComputo().getNombre()));
+
+        } catch (NegocioException ex)
+        {
+            Logger.getLogger(FrmEditarComputadora.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -28,79 +65,112 @@ public class FrmEditarComputadora extends javax.swing.JFrame {
 
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        LblNombreAlumno = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        LblNumMaq = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        LblIp = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        CBTipoCompu = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        CBCentroComputo = new javax.swing.JComboBox<>();
+        BtnConfirmarEdicion = new javax.swing.JButton();
+        BtnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(0, 102, 153));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Editar Computadora");
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 28, -1, -1));
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("IP");
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Nombre Alumno");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, -1, -1));
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Número Computadora");
+        LblNombreAlumno.setBackground(new java.awt.Color(255, 255, 255));
+        LblNombreAlumno.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblNombreAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 255, -1));
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Estado");
+        jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("DISPONIBLE");
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Numero Maquina");
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, -1, -1));
+
+        LblNumMaq.setBackground(new java.awt.Color(255, 255, 255));
+        LblNumMaq.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblNumMaq, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 60, -1));
+
+        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Dirección IP");
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, -1, -1));
+
+        LblIp.setBackground(new java.awt.Color(255, 255, 255));
+        LblIp.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblIp, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 255, -1));
+
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Tipo de Computadora");
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, -1, -1));
+
+        CBTipoCompu.setBackground(new java.awt.Color(255, 255, 255));
+        CBTipoCompu.setForeground(new java.awt.Color(0, 0, 0));
+        CBTipoCompu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMIN", "ESTUDIANTE", "MAESTRO" }));
+        jPanel4.add(CBTipoCompu, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 350, 130, 30));
+
+        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Centro de Computo");
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, -1, -1));
+
+        CBCentroComputo.setBackground(new java.awt.Color(255, 255, 255));
+        CBCentroComputo.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(CBCentroComputo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 430, 130, 30));
+
+        BtnConfirmarEdicion.setBackground(new java.awt.Color(102, 153, 255));
+        BtnConfirmarEdicion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        BtnConfirmarEdicion.setForeground(new java.awt.Color(255, 255, 255));
+        BtnConfirmarEdicion.setText("Confirmar");
+        BtnConfirmarEdicion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtnConfirmarEdicionActionPerformed(evt);
             }
         });
+        jPanel4.add(BtnConfirmarEdicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 490, 200, 40));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3))
-                        .addGap(147, 147, 147))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(136, 136, 136))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(235, 235, 235))))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel1)
-                .addGap(55, 55, 55)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(63, 63, 63))
-        );
+        BtnRegresar.setText("Regresar");
+        BtnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(BtnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 80, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,9 +180,66 @@ public class FrmEditarComputadora extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BtnConfirmarEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnConfirmarEdicionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try
+        {
+            String nombreAlumno = LblNombreAlumno.getText();
+            String direccionIP = LblIp.getText();
+            int numeroMaquina = Integer.parseInt(LblNumMaq.getText());
+            Object selectedItemT = CBTipoCompu.getSelectedItem();
+            Object selectedItemC = CBCentroComputo.getSelectedItem();
+            if (selectedItemT != null || selectedItemC != null)
+            {
+                // Convierte el objeto seleccionado a String
+                String tipoSeleccionado = selectedItemT.toString();
+                TipoCompu tipoCompu = TipoCompu.valueOf(tipoSeleccionado);
+
+                String centroSeleccionado = selectedItemC.toString();
+                CentroComputoDTO centro = new CentroComputoDTO();
+                try
+                {
+                    centro = centroNeg.obtenerCentroComputoPorNombre(centroSeleccionado);
+                } catch (NegocioException ex)
+                {
+                    Logger.getLogger(FrmEditarComputadora.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                // Crear instancia de ComputadoraDTO con los datos de los campos
+                ComputadoraDTO computadoraDTO = new ComputadoraDTO();
+                computadoraDTO.setNombreAlumno(nombreAlumno);
+                computadoraDTO.setDireccionIP(direccionIP);
+                computadoraDTO.setNumeroMaquina(numeroMaquina);
+                computadoraDTO.setEstado(Estado.DISPONIBLE);
+                computadoraDTO.setTipoCompu(tipoCompu);
+                computadoraDTO.setCentroComputo(centro);
+
+                compuNeg.editarComputadora(computadoraDTO);
+
+                JOptionPane.showMessageDialog(this, "Computadora agregada exitosamente.");
+            } else
+            {
+                System.out.println("No se seleccionó ningún tipo de computadora.");
+            }
+
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Número de computadora inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (PersistenceException e)
+        {
+            JOptionPane.showMessageDialog(this, "Error al agregar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NegocioException ex)
+        {
+            Logger.getLogger(FrmAgregarComputadora.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BtnConfirmarEdicionActionPerformed
+
+    private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
+        // TODO add your handling code here:
+        FrmComputadoras fc = new FrmComputadoras();
+        fc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegresarActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -150,12 +277,21 @@ public class FrmEditarComputadora extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BtnConfirmarEdicion;
+    private javax.swing.JButton BtnRegresar;
+    private javax.swing.JComboBox<String> CBCentroComputo;
+    private javax.swing.JComboBox<String> CBTipoCompu;
+    private javax.swing.JTextField LblIp;
+    private javax.swing.JTextField LblNombreAlumno;
+    private javax.swing.JTextField LblNumMaq;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
