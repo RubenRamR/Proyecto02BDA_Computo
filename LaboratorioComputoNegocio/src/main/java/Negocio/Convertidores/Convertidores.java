@@ -45,16 +45,29 @@ public class Convertidores {
     }
 
     public EstudianteEntidad convertirEstudianteAEntidad(EstudianteDTO estudiantedto) {
+        if (estudiantedto.getId() == null)
+        {
+            System.out.println("Advertencia: El ID del estudiante es nulo.");
+        }
+
         Long id = estudiantedto.getId();
         String nombre = estudiantedto.getNombre();
         String apPaterno = estudiantedto.getApPaterno();
         String apMaterno = estudiantedto.getApMaterno();
         Estatus estatus = estudiantedto.getEstatus();
         String contrasena = estudiantedto.getContrasena();
-        Long idCarrera = estudiantedto.getCarrera().getId(); // Obtener el ID de la carrera
 
-        // Buscar la CarreraEntidad usando el ID
-        CarreraEntidad carreraEntidad = carreraDAO.obtenerCarreraPorId(idCarrera);
+        CarreraEntidad carreraEntidad = null;
+
+        // Verificar si la carrera no es nula antes de obtener el ID
+        if (estudiantedto.getCarrera() != null)
+        {
+            Long idCarrera = estudiantedto.getCarrera().getId();
+            carreraEntidad = carreraDAO.obtenerCarreraPorId(idCarrera);
+        } else
+        {
+            System.out.println("Advertencia: Carrera no especificada para el estudiante.");
+        }
 
         EstudianteEntidad estudianteEntidad = new EstudianteEntidad();
         estudianteEntidad.setId(id);
@@ -63,23 +76,16 @@ public class Convertidores {
         estudianteEntidad.setApMaterno(apMaterno);
         estudianteEntidad.setEstatus(estatus);
         estudianteEntidad.setContrasena(contrasena);
-        estudianteEntidad.setCarrera(carreraEntidad); // Asignar la carrera
+        estudianteEntidad.setCarrera(carreraEntidad); // Asignar la carrera (puede ser nula si no existe)
 
         List<BloqueoDTO> listaBloqueosdto = estudiantedto.getBloqueos();
         List<BloqueoEntidad> listaBloqueosEntidad = this.convertirBloqueosAEntidad(listaBloqueosdto);
         estudianteEntidad.setBloqueos(listaBloqueosEntidad);
 
         return estudianteEntidad;
-
     }
-    
-    
-    
 
     //
-   
-    
-    
     public EstudianteDTO convertirEstudianteADTO(EstudianteEntidad estudianteEntidad) {
         EstudianteDTO estudianteDTO = new EstudianteDTO();
 
@@ -295,41 +301,43 @@ public class Convertidores {
     }
 
     public ComputadoraEntidad convertirComputadoraDTOAEntidad(ComputadoraDTO computadoraDTO) {
-    // Primero, verifica si la computadoraDTO es nula
-    if (computadoraDTO == null) {
-        return null; // Manejo de caso nulo
+        // Primero, verifica si la computadoraDTO es nula
+        if (computadoraDTO == null)
+        {
+            return null; // Manejo de caso nulo
+        }
+
+        // Intentar obtener la entidad existente de la base de datos
+        ComputadoraEntidad computadoraEntidad = null;
+        if (computadoraDTO.getId() != null)
+        {
+            computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(computadoraDTO.getId());
+        }
+
+        // Si no se encontró la entidad existente, crea una nueva instancia
+        if (computadoraEntidad == null)
+        {
+            computadoraEntidad = new ComputadoraEntidad();
+        }
+
+        // Asigna los valores del DTO a la entidad
+        computadoraEntidad.setId(computadoraDTO.getId());
+        computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
+        computadoraEntidad.setEstado(computadoraDTO.getEstado());
+        computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
+        computadoraEntidad.setDireccionIP(computadoraDTO.getDireccionIP());
+        computadoraEntidad.setTipoCompu(computadoraDTO.getTipoCompu());
+
+        // Manejo del CentroComputo
+        CentroComputoEntidad centroComputoEntidad = convertirCentroComputoDTOAEntidad(computadoraDTO.getCentroComputo());
+        computadoraEntidad.setCentroComputo(centroComputoEntidad);
+
+        // Manejo de la lista de Software
+        List<SoftwareEntidad> softwareList = convertirListaSoftwareDTOAEntidad(computadoraDTO.getSoftwareList());
+        computadoraEntidad.setSoftwareList(softwareList);
+
+        return computadoraEntidad;
     }
-
-    // Intentar obtener la entidad existente de la base de datos
-    ComputadoraEntidad computadoraEntidad = null;
-    if (computadoraDTO.getId() != null) {
-        computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(computadoraDTO.getId());
-    }
-
-    // Si no se encontró la entidad existente, crea una nueva instancia
-    if (computadoraEntidad == null) {
-        computadoraEntidad = new ComputadoraEntidad();
-    }
-
-    // Asigna los valores del DTO a la entidad
-    computadoraEntidad.setId(computadoraDTO.getId());
-    computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
-    computadoraEntidad.setEstado(computadoraDTO.getEstado());
-    computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
-    computadoraEntidad.setDireccionIP(computadoraDTO.getDireccionIP());
-    computadoraEntidad.setTipoCompu(computadoraDTO.getTipoCompu());
-
-    // Manejo del CentroComputo
-    CentroComputoEntidad centroComputoEntidad = convertirCentroComputoDTOAEntidad(computadoraDTO.getCentroComputo());
-    computadoraEntidad.setCentroComputo(centroComputoEntidad);
-
-    // Manejo de la lista de Software
-    List<SoftwareEntidad> softwareList = convertirListaSoftwareDTOAEntidad(computadoraDTO.getSoftwareList());
-    computadoraEntidad.setSoftwareList(softwareList);
-
-    return computadoraEntidad;
-}
-
 
     // Método para convertir SoftwareEntidad a SoftwareDTO
     public SoftwareDTO convertirSoftwareEntidadADTO(SoftwareEntidad softwareEntidad) {

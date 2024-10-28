@@ -28,6 +28,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
     EstudianteNegocio estudianteNegocio;
     BloqueoNegocio bloqueoNegocio;
     BloqueoDAO bloqueoDAO;
+    List<CarreraDTO> carreras;
 
     /**
      * Creates new form FrmEditarEstudiante
@@ -35,12 +36,24 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
      * @param idEstudiante
      */
     public FrmEditarEstudiante(Long idEstudiante) throws NegocioException {
-         initComponents();
+        initComponents();
         this.idEstudiante = idEstudiante;
         estudianteNegocio = new EstudianteNegocio();
         bloqueoDAO = new BloqueoDAO();
         bloqueoNegocio = new BloqueoNegocio(bloqueoDAO);
         cargarCampos();
+        cargarCarreras();
+    }
+
+    private void cargarCarreras() {
+        carreras = estudianteNegocio.obtenerCarreras(); // Método que trae las carreras disponibles
+
+        // Limpia y carga CBCarrera con los nombres de las carreras
+        CBCarrera.removeAllItems();
+        for (CarreraDTO carrera : carreras)
+        {
+            CBCarrera.addItem(carrera.getNombre()); // O la propiedad que sea adecuada
+        }
     }
 
     public void cargarCampos() throws NegocioException {
@@ -249,53 +262,53 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnConfirmarEdicionActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try
-                {
-                    new FrmEditarEstudiante(3L).setVisible(true);
-                } catch (NegocioException ex)
-                {
-                    Logger.getLogger(FrmEditarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try
+//        {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+//            {
+//                if ("Nimbus".equals(info.getName()))
+//                {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex)
+//        {
+//            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex)
+//        {
+//            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex)
+//        {
+//            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+//        {
+//            java.util.logging.Logger.getLogger(FrmEditarEstudiante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try
+//                {
+//                    new FrmEditarEstudiante(2L).setVisible(true);
+//                } catch (NegocioException ex)
+//                {
+//                    Logger.getLogger(FrmEditarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnConfirmarEdicion;

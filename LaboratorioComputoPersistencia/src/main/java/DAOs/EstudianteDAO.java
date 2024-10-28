@@ -173,20 +173,27 @@ public class EstudianteDAO implements IEstudianteDAO {
     @Override
     public EstudianteEntidad obtenerEstudiantePorID(Long id) throws PersistenceException {
         EntityManager em = null;
-        EstudianteEntidad estudiante = null;
+        EstudianteEntidad estudiante = new EstudianteEntidad();
 
         try
         {
             em = entityManagerFactory.createEntityManager();
-            estudiante = em.find(EstudianteEntidad.class, id);
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<EstudianteEntidad> cq = cb.createQuery(EstudianteEntidad.class);
 
-            if (estudiante != null)
-            {
-                System.out.println("Estudiante encontrado: " + estudiante);
-            } else
-            {
-                System.out.println("Estudiante no encontrado con ID: " + id);
-            }
+            // Definir la raíz de la consulta, en este caso, EstudianteEntidad
+            Root<EstudianteEntidad> root = cq.from(EstudianteEntidad.class);
+
+            // Añadir el criterio de búsqueda por ID
+            cq.select(root).where(cb.equal(root.get("id"), id));
+
+            // Ejecutar la consulta y obtener el resultado único
+            estudiante = em.createQuery(cq).getSingleResult();
+
+            System.out.println("Estudiante encontrado: " + estudiante);
+        } catch (NoResultException e)
+        {
+            System.out.println("Estudiante no encontrado con ID: " + id);
         } catch (Exception e)
         {
             throw new PersistenceException("Error al obtener el estudiante con ID: " + id, e);
