@@ -5,17 +5,19 @@
 package presentacion.Estudiante;
 
 import DTOs.EstudianteDTO;
+import Negocio.CentroComputoNegocio;
 import Negocio.EstudianteNegocio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
  * @author user
  */
 public class FrmIngresar extends javax.swing.JFrame {
-
+private CentroComputoNegocio centroComputoNegocio;
     EstudianteNegocio en = new EstudianteNegocio();
     EstudianteDTO estudiante = new EstudianteDTO();
 
@@ -32,6 +34,10 @@ public class FrmIngresar extends javax.swing.JFrame {
         this.configuracionFrame();
     }
 
+    public String getTxtIdValue() {
+        return txtId.getText().trim();
+    }
+    
     public void configuracionFrame() {
         this.setTitle("Ingresar ");
         this.setResizable(false);
@@ -51,11 +57,11 @@ public class FrmIngresar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        TxtId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         BtnAceptar1 = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,12 +86,6 @@ public class FrmIngresar extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        TxtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtIdActionPerformed(evt);
-            }
-        });
-
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID");
 
@@ -95,12 +95,12 @@ public class FrmIngresar extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Ingresar ID");
+        jLabel4.setText("Bienvenido");
 
         BtnAceptar1.setBackground(new java.awt.Color(102, 204, 255));
         BtnAceptar1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         BtnAceptar1.setForeground(new java.awt.Color(255, 255, 255));
-        BtnAceptar1.setText("Aceptar");
+        BtnAceptar1.setText("Reservar Computadora");
         BtnAceptar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnAceptar1ActionPerformed(evt);
@@ -116,19 +116,19 @@ public class FrmIngresar extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(214, 214, 214))
+                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(217, 217, 217))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(166, 166, 166)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(BtnAceptar1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(227, 227, 227)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(196, 196, 196)
+                        .addComponent(BtnAceptar1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -139,13 +139,13 @@ public class FrmIngresar extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(50, 50, 50)
                 .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(43, 43, 43)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
                 .addComponent(BtnAceptar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,17 +162,18 @@ public class FrmIngresar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TxtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtIdActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_TxtIdActionPerformed
-
     private void BtnAceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptar1ActionPerformed
         // TODO add your handling code here:
-        //FrmReservaComputadora fcc = new FrmReservaComputadora();
-        //fcc.setVisible(true);
-        this.dispose();
-        
+        // Verificar si el campo txtId está vacío
+    if (txtId.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID antes de continuar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return; // No hacer nada si está vacío
+    }
+
+    // Crear y mostrar el FrmReservaComputadora si el ID no está vacío
+    FrmReservaComputadora frmReservaComputadora = new FrmReservaComputadora();
+    frmReservaComputadora.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_BtnAceptar1ActionPerformed
 
     /**
@@ -220,12 +221,12 @@ public class FrmIngresar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAceptar1;
-    private javax.swing.JTextField TxtId;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }

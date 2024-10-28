@@ -7,6 +7,7 @@ package Negocio;
 import DAOs.ComputadoraDAO;
 import DTOs.ComputadoraDTO;
 import DTOs.SoftwareDTO;
+import ENUM_P.Estado;
 import Entidades.ComputadoraEntidad;
 import Entidades.SoftwareEntidad;
 import InterfacesNegocio.IComputadoraNegocio;
@@ -45,6 +46,8 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
             throw new NegocioException("Error en la capa de negocio al insertar la computadora", e);
         }
     }
+    
+    
 
     @Override
     public void editarComputadora(ComputadoraDTO computadora) throws NegocioException {
@@ -68,6 +71,43 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
             throw new NegocioException("Error en la capa de negocio al obtener la computadora por id", e);
         }
     }
+    
+    
+    public ComputadoraDTO obtenerComputadoraPorEstudiante(long idEstudiante) throws NegocioException {
+    // Llama a tu DAO para obtener la computadora ocupada
+    ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorEstudiante(idEstudiante);
+    
+    if (computadoraEntidad == null) {
+        return null; // No se encontró ninguna computadora ocupada
+    }
+
+    // Convierte la entidad a DTO
+    return convertirComputadoraEntidadADTO(computadoraEntidad);
+}
+
+    
+    public void actualizarComputadora(long idComputadora, Estado nuevoEstado) throws NegocioException {
+    // Primero, obtenemos la computadora por ID
+    ComputadoraEntidad computadora = computadoraDAO.obtenerComputadoraPorID(idComputadora);
+    
+    // Verificamos si la computadora existe
+    if (computadora == null) {
+        throw new NegocioException("Computadora no encontrada.");
+    }
+
+    // Actualizamos el estado de la computadora
+    computadora.setEstado(nuevoEstado);
+
+    // Llamamos al DAO para realizar la actualización en la base de datos
+    try {
+        computadoraDAO.actualizarComputadora(computadora);
+    } catch (PersistenceException e) {
+        // Manejo de errores de la capa de persistencia
+        throw new NegocioException("Error al actualizar la computadora: " + e.getMessage(), e);
+    }
+}
+
+    
 
     @Override
     public List<ComputadoraDTO> obtenerTodasLasComputadora() throws NegocioException {

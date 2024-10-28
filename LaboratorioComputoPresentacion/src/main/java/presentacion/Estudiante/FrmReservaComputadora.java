@@ -50,6 +50,36 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
 
     }
 
+    public FrmReservaComputadora() {
+        initComponents2();
+        centroComputoNegocio = new CentroComputoNegocio();
+        computadoraNegocio = new ComputadoraNegocio();
+        cargarTodasLasComputadoras();
+    }
+
+    private void cargarComputadoras(List<ComputadoraDTO> computadoras) {
+        try {
+            for (ComputadoraDTO computadora : computadoras) {
+                modelo.addRow(new Object[]{
+                    computadora.getNumeroMaquina(),
+                    computadora.getEstado().toString(),
+                    computadora.getNombreAlumno() // Asumir que este campo está en el DTO
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar computadoras: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarTodasLasComputadoras() {
+        try {
+            List<ComputadoraDTO> computadoras = computadoraNegocio.obtenerTodasLasComputadoras(); // Llama al método correcto
+            cargarComputadoras(computadoras); // Usa el método para llenar la tabla
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar computadoras: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void initComponents2() {
         setTitle("Reservar Computadora");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -126,14 +156,14 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
         // Obtener el ID de la computadora seleccionada
         Integer idComputadoraInteger = (Integer) modelo.getValueAt(filaSeleccionada, 0);
         Long idComputadora = idComputadoraInteger.longValue();
-        
+
         // Obtener el CentroComputo asociado a la computadora
-    CentroComputoDTO centroComputo = centroComputoNegocio.obtenerCentroComputoPorComputadora(idComputadora);
-    if (centroComputo == null) {
-        JOptionPane.showMessageDialog(this, "Centro de cómputo no encontrado para esta computadora.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
+        CentroComputoDTO centroComputo = centroComputoNegocio.obtenerCentroComputoPorComputadora(idComputadora);
+        if (centroComputo == null) {
+            JOptionPane.showMessageDialog(this, "Centro de cómputo no encontrado para esta computadora.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String idAlumnoStr = JOptionPane.showInputDialog(this, "Ingrese su ID:");
 
         if (idAlumnoStr != null && !idAlumnoStr.trim().isEmpty()) {
@@ -146,9 +176,23 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Estudiante no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                // Obtener la lista completa de computadoras
+                List<ComputadoraDTO> computadoras = computadoraNegocio.obtenerTodasLasComputadoras();
+                ComputadoraDTO computadoraSeleccionada = null;
+
+                // Buscar la computadora en la lista
+                for (ComputadoraDTO computadora : computadoras) {
+                    if (computadora.getId().equals(idComputadora)) {
+                        computadoraSeleccionada = computadora;
+                        break;
+                    }
+                }
+
+                // Obtener la dirección IP de la computadora seleccionada
+                String direccionIP = computadoraSeleccionada != null ? computadoraSeleccionada.getDireccionIP() : null;
 
                 // Crear la computadora DTO
-                ComputadoraDTO computadora = new ComputadoraDTO(estudiante.getNombre(), Estado.OCUPADO, idComputadoraInteger, "", TipoCompu.ADMIN, centroComputo); // Ajustar según sea necesario
+                ComputadoraDTO computadora = new ComputadoraDTO(estudiante.getNombre(), Estado.OCUPADO, idComputadoraInteger, direccionIP, TipoCompu.ADMIN, centroComputo); // Ajustar según sea necesario
 
                 // Reservar la computadora
                 centroComputoNegocio.reservarComputadora(computadora, estudiante, LocalDateTime.now(), LocalDateTime.now().plusHours(1));

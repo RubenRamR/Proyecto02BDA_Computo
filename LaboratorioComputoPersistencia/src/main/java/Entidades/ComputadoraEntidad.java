@@ -48,6 +48,10 @@ public class ComputadoraEntidad implements Serializable {
     @OneToMany(mappedBy = "computadora", cascade = {CascadeType.MERGE})
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "idEstudiante", nullable = true) // Si puede ser nulo
+    private EstudianteEntidad estudiante;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "computadora_software", // Nombre de la tabla de unión

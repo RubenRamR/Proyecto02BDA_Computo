@@ -4,6 +4,7 @@
  */
 package DAOs;
 
+import ENUM_P.Estado;
 import Entidades.ComputadoraEntidad;
 import InterfacesDAO.IComputadoraDAO;
 import java.util.List;
@@ -98,33 +99,52 @@ public class ComputadoraDAO implements IComputadoraDAO {
     }
 
     @Override
-public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException {
+    public ComputadoraEntidad obtenerComputadoraPorEstudiante(long idEstudiante) throws PersistenceException {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     try {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<ComputadoraEntidad> query = cb.createQuery(ComputadoraEntidad.class);
         Root<ComputadoraEntidad> root = query.from(ComputadoraEntidad.class);
-        root.fetch("centroComputo", JoinType.LEFT);
-        query.select(root).where(cb.equal(root.get("id"), id));
+        query.select(root).where(cb.equal(root.get("estudiante").get("id"), idEstudiante)); // Acceso correcto a la relación
 
-        try {
-            return entityManager.createQuery(query).getSingleResult();
-        } catch (NoResultException e) {
-            logger.warning("No se encontró ninguna computadora con ID: " + id);
-            return null; // Manejo adecuado en tu lógica de negocio
-        }
+        return entityManager.createQuery(query).getSingleResult();
+    } catch (NoResultException e) {
+        logger.warning("No se encontró computadora para el estudiante con ID: " + idEstudiante);
+        return null;
     } catch (Exception e) {
-        logger.severe("Error al obtener la computadora por ID: " + e.getMessage());
-        throw new PersistenceException("Error al obtener la computadora por ID: " + e.getMessage(), e);
+        logger.severe("Error al obtener la computadora por estudiante: " + e.getMessage());
+        throw new PersistenceException("Error al obtener la computadora por estudiante", e);
     } finally {
         entityManager.close();
     }
 }
 
 
+    @Override
+    public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComputadoraEntidad> query = cb.createQuery(ComputadoraEntidad.class);
+            Root<ComputadoraEntidad> root = query.from(ComputadoraEntidad.class);
+            root.fetch("centroComputo", JoinType.LEFT);
+            query.select(root).where(cb.equal(root.get("id"), id));
 
+            try {
+                return entityManager.createQuery(query).getSingleResult();
+            } catch (NoResultException e) {
+                logger.warning("No se encontró ninguna computadora con ID: " + id);
+                return null; // Manejo adecuado en tu lógica de negocio
+            }
+        } catch (Exception e) {
+            logger.severe("Error al obtener la computadora por ID: " + e.getMessage());
+            throw new PersistenceException("Error al obtener la computadora por ID: " + e.getMessage(), e);
+        } finally {
+            entityManager.close();
+        }
+    }
 
-public void actualizarComputadora(ComputadoraEntidad computadora) throws PersistenceException {
+    public void actualizarComputadora(ComputadoraEntidad computadora) throws PersistenceException {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
