@@ -22,5 +22,7 @@ public interface ICentroComputoNegocio {
 
     public CentroComputoDTO obtenerCentroComputoPorID(Long id) throws NegocioException;
 
+        public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora);
+    
     public List<CentroComputoDTO> obtenerTodosLosCentroComputo() throws NegocioException;
 }

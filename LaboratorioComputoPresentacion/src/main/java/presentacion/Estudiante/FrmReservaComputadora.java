@@ -4,6 +4,7 @@
  */
 package presentacion.Estudiante;
 
+import DTOs.CentroComputoDTO;
 import DTOs.ComputadoraDTO;
 import DTOs.EstudianteDTO;
 import ENUM_P.Estado;
@@ -124,6 +125,15 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
 
         // Obtener el ID de la computadora seleccionada
         Integer idComputadoraInteger = (Integer) modelo.getValueAt(filaSeleccionada, 0);
+        Long idComputadora = idComputadoraInteger.longValue();
+        
+        // Obtener el CentroComputo asociado a la computadora
+    CentroComputoDTO centroComputo = centroComputoNegocio.obtenerCentroComputoPorComputadora(idComputadora);
+    if (centroComputo == null) {
+        JOptionPane.showMessageDialog(this, "Centro de cómputo no encontrado para esta computadora.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
         String idAlumnoStr = JOptionPane.showInputDialog(this, "Ingrese su ID:");
 
         if (idAlumnoStr != null && !idAlumnoStr.trim().isEmpty()) {
@@ -138,7 +148,7 @@ public class FrmReservaComputadora extends javax.swing.JFrame {
                 }
 
                 // Crear la computadora DTO
-                ComputadoraDTO computadora = new ComputadoraDTO(estudiante.getNombre(), Estado.OCUPADO, idComputadoraInteger, "", TipoCompu.ADMIN, null); // Ajustar según sea necesario
+                ComputadoraDTO computadora = new ComputadoraDTO(estudiante.getNombre(), Estado.OCUPADO, idComputadoraInteger, "", TipoCompu.ADMIN, centroComputo); // Ajustar según sea necesario
 
                 // Reservar la computadora
                 centroComputoNegocio.reservarComputadora(computadora, estudiante, LocalDateTime.now(), LocalDateTime.now().plusHours(1));

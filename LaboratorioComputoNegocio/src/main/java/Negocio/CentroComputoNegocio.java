@@ -102,8 +102,41 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
 
     @Override
     public CentroComputoDTO obtenerCentroComputoPorID(Long id) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    try {
+        // Llama al DAO para obtener la entidad del centro de cómputo
+        CentroComputoEntidad centroComputoEntidad = centroComputoDAO.obtenerCentroComputoPorID(id);
+        
+        // Convertir la entidad a DTO
+        CentroComputoDTO centroComputoDTO = convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
+        
+        return centroComputoDTO;
+    } catch (Exception e) {
+        throw new NegocioException("Error al obtener el centro de cómputo: " + e.getMessage(), e);
     }
+}
+
+@Override
+    public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora) {
+    // Obtener la computadora por ID
+    ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(idComputadora);
+    
+    // Si la computadora no existe, devolver null
+    if (computadoraEntidad == null) {
+        return null;
+    }
+
+    // Obtener el centro de cómputo asociado
+    CentroComputoEntidad centroComputoEntidad = computadoraEntidad.getCentroComputo();
+    if (centroComputoEntidad == null) {
+        return null; // O manejar según tu lógica
+    }
+ 
+    // Convertir a CentroComputoDTO
+    return convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
+}
+
+    
 
     @Override
     public List<CentroComputoDTO> obtenerTodosLosCentroComputo() throws NegocioException {
