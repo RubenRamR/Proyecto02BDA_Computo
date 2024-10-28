@@ -4,12 +4,15 @@
  */
 package presentacion.Administrador;
 
+import DTOs.CentroComputoDTO;
 import DTOs.ComputadoraDTO;
 import ENUM_P.Estado;
 import ENUM_P.TipoCompu;
+import Negocio.CentroComputoNegocio;
 import Negocio.ComputadoraNegocio;
 import excepciones.NegocioException;
 import jakarta.persistence.PersistenceException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,6 +24,8 @@ import javax.swing.JOptionPane;
 public class FrmAgregarComputadora extends javax.swing.JFrame {
 
     ComputadoraNegocio compuNeg;
+    CentroComputoNegocio centroNeg;
+    List<CentroComputoDTO> centros;
 
     /**
      * Creates new form FrmAgregarComputadora
@@ -28,6 +33,34 @@ public class FrmAgregarComputadora extends javax.swing.JFrame {
     public FrmAgregarComputadora() {
         initComponents();
         compuNeg = new ComputadoraNegocio();
+        centroNeg = new CentroComputoNegocio();
+        cargarCentroComputo();
+    }
+    
+    private void cargarCentroComputo() {
+        try
+        {
+            centros = centroNeg.obtenerTodosLosCentroComputo(); // Asigna directamente a la lista de instancia
+            CBCentroComputo.removeAllItems();
+            for (CentroComputoDTO centro : centros)
+            {
+                if (centro/*.getNombre()*/ != null)
+                { // Asegúrate de que el nombre no sea nulo
+                    CBCentroComputo.addItem(centro.getNombre());
+                } else
+                {
+                    System.err.println("Unidad académica con nombre nulo encontrada.");
+                }
+            }
+        } catch (NullPointerException e)
+        {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e)
+        {
+            System.err.println("Se produjo un error al cargar las unidades: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -39,89 +72,120 @@ public class FrmAgregarComputadora extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        TxtNum = new javax.swing.JTextField();
-        TxtIp = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         BtnAgregarC = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        LblNombreAlumno = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        LblNumMaq = new javax.swing.JTextField();
+        LblIp = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        CBTipoCompu = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        BtnRegresar = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        CBCentroComputo = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+
+        jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(0, 102, 153));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Agregar Computadora");
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(134, 28, -1, -1));
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("IP");
-
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Número Computadora");
-
+        BtnAgregarC.setBackground(new java.awt.Color(102, 153, 255));
+        BtnAgregarC.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        BtnAgregarC.setForeground(new java.awt.Color(255, 255, 255));
         BtnAgregarC.setText("Agregar Computadora");
         BtnAgregarC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnAgregarCActionPerformed(evt);
             }
         });
+        jPanel4.add(BtnAgregarC, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 490, 200, 40));
 
-        jButton2.setText("Gestionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Nombre Alumno");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, -1, -1));
+
+        LblNombreAlumno.setBackground(new java.awt.Color(255, 255, 255));
+        LblNombreAlumno.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblNombreAlumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 255, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 9)); // NOI18N
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 470, 30, 10));
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("DISPONIBLE");
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Numero Maquina");
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, -1, -1));
+
+        LblNumMaq.setBackground(new java.awt.Color(255, 255, 255));
+        LblNumMaq.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblNumMaq, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, 60, -1));
+
+        LblIp.setBackground(new java.awt.Color(255, 255, 255));
+        LblIp.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(LblIp, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 290, 255, -1));
+
+        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Dirección IP");
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, -1, -1));
+
+        CBTipoCompu.setBackground(new java.awt.Color(255, 255, 255));
+        CBTipoCompu.setForeground(new java.awt.Color(0, 0, 0));
+        CBTipoCompu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMIN", "ESTUDIANTE", "MAESTRO" }));
+        jPanel4.add(CBTipoCompu, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 130, 30));
+
+        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Centro de Computo");
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Estado");
+        jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, -1, -1));
+
+        BtnRegresar.setText("Regresar");
+        BtnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                BtnRegresarActionPerformed(evt);
             }
         });
+        jPanel4.add(BtnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, 80, 40));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(134, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(TxtIp, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(TxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel3))))
-                        .addGap(147, 147, 147))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(243, 243, 243))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(BtnAgregarC)
-                        .addGap(213, 213, 213))))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel1)
-                .addGap(55, 55, 55)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TxtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TxtNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(BtnAgregarC)
-                .addGap(28, 28, 28)
-                .addComponent(jButton2)
-                .addGap(33, 33, 33))
-        );
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 9)); // NOI18N
+        jLabel11.setText("(No hubo tiempo de quitarlo xd)");
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
+
+        CBCentroComputo.setBackground(new java.awt.Color(255, 255, 255));
+        CBCentroComputo.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel4.add(CBCentroComputo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, 130, 30));
+
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Tipo de Computadora");
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,35 +203,58 @@ public class FrmAgregarComputadora extends javax.swing.JFrame {
 
     private void BtnAgregarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarCActionPerformed
         // TODO add your handling code here:
-            try {
-        String direccionIP = TxtIp.getText();
-        int numeroMaquina = Integer.parseInt(TxtNum.getText());
-        
-        // Crear instancia de ComputadoraDTO con los datos de los campos
-        ComputadoraDTO computadoraDTO = new ComputadoraDTO();
-        computadoraDTO.setDireccionIP(direccionIP);
-        computadoraDTO.setNumeroMaquina(numeroMaquina);
-        computadoraDTO.setEstado(Estado.DISPONIBLE); // Ajusta el estado según tu lógica
-        computadoraDTO.setTipoCompu(TipoCompu.ADMIN); // Ajusta el tipo según tu lógica
+        try
+        {
+            String nombreAlumno = LblNombreAlumno.getText();
+            String direccionIP = LblIp.getText();
+            int numeroMaquina = Integer.parseInt(LblNumMaq.getText());
+            Object selectedItemT = CBTipoCompu.getSelectedItem();
+            Object selectedItemC = CBCentroComputo.getSelectedItem();
+            if (selectedItemT != null || selectedItemC != null)
+            {
+                // Convierte el objeto seleccionado a String
+                String tipoSeleccionado = selectedItemT.toString();
+                TipoCompu tipoCompu = TipoCompu.valueOf(tipoSeleccionado);
+                
+                String centroSeleccionado = selectedItemC.toString();
+                CentroComputoDTO centro = new CentroComputoDTO();
+                centro = centroNeg.obtenerCentroComputoPorNombre(centroSeleccionado);
 
-        // Crear instancia de DAO y llamar al método para insertar
-        compuNeg.insertarComputadora(computadoraDTO);
-        
-        JOptionPane.showMessageDialog(this, "Computadora agregada exitosamente.");
-        
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Número de computadora inválido.", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (PersistenceException e) {
-        JOptionPane.showMessageDialog(this, "Error al agregar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }   catch (NegocioException ex)
+                // Crear instancia de ComputadoraDTO con los datos de los campos
+                ComputadoraDTO computadoraDTO = new ComputadoraDTO();
+                computadoraDTO.setNombreAlumno(nombreAlumno);
+                computadoraDTO.setDireccionIP(direccionIP);
+                computadoraDTO.setNumeroMaquina(numeroMaquina);
+                computadoraDTO.setEstado(Estado.DISPONIBLE);
+                computadoraDTO.setTipoCompu(tipoCompu);
+                computadoraDTO.setCentroComputo(centro);
+
+                compuNeg.insertarComputadora(computadoraDTO);
+
+                JOptionPane.showMessageDialog(this, "Computadora agregada exitosamente.");
+            } else
+            {
+                System.out.println("No se seleccionó ningún tipo de computadora.");
+            }
+
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Número de computadora inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (PersistenceException e)
+        {
+            JOptionPane.showMessageDialog(this, "Error al agregar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NegocioException ex)
         {
             Logger.getLogger(FrmAgregarComputadora.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BtnAgregarCActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        FrmEstudiantes fe = new FrmEstudiantes();
+        fe.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,12 +300,23 @@ public class FrmAgregarComputadora extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregarC;
-    private javax.swing.JTextField TxtIp;
-    private javax.swing.JTextField TxtNum;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton BtnRegresar;
+    private javax.swing.JComboBox<String> CBCentroComputo;
+    private javax.swing.JComboBox<String> CBTipoCompu;
+    private javax.swing.JTextField LblIp;
+    private javax.swing.JTextField LblNombreAlumno;
+    private javax.swing.JTextField LblNumMaq;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
 }

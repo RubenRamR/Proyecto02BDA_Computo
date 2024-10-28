@@ -23,7 +23,7 @@ public class CentroComputoEntidad implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", length = 60, nullable = false)
+    @Column(name = "nombre", length = 60, nullable = false, unique = true)
     private String nombre;
 
     @Column(name = "contrasenaMaestra", length = 25, nullable = false)

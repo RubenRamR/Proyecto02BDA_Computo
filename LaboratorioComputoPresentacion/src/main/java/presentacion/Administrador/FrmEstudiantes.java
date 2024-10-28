@@ -6,7 +6,9 @@ package presentacion.Administrador;
 
 import DTOs.EstudianteDTO;
 import Negocio.EstudianteNegocio;
+import excepciones.NegocioException;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -236,8 +238,7 @@ public class FrmEstudiantes extends javax.swing.JFrame {
         BtnSiguiente = new javax.swing.JButton();
         BtnAgregarE = new javax.swing.JButton();
         NumeroDePagina = new javax.swing.JTextField();
-        CambiarLimite = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        BtnMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -285,6 +286,11 @@ public class FrmEstudiantes extends javax.swing.JFrame {
         BtnSiguiente.setBackground(new java.awt.Color(102, 204, 255));
         BtnSiguiente.setForeground(new java.awt.Color(0, 0, 0));
         BtnSiguiente.setText("Siguiente");
+        BtnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSiguienteActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
 
         BtnAgregarE.setBackground(new java.awt.Color(102, 204, 255));
@@ -305,22 +311,18 @@ public class FrmEstudiantes extends javax.swing.JFrame {
                 NumeroDePaginaActionPerformed(evt);
             }
         });
-        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 360, 20, 20));
+        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 340, 30, 30));
 
-        CambiarLimite.setBackground(new java.awt.Color(255, 255, 255));
-        CambiarLimite.setForeground(new java.awt.Color(0, 0, 0));
-        CambiarLimite.setText("1");
-        CambiarLimite.addActionListener(new java.awt.event.ActionListener() {
+        BtnMenu.setBackground(new java.awt.Color(102, 153, 255));
+        BtnMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        BtnMenu.setForeground(new java.awt.Color(255, 255, 255));
+        BtnMenu.setText("Menú");
+        BtnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CambiarLimiteActionPerformed(evt);
+                BtnMenuActionPerformed(evt);
             }
         });
-        jPanel1.add(CambiarLimite, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, 20, 40));
-
-        jLabel7.setFont(new java.awt.Font("Shree Devanagari 714", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Numero de Resultados");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 360, -1, -1));
+        jPanel1.add(BtnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -345,6 +347,11 @@ public class FrmEstudiantes extends javax.swing.JFrame {
 
     private void BtnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAtrasActionPerformed
         // TODO add your handling code here:
+         if (pagina > 1) {
+            pagina--;
+            cargarEstudiantesEnTabla();
+            actualizarNumeroDePagina();
+        }
     }//GEN-LAST:event_BtnAtrasActionPerformed
 
     private void NumeroDePaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumeroDePaginaActionPerformed
@@ -377,28 +384,36 @@ public class FrmEstudiantes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_NumeroDePaginaActionPerformed
 
-    private void CambiarLimiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarLimiteActionPerformed
+    private void BtnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSiguienteActionPerformed
+        // TODO add your handling code here:
         try
         {
-            if (!conFiltro)
+            List<EstudianteDTO> todosLosEstudiantes = estudianteNegocio.obtenerTodosLosEstudiantes();
+
+            int totalPaginas = (int) Math.ceil((double) todosLosEstudiantes.size() / LIMITE);
+
+            if (pagina < totalPaginas)
             {
-                int nuevoLimite = Integer.parseInt(CambiarLimite.getText());
-                this.LIMITE = nuevoLimite;
+                pagina++;
                 cargarEstudiantesEnTabla();
                 actualizarNumeroDePagina();
             } else
             {
-                int nuevoLimite = Integer.parseInt(CambiarLimite.getText());
-                this.LIMITE = nuevoLimite;
-                actualizarNumeroDePagina();
-                conFiltro = true;
-            }
-        } catch (NumberFormatException ex)
-        {
-            JOptionPane.showMessageDialog(this, "Ingrese un número válido para el límite", "Error", JOptionPane.ERROR_MESSAGE);
-        }
 
-    }//GEN-LAST:event_CambiarLimiteActionPerformed
+                JOptionPane.showMessageDialog(this, "No hay más páginas disponibles", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NegocioException | HeadlessException ex)
+        {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_BtnSiguienteActionPerformed
+
+    private void BtnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMenuActionPerformed
+        // TODO add your handling code here:
+        FrmMenu fm = new FrmMenu();
+        fm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -446,12 +461,11 @@ public class FrmEstudiantes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregarE;
     private javax.swing.JButton BtnAtras;
+    private javax.swing.JButton BtnMenu;
     private javax.swing.JButton BtnSiguiente;
-    private javax.swing.JTextField CambiarLimite;
     private javax.swing.JTextField NumeroDePagina;
     private javax.swing.JTable TblEstudiantes;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

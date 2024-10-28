@@ -24,5 +24,5 @@ public interface IComputadoraNegocio {
 
     public ComputadoraDTO obtenerComputadoraPorID(Long id) throws NegocioException;
 
-    public List<ComputadoraDTO> obtenerTodasLasComputadora() throws NegocioException;
+    public List<ComputadoraDTO> obtenerTodasLasComputadoras() throws NegocioException;
 }

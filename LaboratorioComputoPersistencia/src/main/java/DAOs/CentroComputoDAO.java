@@ -237,4 +237,42 @@ public class CentroComputoDAO implements ICentroComputoDAO {
         return unidadesAcademicas;
     }
 
+    @Override
+    public CentroComputoEntidad obtenerCentroComputoPorNombre(String nombre) throws PersistenceException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        CentroComputoEntidad centroComputo = null;
+
+        try
+        {
+            // Inicia una transacción
+            entityManager.getTransaction().begin();
+
+            // Realiza la consulta JPQL
+            centroComputo = entityManager.createQuery("SELECT c FROM CentroComputoEntidad c WHERE c.nombre = :nombre", CentroComputoEntidad.class)
+                    .setParameter("nombre", nombre)
+                    .getSingleResult();
+
+            // Confirma la transacción
+            entityManager.getTransaction().commit();
+        } catch (NoResultException e)
+        {
+            logger.warning("No se encontró un centro de cómputo con el nombre: " + nombre);
+        } catch (PersistenceException e)
+        {
+            logger.severe("Error de persistencia: " + e.getMessage());
+            // Revertir la transacción en caso de error
+            if (entityManager.getTransaction().isActive())
+            {
+                entityManager.getTransaction().rollback();
+            }
+            throw e; // Lanza la excepción hacia arriba
+        } finally
+        {
+            // Cierra el EntityManager
+            entityManager.close();
+        }
+
+        return centroComputo; // Puede ser null si no se encontró el centro
+    }
+
 }

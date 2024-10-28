@@ -5,8 +5,10 @@
 package presentacion.Administrador;
 
 import DTOs.CentroComputoDTO;
+import DTOs.ComputadoraDTO;
 import DTOs.EstudianteDTO;
 import Negocio.CentroComputoNegocio;
+import Negocio.ComputadoraNegocio;
 import excepciones.NegocioException;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -25,28 +27,28 @@ import utilerias.JButtonRenderer;
  *
  * @author user
  */
-public class FrmCentroComputo extends javax.swing.JFrame {
+public class FrmComputadoras extends javax.swing.JFrame {
 
     private int pagina = 1;
     private int LIMITE = 2;
-    CentroComputoNegocio centroNeg;
+    ComputadoraNegocio compNeg;
 
     /**
      * Creates new form CentroComputo
      */
-    public FrmCentroComputo() {
+    public FrmComputadoras() {
         initComponents();
-        centroNeg = new CentroComputoNegocio();
-        cargarConfiguracionInicialTablaCentro(); // Configurar la tabla
-        cargarCentrosEnTabla();// Cargar los estudiantes en la tabla
+        compNeg = new ComputadoraNegocio();
+        cargarConfiguracionInicialTablaComputadora(); // Configurar la tabla
+        cargarComputadorasEnTabla();// Cargar los estudiantes en la tabla
         NumeroDePagina.setEditable(false);
     }
 
-    private long getIdSeleccionadoTablaCentro() throws Exception {
-        int selectedRow = TblCentroComp.getSelectedRow(); // Obtener la fila seleccionada
+    private long getIdSeleccionadoTablaComputadora() throws Exception {
+        int selectedRow = TblComputadoras.getSelectedRow(); // Obtener la fila seleccionada
         if (selectedRow >= 0)
         {
-            Object value = TblCentroComp.getValueAt(selectedRow, 0); // Obtener el valor de la primera columna
+            Object value = TblComputadoras.getValueAt(selectedRow, 0); // Obtener el valor de la primera columna
             if (value != null)
             {
                 return (long) value; // Retornar el ID
@@ -61,11 +63,11 @@ public class FrmCentroComputo extends javax.swing.JFrame {
     }
 
     private void cargarMetodosIniciales() {
-        this.cargarConfiguracionInicialTablaCentro();
-        this.cargarCentrosEnTabla();
+        this.cargarConfiguracionInicialTablaComputadora();
+        this.cargarComputadorasEnTabla();
     }
 
-    private void cargarConfiguracionInicialTablaCentro() {
+    private void cargarConfiguracionInicialTablaComputadora() {
         ActionListener onEditarClickListener = new ActionListener() {
             final int columnaId = 0;
 
@@ -74,8 +76,8 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 editar();
             }
         };
-        int indiceColumnaEditar = 5;
-        TableColumnModel modeloColumnas = this.TblCentroComp.getColumnModel();
+        int indiceColumnaEditar = 6;
+        TableColumnModel modeloColumnas = this.TblComputadoras.getColumnModel();
         Color color = new Color(178, 218, 250);
         modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Editar", color));
         modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Editar", onEditarClickListener));
@@ -88,7 +90,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 eliminar();
             }
         };
-        int indiceColumnaEliminar = 6;
+        int indiceColumnaEliminar = 7;
         color = new Color(255, 105, 97);
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar", color));
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
@@ -97,11 +99,11 @@ public class FrmCentroComputo extends javax.swing.JFrame {
     private void editar() {
         try
         {
-            long id = this.getIdSeleccionadoTablaCentro();
-            System.out.println("ID del centro seleccionado: " + id);
-            CentroComputoDTO editar = new CentroComputoDTO();
+            long id = this.getIdSeleccionadoTablaComputadora();
+            System.out.println("ID de la computadora seleccionada: " + id);
+            ComputadoraDTO editar = new ComputadoraDTO();
             this.setVisible(false);
-            FrmEditarCentroComputadora frm = new FrmEditarCentroComputadora(id);
+            FrmEditarComputadora frm = new FrmEditarComputadora(id);
             frm.setVisible(true);
         } catch (Exception e)
         {
@@ -112,27 +114,28 @@ public class FrmCentroComputo extends javax.swing.JFrame {
     private void eliminar() {
         try
         {
-            long id = this.getIdSeleccionadoTablaCentro();
-            CentroComputoDTO centros = centroNeg.obtenerCentroComputoPorID(id);
+            long id = this.getIdSeleccionadoTablaComputadora();
+            ComputadoraDTO computadora = compNeg.obtenerComputadoraPorID(id);
             int confirmacion = JOptionPane.showConfirmDialog(this,
                     "¿Está seguro que desea eliminar al estudiante?\n"
-                    + "ID: " + centros.getId() + "\n"
-                    + "Nombre: " + centros.getNombre() + "\n"
-                    + "Contraseña: " + centros.getContrasenaMaestra() + "\n"
-                    + "Hora Inicio: " + centros.getHoraInicio() + "\n"
-                    + "Hora Fin: " + centros.getHoraFin(),
+                    + "ID: " + computadora.getId() + "\n"
+                    + "Nombre: " + computadora.getNombreAlumno()+ "\n"
+                    + "Contraseña: " + computadora.getEstado()+ "\n"
+                    + "Hora Inicio: " + computadora.getNumeroMaquina()+ "\n"
+                    + "Hora Fin: " + computadora.getDireccionIP()+ "\n"
+                    + "Tipo Compu: "+ computadora.getTipoCompu(),
                     "Confirmar eliminación",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirmacion == JOptionPane.YES_OPTION)
             {
-                centroNeg.eliminarCentroComputoPorID(id);
-                JOptionPane.showMessageDialog(this, "Centro eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarCentrosEnTabla();
+                compNeg.eliminarComputadoraPorID(id);
+                JOptionPane.showMessageDialog(this, "Computadora eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarComputadorasEnTabla();
             }
         } catch (Exception ex)
         {
-            JOptionPane.showMessageDialog(this, "Error al eliminar el Centro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al eliminar el Computadora: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -147,7 +150,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TblCentroComp = new javax.swing.JTable();
+        TblComputadoras = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -160,31 +163,31 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 102, 153));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        TblCentroComp.setModel(new javax.swing.table.DefaultTableModel(
+        TblComputadoras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nombre", "Contraseña", "Hora Inicio", "Hora Fin", "Editar", "Eliminar"
+                "Id", "Nombre alumno", "Estado", "Num Maquina", "IP", "Tipo Compu", "Editar", "Eliminar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, false, false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TblCentroComp);
+        jScrollPane1.setViewportView(TblComputadoras);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 129, 580, 173));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 129, 800, 173));
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Centro Computo");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 34, -1, -1));
+        jLabel1.setText("Computadoras");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
 
         jButton1.setText("Atrás");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +195,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 80, 30));
 
         jButton2.setText("Siguiente");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -200,7 +203,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 340, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(719, 320, 90, 30));
 
         BtnNuevo.setText("Nuevo");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -208,7 +211,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 BtnNuevoActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+        jPanel1.add(BtnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 93, 80, 30));
 
         NumeroDePagina.setBackground(new java.awt.Color(255, 255, 255));
         NumeroDePagina.setForeground(new java.awt.Color(0, 0, 0));
@@ -218,7 +221,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
                 NumeroDePaginaActionPerformed(evt);
             }
         });
-        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, 30, 30));
+        jPanel1.add(NumeroDePagina, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 320, 30, 30));
 
         BtnMenu.setBackground(new java.awt.Color(102, 153, 255));
         BtnMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -235,11 +238,11 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
         );
 
         pack();
@@ -249,14 +252,14 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         // TODO add your handling code here:
         try
         {
-            List<CentroComputoDTO> todosLosCentros = centroNeg.obtenerTodosLosCentroComputo();
+            List<ComputadoraDTO> todasLasComputadoras = compNeg.obtenerTodasLasComputadoras();
 
-            int totalPaginas = (int) Math.ceil((double) todosLosCentros.size() / LIMITE);
+            int totalPaginas = (int) Math.ceil((double) todasLasComputadoras.size() / LIMITE);
 
             if (pagina < totalPaginas)
             {
                 pagina++;
-                cargarCentrosEnTabla();
+                cargarComputadorasEnTabla();
                 actualizarNumeroDePagina();
             } else
             {
@@ -271,7 +274,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
 
     private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
         // TODO add your handling code here:
-        FrmAgregarCentroComputo fac = new FrmAgregarCentroComputo();
+        FrmAgregarComputadora fac = new FrmAgregarComputadora();
         fac.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnNuevoActionPerformed
@@ -280,9 +283,9 @@ public class FrmCentroComputo extends javax.swing.JFrame {
 
         try
         {
-            List<CentroComputoDTO> todosLosCentros = centroNeg.obtenerTodosLosCentroComputo();
+            List<ComputadoraDTO> todasLasComputadoras = compNeg.obtenerTodasLasComputadoras();
 
-            int totalPaginas = (int) Math.ceil((double) todosLosCentros.size() / LIMITE);
+            int totalPaginas = (int) Math.ceil((double) todasLasComputadoras.size() / LIMITE);
 
             int nuevaPagina = Integer.parseInt(NumeroDePagina.getText());
 
@@ -290,7 +293,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
             {
                 pagina = nuevaPagina;
 
-                cargarCentrosEnTabla();
+                cargarComputadorasEnTabla();
 
                 actualizarNumeroDePagina();
             } else
@@ -311,7 +314,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         if (pagina > 1)
         {
             pagina--;
-            cargarCentrosEnTabla();
+            cargarComputadorasEnTabla();
             actualizarNumeroDePagina();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -323,53 +326,53 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BtnMenuActionPerformed
 
-    private void llenarTablaCentros(List<CentroComputoDTO> listaCentros) {
-        DefaultTableModel modeloTabla = (DefaultTableModel) this.TblCentroComp.getModel();
+    private void llenarTablaComputadoras(List<ComputadoraDTO> listaComputadoras) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.TblComputadoras.getModel();
         modeloTabla.setRowCount(0); // Limpiar la tabla antes de llenarla
 
-        System.out.println("Total de centros de cómputo a mostrar: " + listaCentros.size()); // Depuración
+        System.out.println("Total de computadoras a mostrar: " + listaComputadoras.size()); // Depuración
 
-        if (listaCentros != null && !listaCentros.isEmpty())
+        if (listaComputadoras != null && !listaComputadoras.isEmpty())
         {
-            for (CentroComputoDTO row : listaCentros)
+            for (ComputadoraDTO row : listaComputadoras)
             {
-                System.out.println("ID Centro de Cómputo: " + row.getId()); // Verifica el ID
+                System.out.println("ID Computadora: " + row.getId()); // Verifica el ID
 
-                Object[] fila = new Object[7];
+                Object[] fila = new Object[8];
                 fila[0] = row.getId();
-                fila[1] = row.getNombre();
-                fila[2] = row.getContrasenaMaestra();
-                fila[3] = row.getHoraInicio();
-                fila[4] = row.getHoraFin();
-                fila[5] = "Editar";
-                fila[6] = "Eliminar";
+                fila[1] = row.getNombreAlumno();
+                fila[2] = row.getEstado();
+                fila[3] = row.getNumeroMaquina();
+                fila[4] = row.getDireccionIP();
+                fila[5] = row.getTipoCompu();
+                fila[6] = "Editar";
+                fila[7] = "Eliminar";
 
-                // Verificar que la hora de fin esté correcta antes de agregar la fila
                 System.out.println("Contenido de fila antes de agregar: " + Arrays.toString(fila));
 
                 modeloTabla.addRow(fila);
             }
         } else
         {
-            System.out.println("No hay centros de cómputo para mostrar.");
+            System.out.println("No hay Computadoras para mostrar.");
         }
     }
 
-    private void cargarCentrosEnTabla() {
+    private void cargarComputadorasEnTabla() {
         try
         {
             int indiceInicio = (pagina - 1) * LIMITE;
-            List<CentroComputoDTO> todosLosCentros = centroNeg.obtenerTodosLosCentroComputo();
-            if (todosLosCentros == null || todosLosCentros.isEmpty())
+            List<ComputadoraDTO> todasLasComputadoras = compNeg.obtenerTodasLasComputadoras();
+            if (todasLasComputadoras == null || todasLasComputadoras.isEmpty())
             {
                 System.out.println("No hay estudiantes para mostrar.");
                 return; // Evita continuar si no hay estudiantes
             }
 
-            int indiceFin = Math.min(indiceInicio + LIMITE, todosLosCentros.size());
-            List<CentroComputoDTO> centroPagina = obtenerCentroComputoPagina(indiceInicio, indiceFin);
+            int indiceFin = Math.min(indiceInicio + LIMITE, todasLasComputadoras.size());
+            List<ComputadoraDTO> centroPagina = obtenerComputadoraPagina(indiceInicio, indiceFin);
 
-            llenarTablaCentros(centroPagina);
+            llenarTablaComputadoras(centroPagina);
 
             actualizarNumeroDePagina();
         } catch (Exception ex)
@@ -378,15 +381,15 @@ public class FrmCentroComputo extends javax.swing.JFrame {
         }
     }
 
-    private List<CentroComputoDTO> obtenerCentroComputoPagina(int indiceInicio, int indiceFin) throws Exception {
-        List<CentroComputoDTO> todosLosCentros = centroNeg.obtenerTodosLosCentroComputo();
-        List<CentroComputoDTO> centrosPaginas = new ArrayList<>();
-        indiceFin = Math.min(indiceFin, todosLosCentros.size());
+    private List<ComputadoraDTO> obtenerComputadoraPagina(int indiceInicio, int indiceFin) throws Exception {
+        List<ComputadoraDTO> todasLasComputadoras = compNeg.obtenerTodasLasComputadoras();
+        List<ComputadoraDTO> compPaginas = new ArrayList<>();
+        indiceFin = Math.min(indiceFin, todasLasComputadoras.size());
         for (int i = indiceInicio; i < indiceFin; i++)
         {
-            centrosPaginas.add(todosLosCentros.get(i));
+            compPaginas.add(todasLasComputadoras.get(i));
         }
-        return centrosPaginas;
+        return compPaginas;
     }
 
 //    private void cargarEstudiantesEnTabla(List<CentroComputoDTO> centrosEncontrados) {
@@ -435,24 +438,26 @@ public class FrmCentroComputo extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(FrmCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(FrmCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(FrmCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(FrmCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmComputadoras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmCentroComputo().setVisible(true);
+                new FrmComputadoras().setVisible(true);
             }
         });
     }
@@ -461,7 +466,7 @@ public class FrmCentroComputo extends javax.swing.JFrame {
     private javax.swing.JButton BtnMenu;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JTextField NumeroDePagina;
-    private javax.swing.JTable TblCentroComp;
+    private javax.swing.JTable TblComputadoras;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

@@ -103,6 +103,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         LblEstatus = new javax.swing.JLabel();
         CBEstatus = new javax.swing.JComboBox<>();
         BtnConfirmarEdicion = new javax.swing.JButton();
+        BtnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,6 +182,14 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         });
         jPanel4.add(BtnConfirmarEdicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 480, -1, 30));
 
+        BtnRegresar.setText("Regresar");
+        BtnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(BtnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 80, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -193,7 +202,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 539, Short.MAX_VALUE)
+            .addGap(0, 540, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -262,6 +271,13 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnConfirmarEdicionActionPerformed
 
+    private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
+        // TODO add your handling code here:
+        FrmEstudiantes fe = new FrmEstudiantes();
+        fe.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegresarActionPerformed
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -312,6 +328,7 @@ public class FrmEditarEstudiante extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnConfirmarEdicion;
+    private javax.swing.JButton BtnRegresar;
     private javax.swing.JComboBox<String> CBCarrera;
     private javax.swing.JComboBox<String> CBEstatus;
     private javax.swing.JTextField LblApMaterno;

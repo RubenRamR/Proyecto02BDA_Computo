@@ -89,6 +89,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         CBUnidadA = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
+        BtnRegresar = new javax.swing.JButton();
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
@@ -160,6 +161,14 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         jLabel8.setText("Hora Inicio");
         jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, -1, -1));
 
+        BtnRegresar.setText("Regresar");
+        BtnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegresarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(BtnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 80, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,7 +177,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -251,6 +260,13 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CBUnidadAActionPerformed
 
+    private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
+        // TODO add your handling code here:
+        FrmCentroComputo fcc = new FrmCentroComputo();
+        fcc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegresarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,6 +312,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregar;
+    private javax.swing.JButton BtnRegresar;
     private javax.swing.JComboBox<String> CBUnidadA;
     private javax.swing.JTextField LblContraseñamaestra;
     private javax.swing.JTextField LblNombre;

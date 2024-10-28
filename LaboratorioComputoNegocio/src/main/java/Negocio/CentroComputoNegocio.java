@@ -42,53 +42,56 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
     public CentroComputoNegocio() {
         this.centroComputoDAO = new CentroComputoDAO();
         this.convertidor = new Convertidores();
-        this.reservaDAO = new ReservaDAO(); 
+        this.reservaDAO = new ReservaDAO();
         this.computadoraDAO = new ComputadoraDAO();
 
     }
 
-     @Override
+    @Override
     public void insertarCentroComputo(CentroComputoDTO centroComputoDTO) throws NegocioException {
-        try {
+        try
+        {
             // Convertir el DTO a la entidad
             CentroComputoEntidad centroComputoEntidad = convertidor.convertirCentroComputoDTOAEntidad(centroComputoDTO);
             // Llamar al DAO para insertar la entidad en la base de datos
             centroComputoDAO.insertarCentroComputo(centroComputoEntidad);
-        } catch (PersistenceException e) {
+        } catch (PersistenceException e)
+        {
             throw new NegocioException("Error al insertar el centro de cómputo: " + e.getMessage(), e);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new NegocioException("Error inesperado: " + e.getMessage(), e);
         }
     }
-    
-   public void reservarComputadora(ComputadoraDTO computadoraDTO, EstudianteEntidad estudiante, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws NegocioException {
-    try {
-        // Convertir el DTO de computadora a entidad
-        ComputadoraEntidad computadoraEntidad = convertidor.convertirComputadoraDTOAEntidad(computadoraDTO);
-        
-        // Crear una nueva reserva
-        ReservaEntidad reserva = new ReservaEntidad();
-        reserva.setComputadora(computadoraEntidad); // Establece la computadora
-        reserva.setEstudiante(estudiante); // Establece el estudiante que reserva
-        reserva.setFechaHoraInicio(fechaHoraInicio); // Establece la fecha y hora de inicio
-        reserva.setFechaHoraFin(fechaHoraFin); // Establece la fecha y hora de fin
 
-        // Llamar al DAO para insertar la reserva
-        reservaDAO.insertarReserva(reserva); // Usa el ReservaDAO para insertar la reserva
+    public void reservarComputadora(ComputadoraDTO computadoraDTO, EstudianteEntidad estudiante, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws NegocioException {
+        try
+        {
+            // Convertir el DTO de computadora a entidad
+            ComputadoraEntidad computadoraEntidad = convertidor.convertirComputadoraDTOAEntidad(computadoraDTO);
 
-        // Actualizar el estado de la computadora a OCUPADO
-        computadoraEntidad.setEstado(Estado.OCUPADO);
-        computadoraDAO.actualizarComputadora(computadoraEntidad); // Actualiza la computadora
+            // Crear una nueva reserva
+            ReservaEntidad reserva = new ReservaEntidad();
+            reserva.setComputadora(computadoraEntidad); // Establece la computadora
+            reserva.setEstudiante(estudiante); // Establece el estudiante que reserva
+            reserva.setFechaHoraInicio(fechaHoraInicio); // Establece la fecha y hora de inicio
+            reserva.setFechaHoraFin(fechaHoraFin); // Establece la fecha y hora de fin
 
-    } catch (PersistenceException e) {
-        throw new NegocioException("Error al reservar la computadora: " + e.getMessage(), e);
-    } catch (Exception e) {
-        throw new NegocioException("Error inesperado al reservar la computadora: " + e.getMessage(), e);
+            // Llamar al DAO para insertar la reserva
+            reservaDAO.insertarReserva(reserva); // Usa el ReservaDAO para insertar la reserva
+
+            // Actualizar el estado de la computadora a OCUPADO
+            computadoraEntidad.setEstado(Estado.OCUPADO);
+            computadoraDAO.actualizarComputadora(computadoraEntidad); // Actualiza la computadora
+
+        } catch (PersistenceException e)
+        {
+            throw new NegocioException("Error al reservar la computadora: " + e.getMessage(), e);
+        } catch (Exception e)
+        {
+            throw new NegocioException("Error inesperado al reservar la computadora: " + e.getMessage(), e);
+        }
     }
-}
-
-
-
 
     @Override
     public void editarCentroComputo(CentroComputoDTO centroComputo) throws NegocioException {
@@ -103,44 +106,53 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
     @Override
     public CentroComputoDTO obtenerCentroComputoPorID(Long id) throws NegocioException {
 
-    try {
-        // Llama al DAO para obtener la entidad del centro de cómputo
-        CentroComputoEntidad centroComputoEntidad = centroComputoDAO.obtenerCentroComputoPorID(id);
-        
-        // Convertir la entidad a DTO
-        CentroComputoDTO centroComputoDTO = convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
-        
-        return centroComputoDTO;
-    } catch (Exception e) {
-        throw new NegocioException("Error al obtener el centro de cómputo: " + e.getMessage(), e);
-    }
-}
+        try
+        {
+            // Llama al DAO para obtener la entidad del centro de cómputo
+            CentroComputoEntidad centroComputoEntidad = centroComputoDAO.obtenerCentroComputoPorID(id);
 
-@Override
+            // Convertir la entidad a DTO
+            CentroComputoDTO centroComputoDTO = convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
+
+            return centroComputoDTO;
+        } catch (Exception e)
+        {
+            throw new NegocioException("Error al obtener el centro de cómputo: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora) {
-    // Obtener la computadora por ID
-    ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(idComputadora);
-    
-    // Si la computadora no existe, devolver null
-    if (computadoraEntidad == null) {
-        return null;
-    }
+        // Obtener la computadora por ID
+        ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorID(idComputadora);
 
-    // Obtener el centro de cómputo asociado
-    CentroComputoEntidad centroComputoEntidad = computadoraEntidad.getCentroComputo();
-    if (centroComputoEntidad == null) {
-        return null; // O manejar según tu lógica
-    }
- 
-    // Convertir a CentroComputoDTO
-    return convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
-}
+        // Si la computadora no existe, devolver null
+        if (computadoraEntidad == null)
+        {
+            return null;
+        }
 
-    
+        // Obtener el centro de cómputo asociado
+        CentroComputoEntidad centroComputoEntidad = computadoraEntidad.getCentroComputo();
+        if (centroComputoEntidad == null)
+        {
+            return null; // O manejar según tu lógica
+        }
+
+        // Convertir a CentroComputoDTO
+        return convertidor.convertirCentroComputoEntidadADTO(centroComputoEntidad);
+    }
 
     @Override
     public List<CentroComputoDTO> obtenerTodosLosCentroComputo() throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try
+        {
+            List<CentroComputoEntidad> centro = centroComputoDAO.obtenerTodosLosCentroComputo();
+            return convertidor.convertirListaCentroComputoEntidadADTO(centro);
+        } catch (Exception e)
+        {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     public UnidadAcademicaDTO obtenerIdUnidadAcademicaPorNombre(String nombre) throws Exception {
@@ -181,6 +193,18 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
             }
         }
         return unidadAcademicaDTOs;
+    }
+
+    @Override
+    public CentroComputoDTO obtenerCentroComputoPorNombre(String nombre) throws NegocioException {
+        try
+        {
+            CentroComputoEntidad centroE = centroComputoDAO.obtenerCentroComputoPorNombre(nombre);
+            return convertidor.convertirCentroComputoEntidadADTO(centroE);
+        } catch (PersistenceException e)
+        {
+            throw new PersistenceException(e.getMessage());
+        }
     }
 
 }

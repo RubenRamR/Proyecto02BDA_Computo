@@ -25,4 +25,6 @@ public interface ICentroComputoNegocio {
         public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora);
     
     public List<CentroComputoDTO> obtenerTodosLosCentroComputo() throws NegocioException;
+    
+    public CentroComputoDTO obtenerCentroComputoPorNombre(String nombre) throws NegocioException;
 }

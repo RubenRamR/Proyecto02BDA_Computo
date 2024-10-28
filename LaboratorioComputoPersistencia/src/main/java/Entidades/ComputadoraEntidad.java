@@ -41,11 +41,14 @@ public class ComputadoraEntidad implements Serializable {
     @Column(name = "TipoCompu")
     private TipoCompu tipoCompu;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "idCentroComputo", nullable = false)
     private CentroComputoEntidad centroComputo;
 
-    @OneToMany(mappedBy = "computadora", cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "computadora", cascade =
+    {
+        CascadeType.MERGE
+    })
     private List<ReservaEntidad> reservas = new ArrayList<>();
 
     @ManyToOne

@@ -23,4 +23,6 @@ public interface ICentroComputoDAO {
     public CentroComputoEntidad obtenerCentroComputoPorID(Long id) throws PersistenceException;
 
     public List<CentroComputoEntidad> obtenerTodosLosCentroComputo() throws PersistenceException;
+    
+    public CentroComputoEntidad obtenerCentroComputoPorNombre(String nombre) throws PersistenceException;
 }
