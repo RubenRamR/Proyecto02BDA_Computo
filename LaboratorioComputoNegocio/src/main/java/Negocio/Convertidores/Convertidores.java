@@ -72,7 +72,14 @@ public class Convertidores {
         return estudianteEntidad;
 
     }
+    
+    
+    
 
+    //
+   
+    
+    
     public EstudianteDTO convertirEstudianteADTO(EstudianteEntidad estudianteEntidad) {
         EstudianteDTO estudianteDTO = new EstudianteDTO();
 
@@ -305,6 +312,7 @@ public class Convertidores {
     }
 
     // Asigna los valores del DTO a la entidad
+    computadoraEntidad.setId(computadoraDTO.getId());
     computadoraEntidad.setNombreAlumno(computadoraDTO.getNombreAlumno());
     computadoraEntidad.setEstado(computadoraDTO.getEstado());
     computadoraEntidad.setNumeroMaquina(computadoraDTO.getNumeroMaquina());
