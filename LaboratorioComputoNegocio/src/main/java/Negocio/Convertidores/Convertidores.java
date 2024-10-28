@@ -282,8 +282,21 @@ public class Convertidores {
         {
             UnidadAcademicaEntidad unidadAcademicaEntidad = new UnidadAcademicaEntidad();
             unidadAcademicaEntidad.setId(centroComputoDTO.getUnidadAcademica().getId());
-            // Asigna otros campos de UnidadAcademicaDTO según sea necesario
+            String nombreUnidad = centroComputoDTO.getUnidadAcademica().getNombre();
+
+            if (nombreUnidad != null)
+            {
+                unidadAcademicaEntidad.setNombre(nombreUnidad);
+                System.out.println("Nombre de la unidad académica establecido: " + nombreUnidad);
+            } else
+            {
+                System.out.println("El nombre de la unidad académica es nulo.");
+            }
+
             centroComputoEntidad.setUnidadAcademica(unidadAcademicaEntidad);
+        } else
+        {
+            System.out.println("Unidad académica es nula.");
         }
 
         // Convertir la lista de ComputadoraDTO a ComputadoraEntidad

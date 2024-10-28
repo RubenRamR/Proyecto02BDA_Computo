@@ -41,22 +41,42 @@ public class CentroComputoDAO implements ICentroComputoDAO {
         {
             em.getTransaction().begin();
 
-            // Asegúrate de que el nombre de la unidad académica no sea nulo
-            if (centroComputo.getUnidadAcademica() != null && centroComputo.getUnidadAcademica().getNombre() == null)
+            // Verifica si la unidad académica no es nula y si su nombre es nulo
+            if (centroComputo.getUnidadAcademica() != null)
             {
-                throw new PersistenceException("El nombre de la unidad académica no puede ser nulo");
+                // Usar Criteria API para verificar el nombre de la unidad académica
+                CriteriaBuilder cb = em.getCriteriaBuilder();
+                CriteriaQuery<Long> query = cb.createQuery(Long.class);
+                Root<UnidadAcademicaEntidad> root = query.from(UnidadAcademicaEntidad.class);
+                query.select(cb.count(root))
+                        .where(cb.equal(root.get("id"), centroComputo.getUnidadAcademica().getId()));
+
+                Long count = em.createQuery(query).getSingleResult();
+                if (count == 0)
+                {
+                    throw new PersistenceException("La unidad académica no existe");
+                }
+
+                if (centroComputo.getUnidadAcademica().getNombre() == null)
+                {
+                    throw new PersistenceException("El nombre de la unidad académica no puede ser nulo");
+                }
+            } else
+            {
+                throw new PersistenceException("La unidad académica no puede ser nula");
             }
 
+            // Persistir el nuevo Centro de Cómputo
             em.persist(centroComputo);
             em.getTransaction().commit();
-//            logger.info("Centro de cómputo insertado: " + centroComputo);
+            logger.info("Centro de cómputo insertado: " + centroComputo);
         } catch (Exception e)
         {
             if (em.getTransaction().isActive())
             {
                 em.getTransaction().rollback();
             }
-//            logger.severe("Error al insertar el centro de cómputo: " + e.getMessage());
+            // logger.severe("Error al insertar el centro de cómputo: " + e.getMessage());
             throw new PersistenceException("Error al insertar el centro de cómputo: " + e.getMessage(), e);
         } finally
         {
@@ -159,7 +179,7 @@ public class CentroComputoDAO implements ICentroComputoDAO {
             em.getTransaction().begin();
 
             // Usa el nombre correcto de la entidad, que es "UnidadAcademicaEntidad"
-            Query query = em.createQuery("SELECT u FROM UnidadAcademicaEntidad u WHERE u.nombre = :nombre");
+            Query query = em.createQuery("SELECT u FROM unidadAcademica u WHERE u.nombre = :nombre;");
             query.setParameter("nombre", nombre);
 
             // Obtiene el resultado de la consulta

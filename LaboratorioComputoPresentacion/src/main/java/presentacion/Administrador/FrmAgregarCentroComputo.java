@@ -164,7 +164,7 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,31 +190,26 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
                 return;
             }
 
-            // Verificar que se haya seleccionado una carrera
             UnidadAcademicaDTO unidadSeleccionada = (CBUnidadA.getSelectedIndex() != -1)
                     ? unidades.get(CBUnidadA.getSelectedIndex())
                     : null;
 
-            
             if (unidadSeleccionada != null)
-            { // Verificar que el índice es válido
-
-                unidadSeleccionada = centroComputoNegocio.obtenerIdUnidadAcademicaPorNombre(unidadSeleccionada.getNombre());
-                String nombreUnidad = unidadSeleccionada.getNombre(); // Obtener el nombre de la unidad
-
+            {
+                // Verifica que el nombre de la unidad no sea nulo o vacío
+                String nombreUnidad = unidadSeleccionada.getNombre();
                 if (nombreUnidad == null || nombreUnidad.isEmpty())
                 {
                     JOptionPane.showMessageDialog(this, "La unidad académica seleccionada no tiene un nombre válido.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
                 // Crear el nuevo Centro de Cómputo
                 CentroComputoDTO nuevoCentro = new CentroComputoDTO();
                 nuevoCentro.setNombre(nombre);
                 nuevoCentro.setContrasenaMaestra(contrMa);
-                nuevoCentro.setUnidadAcademica(unidadSeleccionada);
                 nuevoCentro.setHoraInicio(horaInicio);
                 nuevoCentro.setHoraFin(horaFin);
+                nuevoCentro.setUnidadAcademica(unidadSeleccionada);
 
                 // Agregar el nuevo Centro de Cómputo
                 centroComputoNegocio.insertarCentroComputo(nuevoCentro);
@@ -229,7 +224,14 @@ public class FrmAgregarCentroComputo extends javax.swing.JFrame {
             }
         } catch (NegocioException ex)
         {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            try
+            {
+                throw new NegocioException(ex.getMessage());
+//            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (NegocioException ex1)
+            {
+                Logger.getLogger(FrmAgregarCentroComputo.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         } catch (Exception ex)
         {
             Logger.getLogger(FrmAgregarCentroComputo.class.getName()).log(Level.SEVERE, null, ex);
