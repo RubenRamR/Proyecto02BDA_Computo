@@ -5,7 +5,10 @@
 package InterfacesNegocio;
 
 import DTOs.CentroComputoDTO;
+import DTOs.ComputadoraDTO;
+import Entidades.EstudianteEntidad;
 import excepciones.NegocioException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,9 +25,11 @@ public interface ICentroComputoNegocio {
 
     public CentroComputoDTO obtenerCentroComputoPorID(Long id) throws NegocioException;
 
-        public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora);
-    
+    public CentroComputoDTO obtenerCentroComputoPorComputadora(Long idComputadora);
+
+    public void reservarComputadora(ComputadoraDTO computadoraDTO, EstudianteEntidad estudiante, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws NegocioException;
+
     public List<CentroComputoDTO> obtenerTodosLosCentroComputo() throws NegocioException;
-    
+
     public CentroComputoDTO obtenerCentroComputoPorNombre(String nombre) throws NegocioException;
 }

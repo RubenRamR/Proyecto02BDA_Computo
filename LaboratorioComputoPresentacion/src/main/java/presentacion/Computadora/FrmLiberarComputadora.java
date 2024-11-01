@@ -6,8 +6,10 @@ package presentacion.Computadora;
 
 import DTOs.ComputadoraDTO;
 import ENUM_P.Estado;
+import Entidades.ComputadoraEntidad;
 import Negocio.CentroComputoNegocio;
 import Negocio.ComputadoraNegocio;
+import java.util.List;
 import javax.swing.JOptionPane;
 import presentacion.Estudiante.FrmIngresar;
 
@@ -22,12 +24,12 @@ public class FrmLiberarComputadora extends javax.swing.JFrame {
     FrmIngresar frmIngresar = new FrmIngresar();
     FrmDesbloquear frmDesbloquear = new FrmDesbloquear();
 
-    String idStr;
+    String idStr = frmDesbloquear.getTxtIdValue();
     
     /**
      * Creates new form FrmLiberarComputadora
      */
-    public FrmLiberarComputadora(String idStr) {
+    public FrmLiberarComputadora() {
         initComponents();
         centroComputoNegocio = new CentroComputoNegocio();
         computadoraNegocio = new ComputadoraNegocio();
@@ -94,37 +96,40 @@ public class FrmLiberarComputadora extends javax.swing.JFrame {
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
 
+    String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID:", "Liberar Computadora", JOptionPane.PLAIN_MESSAGE);
+    
+    // Validar que se haya ingresado un ID
+    if (idStr == null || idStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        long idComputadora = Long.parseLong(idStr); // Convertir el ID a long
         
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        // Obtener la computadora por ID
+        ComputadoraDTO computadora = computadoraNegocio.obtenerComputadoraPorID(idComputadora);
+
+        if (computadora != null) {
+            Estado nuevoEstado = Estado.DISPONIBLE; // Definir el nuevo estado
+
+            // Actualizar la computadora en la base de datos
+            computadoraNegocio.actualizarComputadora(idComputadora, nuevoEstado);
+            JOptionPane.showMessageDialog(this, "Computadora liberada exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró ninguna computadora con este ID.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        try {
-            long idEstudiante = Long.parseLong(idStr);
-            // Lógica para liberar la computadora
-            ComputadoraDTO computadoraOcupada = computadoraNegocio.obtenerComputadoraPorEstudiante(idEstudiante);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El ID ingresado no es válido. Debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al liberar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
-            if (computadoraOcupada != null) {
-                long idComputadora = computadoraOcupada.getId(); // Obtener el ID
-                Estado nuevoEstado = Estado.DISPONIBLE; // Definir el nuevo estado
-
-                // Actualizar la computadora en la base de datos
-                computadoraNegocio.actualizarComputadora(idComputadora, nuevoEstado);
-                JOptionPane.showMessageDialog(this, "Computadora liberada exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró ninguna computadora ocupada por este ID.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al liberar la computadora: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Manda al frmDesbloquear si es necesario
-        FrmDesbloquear fdb = new FrmDesbloquear();
-        fdb.setVisible(true);
-        this.dispose();
-
+    // Manda al frmDesbloquear si es necesario
+    FrmDesbloquear fdb = new FrmDesbloquear();
+    fdb.setVisible(true);
+    this.dispose();
 
     }//GEN-LAST:event_btnLiberarActionPerformed
 
@@ -158,7 +163,7 @@ public class FrmLiberarComputadora extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new FrmLiberarComputadora().setVisible(true);
+                new FrmLiberarComputadora().setVisible(true);
             }
         });
     }

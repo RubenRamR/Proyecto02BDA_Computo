@@ -63,35 +63,69 @@ public class CentroComputoNegocio implements ICentroComputoNegocio {
             throw new NegocioException("Error inesperado: " + e.getMessage(), e);
         }
     }
-
+    
+    @Override
     public void reservarComputadora(ComputadoraDTO computadoraDTO, EstudianteEntidad estudiante, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws NegocioException {
-        try
-        {
-            // Convertir el DTO de computadora a entidad
-            ComputadoraEntidad computadoraEntidad = convertidor.convertirComputadoraDTOAEntidad(computadoraDTO);
+    try {
+        // Convertir el DTO de computadora a entidad
+        ComputadoraEntidad computadoraEntidad = computadoraDAO.obtenerComputadoraPorDireccionIP(computadoraDTO.getDireccionIP());
 
-            // Crear una nueva reserva
-            ReservaEntidad reserva = new ReservaEntidad();
-            reserva.setComputadora(computadoraEntidad); // Establece la computadora
-            reserva.setEstudiante(estudiante); // Establece el estudiante que reserva
-            reserva.setFechaHoraInicio(fechaHoraInicio); // Establece la fecha y hora de inicio
-            reserva.setFechaHoraFin(fechaHoraFin); // Establece la fecha y hora de fin
-
-            // Llamar al DAO para insertar la reserva
-            reservaDAO.insertarReserva(reserva); // Usa el ReservaDAO para insertar la reserva
-
-            // Actualizar el estado de la computadora a OCUPADO
-            computadoraEntidad.setEstado(Estado.OCUPADO);
-            computadoraDAO.actualizarComputadora(computadoraEntidad); // Actualiza la computadora
-
-        } catch (PersistenceException e)
-        {
-            throw new NegocioException("Error al reservar la computadora: " + e.getMessage(), e);
-        } catch (Exception e)
-        {
-            throw new NegocioException("Error inesperado al reservar la computadora: " + e.getMessage(), e);
+        // Verificar si la computadora existe
+        if (computadoraEntidad == null) {
+            throw new NegocioException("No se encontró la computadora con la dirección IP: " + computadoraDTO.getDireccionIP());
         }
+
+        // Crear una nueva reserva
+        ReservaEntidad reserva = new ReservaEntidad();
+        reserva.setComputadora(computadoraEntidad); // Establece la computadora
+        reserva.setEstudiante(estudiante); // Establece el estudiante que reserva
+        reserva.setFechaHoraInicio(fechaHoraInicio); // Establece la fecha y hora de inicio
+        reserva.setFechaHoraFin(fechaHoraFin); // Establece la fecha y hora de fin
+
+        // Llamar al DAO para insertar la reserva
+        reservaDAO.insertarReserva(reserva); // Usa el ReservaDAO para insertar la reserva
+
+        // Actualizar el estado de la computadora a OCUPADO
+        computadoraEntidad.setEstado(Estado.OCUPADO);
+        computadoraDAO.editarComputadora(computadoraEntidad); // Actualiza la computadora
+    } catch (PersistenceException e) {
+        throw new NegocioException("Error al reservar la computadora: " + e.getMessage(), e);
+    } catch (Exception e) {
+        throw new NegocioException("Error inesperado al reservar la computadora: " + e.getMessage(), e);
     }
+}
+
+
+
+        //funciona
+//    public void reservarComputadora(ComputadoraDTO computadoraDTO, EstudianteEntidad estudiante, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws NegocioException {
+//        try
+//        {
+//            // Convertir el DTO de computadora a entidad
+//            ComputadoraEntidad computadoraEntidad = convertidor.convertirComputadoraDTOAEntidad(computadoraDTO);
+//
+//            // Crear una nueva reserva
+//            ReservaEntidad reserva = new ReservaEntidad();
+//            reserva.setComputadora(computadoraEntidad); // Establece la computadora
+//            reserva.setEstudiante(estudiante); // Establece el estudiante que reserva
+//            reserva.setFechaHoraInicio(fechaHoraInicio); // Establece la fecha y hora de inicio
+//            reserva.setFechaHoraFin(fechaHoraFin); // Establece la fecha y hora de fin
+//
+//            // Llamar al DAO para insertar la reserva
+//            reservaDAO.insertarReserva(reserva); // Usa el ReservaDAO para insertar la reserva
+//
+//            // Actualizar el estado de la computadora a OCUPADO
+//            computadoraEntidad.setEstado(Estado.OCUPADO);
+//            computadoraDAO.actualizarComputadora(computadoraEntidad); // Actualiza la computadora
+//
+//        } catch (PersistenceException e)
+//        {
+//            throw new NegocioException("Error al reservar la computadora: " + e.getMessage(), e);
+//        } catch (Exception e)
+//        {
+//            throw new NegocioException("Error inesperado al reservar la computadora: " + e.getMessage(), e);
+//        }
+//    }
 
     @Override
     public void editarCentroComputo(CentroComputoDTO centroComputo) throws NegocioException {

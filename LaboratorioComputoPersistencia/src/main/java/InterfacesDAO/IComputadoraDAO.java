@@ -20,10 +20,17 @@ public interface IComputadoraDAO {
 
     public void eliminarComputadoraPorID(Long id) throws PersistenceException;
 
+        public void actualizarComputadora(ComputadoraEntidad computadora) throws PersistenceException ;
+
+    
     public ComputadoraEntidad obtenerComputadoraPorID(Long id) throws PersistenceException;
 
     public ComputadoraEntidad obtenerComputadoraPorEstudiante(long idEstudiante) throws PersistenceException ;
 
-    
+        public ComputadoraEntidad obtenerComputadoraPorDireccionIP(String direccionIP) throws PersistenceException;
+
+        public List<ComputadoraEntidad> obtenerComputadoraPorIdEstudiante(long idEstudiante) throws PersistenceException ;
+
+        
     public List<ComputadoraEntidad> obtenerTodasLasComputadoras() throws PersistenceException;
 }

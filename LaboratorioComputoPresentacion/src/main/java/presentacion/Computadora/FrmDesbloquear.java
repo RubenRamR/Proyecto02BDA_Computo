@@ -172,7 +172,7 @@ public class FrmDesbloquear extends javax.swing.JFrame {
         return; // No hacer nada si está vacío
     }
         String strId = txtId.getText().trim();
-        FrmLiberarComputadora flc = new FrmLiberarComputadora(strId);
+        FrmLiberarComputadora flc = new FrmLiberarComputadora();
         flc.setVisible(true);
         this.dispose();
         

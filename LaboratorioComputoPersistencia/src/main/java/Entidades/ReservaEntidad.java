@@ -31,7 +31,7 @@ public class ReservaEntidad implements Serializable {
     @JoinColumn(name = "estudiante_id")
     private EstudianteEntidad estudiante;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "computadora_id", nullable = false)
     private ComputadoraEntidad computadora;
 

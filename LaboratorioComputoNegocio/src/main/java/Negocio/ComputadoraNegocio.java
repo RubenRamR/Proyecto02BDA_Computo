@@ -126,6 +126,15 @@ public class ComputadoraNegocio implements IComputadoraNegocio {
         }
     }
 
+    public List<ComputadoraEntidad> obtenerComputadoraPorIdEstudiante(long idEstudiante) throws NegocioException {
+        try {
+            return computadoraDAO.obtenerComputadoraPorIdEstudiante(idEstudiante);
+        } catch (PersistenceException e) {
+            // Manejo de la excepción en la capa de negocio
+            throw new NegocioException("Error al obtener computadoras para el estudiante con ID: " + idEstudiante, e);
+        }
+    }
+    
     @Override
     public List<ComputadoraDTO> obtenerTodasLasComputadoras() throws NegocioException {
         try
